@@ -46,10 +46,15 @@ const element: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
   if (!selfClosing) {
     const substr = src.slice(matchLength);
     const fragment = parser.parseFragment(substr);
-    token.children = fragment.children as any;
     const fragmentLen = fragment.len;
-    const matchClose = selfClosing ? null : substr.slice(fragmentLen).match(REG_CLOSE_TAG);
-    token.len += fragment.len + (matchClose?.[0].length ?? 0);
+    if (selfClosing) {
+      token.len += fragment.len;
+    } else {
+      const matchClose = substr.slice(fragmentLen).match(REG_CLOSE_TAG);
+      if (!matchClose) return token;
+      token.len += fragment.len + (matchClose?.[0].length ?? 0);
+    }
+    token.children = fragment.children as any;
   }
   return token;
 };

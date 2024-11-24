@@ -16,25 +16,30 @@ export const token = <T extends IToken>(
   return tok;
 };
 
-export const loop = <T extends IToken, P extends IParser<T>>(
+export const loop0 = <T extends IToken, P extends IParser<T>>(
   parser: P,
   tokenizer: TTokenizer<T, P>,
   src: string,
-): T[] => {
+): [tokens: T[], length: number] => {
   const children = [];
   const end = src.length;
   let remaining = src;
   let length = 0;
   while (length < end) {
     const tok = tokenizer(parser, remaining);
-    if (tok) {
-      children.push(tok);
-      length += tok.len || 0;
-      remaining = remaining.slice(tok.len);
-    } else if (!children.length) return [];
+    if (!tok) break;
+    children.push(tok);
+    length += tok.len || 0;
+    remaining = remaining.slice(tok.len);
   }
-  return children;
+  return [children, length];
 };
+
+export const loop = <T extends IToken, P extends IParser<T>>(
+  parser: P,
+  tokenizer: TTokenizer<T, P>,
+  src: string,
+): T[] => loop0(parser, tokenizer, src)[0];
 
 export const first = <T extends IToken, P extends IParser<T>>(tokenizers: TTokenizer<T, P>[]): TTokenizer<T, P> => {
   const length = tokenizers.length;

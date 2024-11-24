@@ -41,6 +41,16 @@ export class HtmlParser extends Parser<THtmlToken> implements IParser<THtmlToken
     return children;
   }
 
+  public parseRoot(src: string): IRoot {
+    const children = this.parse(src);
+    const root: IRoot = {
+      type: 'root',
+      children,
+      len: src.length,
+    };
+    return root;
+  }
+
   public parseFragment(src: string): IRoot {
     const children = [];
     const end = src.length;

@@ -24,10 +24,4 @@ export interface IElement extends IToken {
   children: (IComment | IElement | IText)[];
 }
 
-export type THtmlToken =
-  | IRoot
-  | IText
-  | IComment
-  | IDoctype
-  | IElement
-  ;
+export type THtmlToken = IRoot | IText | IComment | IDoctype | IElement;

@@ -22,10 +22,7 @@ const text: TTokenizer<type.IText, HtmlParser> = (_, src) => {
   return token<type.IText>(value, 'text', void 0, {value}, value.length);
 };
 
-const REG_OPEN_TAG = reg.replace(
-  /^<([a-z][\w-]*)(?:attr)*? *(\/?)>/,
-  {attr: reg.attr},
-);
+const REG_OPEN_TAG = reg.replace(/^<([a-z][\w-]*)(?:attr)*? *(\/?)>/, {attr: reg.attr});
 const REG_ATTRS = /([\w|data-]+)=["']?((?:.(?!["']?\s+(?:\S+)=|\s*\/?[>"']))+.)["']?/gm;
 const REG_CLOSE_TAG = /^<\/([a-z][\w-]*)>/;
 const element: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {

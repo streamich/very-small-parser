@@ -11,7 +11,7 @@ describe('parsers', () => {
       });
     });
   });
-  
+
   describe('text', () => {
     test('text', () => {
       const ast = parse('hello world');
@@ -74,10 +74,8 @@ describe('parsers', () => {
           {
             type: 'element',
             tagName: 'i',
-            children: [
-              {type: 'text', value: 'def'},
-            ],
-          }
+            children: [{type: 'text', value: 'def'}],
+          },
         ],
       });
     });
@@ -92,17 +90,13 @@ describe('parsers', () => {
           {
             type: 'element',
             tagName: 'i',
-            children: [
-              {type: 'text', value: 'def'},
-            ],
+            children: [{type: 'text', value: 'def'}],
           },
           {type: 'text', value: ' '},
           {
             type: 'element',
             tagName: 'u',
-            children: [
-              {type: 'text', value: 'ghi'},
-            ],
+            children: [{type: 'text', value: 'ghi'}],
           },
           {type: 'text', value: '!'},
         ],
@@ -124,9 +118,7 @@ describe('parsers', () => {
               {
                 type: 'element',
                 tagName: 'b',
-                children: [
-                  {type: 'text', value: 'e'},
-                ],
+                children: [{type: 'text', value: 'e'}],
               },
               {type: 'text', value: 'f'},
             ],
@@ -145,9 +137,7 @@ describe('parsers', () => {
           properties: {
             id: 'test',
           },
-          children: [
-            {type: 'text', value: ' ! '},
-          ],
+          children: [{type: 'text', value: ' ! '}],
         });
       });
 
@@ -160,9 +150,7 @@ describe('parsers', () => {
             id: 'test',
             role: 'button',
           },
-          children: [
-            {type: 'text', value: ' ! '},
-          ],
+          children: [{type: 'text', value: ' ! '}],
         });
       });
 
@@ -172,25 +160,21 @@ describe('parsers', () => {
           type: 'element',
           tagName: 'p',
           properties: {
-            ['data-testid']: '123',
+            'data-testid': '123',
           },
-          children: [
-            {type: 'text', value: ' ! '},
-          ],
+          children: [{type: 'text', value: ' ! '}],
         });
       });
 
       test('single quotes', () => {
-        const ast = parse('<p data-testid=\'123\'> ! </p>');
+        const ast = parse("<p data-testid='123'> ! </p>");
         expect(ast[0]).toMatchObject({
           type: 'element',
           tagName: 'p',
           properties: {
-            ['data-testid']: '123',
+            'data-testid': '123',
           },
-          children: [
-            {type: 'text', value: ' ! '},
-          ],
+          children: [{type: 'text', value: ' ! '}],
         });
       });
 
@@ -200,11 +184,9 @@ describe('parsers', () => {
           type: 'element',
           tagName: 'p',
           properties: {
-            ['data-testid']: '123',
+            'data-testid': '123',
           },
-          children: [
-            {type: 'text', value: ' ! '},
-          ],
+          children: [{type: 'text', value: ' ! '}],
         });
       });
 
@@ -216,9 +198,7 @@ describe('parsers', () => {
           properties: {
             href: 'test.jpg?public=true',
           },
-          children: [
-            {type: 'text', value: ' ! '},
-          ],
+          children: [{type: 'text', value: ' ! '}],
         });
       });
     });
@@ -250,7 +230,7 @@ describe('parsers', () => {
           type: 'element',
           tagName: 'hr',
           properties: {
-            ['data-testid']: 'very-important',
+            'data-testid': 'very-important',
           },
           children: [],
         });

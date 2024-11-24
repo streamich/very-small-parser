@@ -1,5 +1,5 @@
-import {Parser, ParserOpts} from '../Parser';
-import {IRoot, IText, THtmlToken} from './types';
+import {Parser, type ParserOpts} from '../Parser';
+import type {IRoot, IText, THtmlToken} from './types';
 import {first} from '../util';
 import type {IParser, TTokenizer} from '../types';
 
@@ -10,7 +10,6 @@ export interface HtmlParserOpts extends ParserOpts<THtmlToken, HtmlParser> {
 export class HtmlParser extends Parser<THtmlToken> implements IParser<THtmlToken> {
   public readonly first: TTokenizer<THtmlToken, HtmlParser>;
 
-  // biome-ignore lint: keep constructor for typing
   constructor(opts: HtmlParserOpts) {
     super(opts as ParserOpts<THtmlToken, Parser<THtmlToken>>);
     this.first = first<THtmlToken, this>(this.parsers) as TTokenizer<THtmlToken, HtmlParser>;

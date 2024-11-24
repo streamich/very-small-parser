@@ -1,5 +1,5 @@
 import {Parser} from '../../Parser';
-import {IParser, TTokenizer} from '../../types';
+import type {IParser, TTokenizer} from '../../types';
 import type {IText, TInlineToken} from './types';
 
 export interface MdInlineParserOpts<T extends TInlineToken> {
@@ -7,6 +7,7 @@ export interface MdInlineParserOpts<T extends TInlineToken> {
 }
 
 export class MdInlineParser<T extends TInlineToken = TInlineToken> extends Parser<T> implements IParser<T> {
+  // biome-ignore lint: keep constructor for typing
   constructor(opts: MdInlineParserOpts<T>) {
     super(opts);
   }

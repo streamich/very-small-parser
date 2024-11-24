@@ -1,4 +1,4 @@
-import {IParser, IToken, TTokenizer} from './types';
+import type {IParser, IToken, TTokenizer} from './types';
 
 const isTest = process.env.NODE_ENV !== 'production';
 
@@ -16,7 +16,11 @@ export const token = <T extends IToken>(
   return tok;
 };
 
-export const loop = <T extends IToken, P extends IParser<T>>(parser: P, tokenizer: TTokenizer<T, P>, value: string): T[] => {
+export const loop = <T extends IToken, P extends IParser<T>>(
+  parser: P,
+  tokenizer: TTokenizer<T, P>,
+  value: string,
+): T[] => {
   const children = [];
   const end = value.length;
   let remaining = value;
@@ -44,7 +48,8 @@ export const first = <T extends IToken, P extends IParser<T>>(tokenizers: TToken
   };
 };
 
-export const regexParser = <T extends IToken>(type: T['type'], reg: RegExp, childrenMatchIndex: number): TTokenizer<T> =>
+export const regexParser =
+  <T extends IToken>(type: T['type'], reg: RegExp, childrenMatchIndex: number): TTokenizer<T> =>
   (parser, value) => {
     const matches = value.match(reg);
     return matches ? token<T>(matches[0], type, parser.parse(matches[childrenMatchIndex])) : void 0;

@@ -1,4 +1,4 @@
-import {IParser, IToken, TTokenizer} from './types';
+import type {IParser, IToken, TTokenizer} from './types';
 import {loop, first} from './util';
 
 export interface ParserOpts<T extends IToken, P extends Parser<T>> {

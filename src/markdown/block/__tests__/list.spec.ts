@@ -6,15 +6,9 @@ describe('list', () => {
     expect(ast[0]).toMatchObject({
       type: 'list',
       children: [
-        {type: 'listItem', children: [
-          {type: 'paragraph', children: [{type: 'text', value: 'item 1'}]},
-        ]},
-        {type: 'listItem', children: [
-          {type: 'paragraph', children: [{type: 'text', value: 'item 2'}]},
-        ]},
-        {type: 'listItem', children: [
-          {type: 'paragraph', children: [{type: 'text', value: 'item 3'}]},
-        ]},
+        {type: 'listItem', children: [{type: 'paragraph', children: [{type: 'text', value: 'item 1'}]}]},
+        {type: 'listItem', children: [{type: 'paragraph', children: [{type: 'text', value: 'item 2'}]}]},
+        {type: 'listItem', children: [{type: 'paragraph', children: [{type: 'text', value: 'item 3'}]}]},
       ],
     });
   });

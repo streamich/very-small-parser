@@ -1,6 +1,6 @@
 import {Parser, type ParserOpts} from '../../Parser';
-import {IParser, TTokenizer} from '../../types';
-import {MdInlineParser} from '../inline/MdInlineParser';
+import type {IParser, TTokenizer} from '../../types';
+import type {MdInlineParser} from '../inline/MdInlineParser';
 import type {TInlineToken} from '../inline/types';
 import type {IRoot, TBlockToken} from './types';
 

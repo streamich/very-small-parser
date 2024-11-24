@@ -1,5 +1,5 @@
 import {block} from '..';
-import {IToken} from '../../../types';
+import type {IToken} from '../../../types';
 
 export const parse = (text: string): IToken[] => {
   const ast = block.parse(text);

@@ -55,7 +55,9 @@ const heading: TTokenizer<type.IHeading, MdBlockParser<type.TBlockToken>> = (par
   matches = src.match(reg.lheading);
   if (matches) {
     const subvalue = matches[1];
-    return token<type.IHeading>(matches[0], 'heading', parser.parseInline(subvalue), {depth: matches[2] === '-' ? 1 : 2});
+    return token<type.IHeading>(matches[0], 'heading', parser.parseInline(subvalue), {
+      depth: matches[2] === '-' ? 1 : 2,
+    });
   }
 };
 

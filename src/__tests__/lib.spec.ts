@@ -1,5 +1,5 @@
 import {token, first} from '../util';
-import {IToken, TTokenizer} from '../types';
+import type {IToken, TTokenizer} from '../types';
 
 const icon = (maxLength: number = 32): TTokenizer<IToken> => {
   const REG_ICON1 = new RegExp(`^::([^'\\s:]{1,${maxLength}}?)::`);

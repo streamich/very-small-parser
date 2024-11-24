@@ -1,5 +1,5 @@
 import {inline} from '..';
-import {IToken} from '../../../types';
+import type {IToken} from '../../../types';
 
 export const parse = (text: string): IToken[] => {
   const ast = inline.parse(text);

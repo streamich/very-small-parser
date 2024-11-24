@@ -312,7 +312,7 @@ describe('Block Markdown', () => {
                 value: 'git-cz',
                 lang: null,
               },
-              { type: 'newline' },
+              {type: 'newline'},
               {
                 type: 'code',
                 value: 'console.log(123)',
@@ -320,7 +320,7 @@ describe('Block Markdown', () => {
               },
             ],
           },
-          { type: 'newline' },
+          {type: 'newline'},
         ],
       });
     });

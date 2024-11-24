@@ -1,5 +1,5 @@
-import {block, IRoot} from '..';
-import {IToken} from '../../types';
+import {block, type IRoot} from '..';
+import type {IToken} from '../../types';
 
 export const parse = (src: string): IRoot => {
   const ast = block.parseRoot(src);

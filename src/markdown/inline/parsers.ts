@@ -126,11 +126,12 @@ const link: TTokenizer<types.ILink | types.IImage> = (parser, value: string) => 
   const isImage = matches[0][0] === '!';
   let linkTitle = matches[3];
   if (linkTitle) linkTitle = linkTitle.slice(1, -1);
-  if (isImage) return token<types.IImage>(matches[0], 'image', void 0, {
-    url: matches[2],
-    alt: matches[1],
-    title: linkTitle,
-  });
+  if (isImage)
+    return token<types.IImage>(matches[0], 'image', void 0, {
+      url: matches[2],
+      alt: matches[1],
+      title: linkTitle,
+    });
   return token<types.ILink>(matches[0], 'link', parser.parse(matches[1]), {
     url: matches[2],
     title: linkTitle,
@@ -159,7 +160,9 @@ const smarttext = (text: string) =>
     .replace(/'/g, '\u2019') // closing singles & apostrophes
     .replace(/(^|[-\u2014/(\[{\u2018\s])"/g, '$1\u201c') // opening doubles
     .replace(/"/g, '\u201d'); // closing doubles
-const REG_TEXT = new RegExp('^[\\s\\S]+?(?=[\\<!\\[_*`:~\\|#@\\$\\^=\\+]| {2,}\\n|(' + urlInline.source + ')|\\\\n|\\\\`|$)');
+const REG_TEXT = new RegExp(
+  '^[\\s\\S]+?(?=[\\<!\\[_*`:~\\|#@\\$\\^=\\+]| {2,}\\n|(' + urlInline.source + ')|\\\\n|\\\\`|$)',
+);
 const text: TTokenizer<types.IText> = (eat, src) => {
   const matches = src.match(REG_TEXT);
   if (!matches) return;

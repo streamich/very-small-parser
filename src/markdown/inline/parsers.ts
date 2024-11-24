@@ -145,12 +145,26 @@ const link: TTokenizer<ILink | IImage> = (parser, value: string) => {
 //   return token<IWhitespace>(subvalue, 'whitespace', void 0, {length: subvalue.length});
 // };
 
+const smarttext = (text: string) =>
+  text
+    .replace(/\.{3}/g, '\u2026')
+    .replace(/\(C\)/gi, '©')
+    .replace(/\(R\)/gi, '®')
+    .replace(/\(TM\)/gi, '™')
+    .replace(/\(P\)/g, '§')
+    .replace(/\+\-/g, '±')
+    .replace(/---/g, '\u2014')
+    .replace(/--/g, '\u2013')
+    .replace(/(^|[-\u2014/(\[{"\s])'/g, '$1\u2018') // opening singles
+    .replace(/'/g, '\u2019') // closing singles & apostrophes
+    .replace(/(^|[-\u2014/(\[{\u2018\s])"/g, '$1\u201c') // opening doubles
+    .replace(/"/g, '\u201d'); // closing doubles
 const REG_TEXT = new RegExp('^[\\s\\S]+?(?=[\\<!\\[_*`:~\\|#@\\$\\^=\\+]| {2,}\\n|(' + urlInline.source + ')|\\\\n|\\\\`|$)');
-const text: TTokenizer<IText> = (eat, value) => {
-  const matches = value.match(REG_TEXT);
+const text: TTokenizer<IText> = (eat, src) => {
+  const matches = src.match(REG_TEXT);
   if (!matches) return;
-  const matchedValue = matches[0];
-  return token<IText>(matchedValue, 'text', void 0, {value: matchedValue});
+  const value = smarttext(matches[0]);
+  return token<IText>(value, 'text', void 0, {value});
 };
 
 const REG_ESCAPE = /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/;

@@ -12,6 +12,15 @@ const googleDocsClipboard = `
 </b>
 `;
 
+test('auto-closes two <meta> tags', () => {
+  const fragment = parse(googleDocsClipboard).filter((node) => node.type !== 'text');
+  expect(fragment).toMatchObject([
+    {type: 'element', tagName: 'meta'},
+    {type: 'element', tagName: 'meta'},
+    {type: 'element', tagName: 'b'},
+  ]);
+});
+
 const gmailClipboard = `
 <meta charset='utf-8'>
 <span style="color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; font-size: small; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">text <span></span>
@@ -24,7 +33,6 @@ const gmailClipboard = `
 `;
 
 test('auto-closes <meta> tag', () => {
-  // const ast = parse(googleDocsClipboard);
   const fragment = parse(gmailClipboard).filter((node) => node.type !== 'text');
   expect(fragment).toMatchObject([
     {type: 'element', tagName: 'meta'},

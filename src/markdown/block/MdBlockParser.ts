@@ -1,5 +1,5 @@
 import {Parser, type ParserOpts} from '../../Parser';
-import {IParser, TTokenizer} from '../../types';
+import {IParser, IToken, TTokenizer} from '../../types';
 import {MdInlineParser} from '../inline/MdInlineParser';
 import type {TInlineToken} from '../inline/types';
 import type {TBlockToken} from './types';
@@ -17,7 +17,16 @@ export class MdBlockParser<T extends TBlockToken> extends Parser<T> implements I
     this.inline = opts.inline;
   }
 
-  public parseInline(value: string): TInlineToken[] {
-    return this.inline.parse(value);
+  public parseChildren(src: string): ReturnType<MdBlockParser<T>['parse']> {
+    const fragment = this.parse(src);
+    if (!fragment) return fragment;
+    const length = fragment.length;
+    if (!length && length > 1) return fragment;
+    const token = fragment[0] as IToken;
+    return (token.children as T[]) ?? [];
+  }
+
+  public parseInline(src: string): TInlineToken[] {
+    return this.inline.parse(src);
   }
 }

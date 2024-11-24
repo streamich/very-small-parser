@@ -1,8 +1,8 @@
 import {token} from '../../util';
 import * as reg from '../regex';
 import type {TTokenizer} from '../../types';
-import type * as type from './types';
 import type {MdBlockParser} from './MdBlockParser';
+import type * as type from './types';
 
 const REG_NEWLINE = /^\n+/;
 const newline: TTokenizer<type.INewline> = (_, src) => {
@@ -70,8 +70,8 @@ const blockquote: TTokenizer<type.IBlockquote, MdBlockParser<type.TBlockToken>> 
 
 const REG_BULLET = /^(\s*)([*+-]|\d\.)(\s{1,2}|\t)/;
 const REG_LOOSE = /\n\n(?!\s*$)/;
-const getParts = (subvalue: string): string[] | null => subvalue.match(REG_PARTS);
-const list: TTokenizer<type.IList> = (parser, value) => {
+const getParts = (subvalue: string): string[] | null => subvalue.match(reg.item);
+const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, value) => {
   const matches = value.match(reg.list);
   if (!matches) return;
   const subvalue = matches[0];
@@ -113,7 +113,7 @@ const list: TTokenizer<type.IList> = (parser, value) => {
       type: 'listItem',
       loose: partLoose,
       checked,
-      children: parser.parse(outdented),
+      children: parser.parseChildren(outdented),
     });
   }
   return token<type.IList>(subvalue, 'list', children, {ordered, start, loose});

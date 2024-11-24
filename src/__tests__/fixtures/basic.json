@@ -1,0 +1,140 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "heading",
+      "raw": "# md-mdast\n\n",
+      "len": 12,
+      "children": [
+        {
+          "type": "text",
+          "raw": "md-mdast",
+          "len": 8,
+          "value": "md-mdast"
+        }
+      ],
+      "depth": 1
+    },
+    {
+      "type": "paragraph",
+      "raw": "[![](https://img.shields.io/bundlephobia/minzip/md-mdast.svg)](https://bundlephobia.com/result?p=md-mdast@1.0.1)\n\n",
+      "len": 114,
+      "children": [
+        {
+          "type": "link",
+          "raw": "[![](https://img.shields.io/bundlephobia/minzip/md-mdast.svg)](https://bundlephobia.com/result?p=md-mdast@1.0.1)",
+          "len": 112,
+          "children": [
+            {
+              "type": "image",
+              "raw": "![](https://img.shields.io/bundlephobia/minzip/md-mdast.svg)",
+              "len": 60,
+              "url": "https://img.shields.io/bundlephobia/minzip/md-mdast.svg",
+              "alt": ""
+            }
+          ],
+          "url": "https://bundlephobia.com/result?p=md-mdast@1.0.1"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "raw": "Markdown-to-MDAST converter. Small and fast.\n\n",
+      "len": 46,
+      "children": [
+        {
+          "type": "text",
+          "raw": "Markdown-to-MDAST converter. Small and fast.",
+          "len": 44,
+          "value": "Markdown-to-MDAST converter. Small and fast."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "raw": "## Installation\n\n",
+      "len": 17,
+      "children": [
+        {
+          "type": "text",
+          "raw": "Installation",
+          "len": 12,
+          "value": "Installation"
+        }
+      ],
+      "depth": 2
+    },
+    {
+      "type": "code",
+      "raw": "```shell\nnpm install md-mdast\n```\n\n",
+      "len": 35,
+      "value": "npm install md-mdast",
+      "lang": "shell",
+      "meta": ""
+    },
+    {
+      "type": "heading",
+      "raw": "## Usage\n\n",
+      "len": 10,
+      "children": [
+        {
+          "type": "text",
+          "raw": "Usage",
+          "len": 5,
+          "value": "Usage"
+        }
+      ],
+      "depth": 2
+    },
+    {
+      "type": "code",
+      "raw": "```js\nconst {create} = require('md-mdast');\n\nconst parser = create();\n\nconsole.log(parser.tokenizeBlock('hello world'));\nconsole.log(parser.tokenizeInline('hello world'));\n```\n\n",
+      "len": 177,
+      "value": "const {create} = require('md-mdast');\n\nconst parser = create();\n\nconsole.log(parser.tokenizeBlock('hello world'));\nconsole.log(parser.tokenizeInline('hello world'));",
+      "lang": "js",
+      "meta": ""
+    },
+    {
+      "type": "heading",
+      "raw": "## License\n\n",
+      "len": 12,
+      "children": [
+        {
+          "type": "text",
+          "raw": "License",
+          "len": 7,
+          "value": "License"
+        }
+      ],
+      "depth": 2
+    },
+    {
+      "type": "paragraph",
+      "raw": "[Unlicense](http://unlicense.org/) &mdash; public domain.\n",
+      "len": 58,
+      "children": [
+        {
+          "type": "link",
+          "raw": "[Unlicense](http://unlicense.org/)",
+          "len": 34,
+          "children": [
+            {
+              "type": "text",
+              "raw": "Unlicense",
+              "len": 9,
+              "value": "Unlicense"
+            }
+          ],
+          "url": "http://unlicense.org/"
+        },
+        {
+          "type": "text",
+          "raw": " &mdash; public domain.",
+          "len": 23,
+          "value": " &mdash; public domain."
+        }
+      ]
+    }
+  ],
+  "len": 481
+}

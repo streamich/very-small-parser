@@ -1,0 +1,57 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "heading",
+      "len": 9,
+      "children": [
+        {
+          "type": "text",
+          "len": 5,
+          "value": "Hello"
+        }
+      ],
+      "depth": 1
+    },
+    {
+      "type": "paragraph",
+      "len": 34,
+      "children": [
+        {
+          "type": "text",
+          "len": 27,
+          "value": "This document has footnotes"
+        },
+        {
+          "type": "footnoteReference",
+          "len": 4,
+          "value": "1"
+        },
+        {
+          "type": "text",
+          "len": 1,
+          "value": "."
+        }
+      ]
+    },
+    {
+      "type": "footnoteDefinition",
+      "len": 34,
+      "children": [
+        {
+          "type": "paragraph",
+          "len": 28,
+          "children": [
+            {
+              "type": "text",
+              "len": 27,
+              "value": "Footnotes are defined here."
+            }
+          ]
+        }
+      ],
+      "identifier": "1"
+    }
+  ],
+  "len": 77
+}

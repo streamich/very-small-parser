@@ -1,0 +1,59 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "heading",
+      "len": 17,
+      "children": [
+        {
+          "type": "text",
+          "len": 13,
+          "value": "The Rust blog"
+        }
+      ],
+      "depth": 1
+    },
+    {
+      "type": "paragraph",
+      "len": 141,
+      "children": [
+        {
+          "type": "link",
+          "len": 139,
+          "children": [
+            {
+              "type": "image",
+              "len": 85,
+              "url": "https://travis-ci.org/rust-lang/blog.rust-lang.org.svg?branch=master",
+              "alt": "Build Status"
+            }
+          ],
+          "url": "https://travis-ci.org/rust-lang/blog.rust-lang.org"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "len": 52,
+      "children": [
+        {
+          "type": "text",
+          "len": 50,
+          "value": "This is the blog of the Rust Programming Language."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "len": 95,
+      "children": [
+        {
+          "type": "text",
+          "len": 94,
+          "value": "It’s implemented as a small static site generator, that’s deployed to GitHub\nPages via Travis."
+        }
+      ]
+    }
+  ],
+  "len": 305
+}

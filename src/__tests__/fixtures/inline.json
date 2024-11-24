@@ -1,0 +1,50 @@
+{
+  "children": [
+    {
+      "children": [
+        { "len": 6, "raw": "Hello ", "type": "text", "value": "Hello " },
+        { "len": 4, "prefix": "#", "raw": "#tag", "type": "handle", "value": "tag" },
+        { "len": 9, "raw": " this is ", "type": "text", "value": " this is " },
+        {
+          "children": [{ "len": 6, "raw": "italic", "type": "text", "value": "italic" }],
+          "len": 8,
+          "raw": "_italic_",
+          "type": "emphasis"
+        },
+        { "len": 5, "raw": " and ", "type": "text", "value": " and " },
+        {
+          "children": [{ "len": 4, "raw": "bold", "type": "text", "value": "bold" }],
+          "len": 8,
+          "raw": "**bold**",
+          "type": "strong"
+        },
+        { "len": 5, "raw": " and ", "type": "text", "value": " and " },
+        {
+          "children": [
+            {
+              "children": [{ "len": 11, "raw": "bold-italic", "type": "text", "value": "bold-italic" }],
+              "len": 13,
+              "raw": "_bold-italic_",
+              "type": "emphasis"
+            }
+          ],
+          "len": 17,
+          "raw": "**_bold-italic_**",
+          "type": "strong"
+        },
+        { "len": 1, "raw": ".", "type": "text", "value": "." },
+        {
+          "children": [{ "len": 5, "raw": "super", "type": "text", "value": "super" }],
+          "len": 7,
+          "raw": "^super^",
+          "type": "sup"
+        }
+      ],
+      "len": 71,
+      "raw": "Hello #tag this is _italic_ and **bold** and **_bold-italic_**.^super^\n",
+      "type": "paragraph"
+    }
+  ],
+  "len": 71,
+  "type": "root"
+}

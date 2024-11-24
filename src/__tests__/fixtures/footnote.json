@@ -1,0 +1,187 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "paragraph",
+      "raw": "Here is some text containing a footnote[^somesamplefootnote]. You can then continue your thought...\n\n",
+      "len": 101,
+      "children": [
+        {
+          "type": "text",
+          "raw": "Here is some text containing a footnote",
+          "len": 39,
+          "value": "Here is some text containing a footnote"
+        },
+        {
+          "type": "footnoteReference",
+          "raw": "[^somesamplefootnote]",
+          "len": 21,
+          "value": "somesamplefootnote"
+        },
+        {
+          "type": "text",
+          "raw": ". You can then continue your thought...",
+          "len": 39,
+          "value": ". You can then continue your thought…"
+        }
+      ]
+    },
+    {
+      "type": "footnoteDefinition",
+      "raw": "[^somesamplefootnote]: Here is the text of the footnote itself.\n\n",
+      "len": 65,
+      "children": [
+        {
+          "type": "paragraph",
+          "raw": "Here is the text of the footnote itself.\n\n",
+          "len": 42,
+          "children": [
+            {
+              "type": "text",
+              "raw": "Here is the text of the footnote itself.",
+              "len": 40,
+              "value": "Here is the text of the footnote itself."
+            }
+          ]
+        }
+      ],
+      "identifier": "somesamplefootnote"
+    },
+    {
+      "type": "paragraph",
+      "raw": "Even go to a new [paragraph][] and the footnotes will go to the bottom of the document[^documentdetails].\n\n",
+      "len": 107,
+      "children": [
+        {
+          "type": "text",
+          "raw": "Even go to a new ",
+          "len": 17,
+          "value": "Even go to a new "
+        },
+        {
+          "type": "linkReference",
+          "raw": "[paragraph][]",
+          "len": 13,
+          "children": [
+            {
+              "type": "text",
+              "raw": "paragraph",
+              "len": 9,
+              "value": "paragraph"
+            }
+          ],
+          "identifier": "paragraph",
+          "referenceType": "collapsed"
+        },
+        {
+          "type": "text",
+          "raw": " and the footnotes will go to the bottom of the document",
+          "len": 56,
+          "value": " and the footnotes will go to the bottom of the document"
+        },
+        {
+          "type": "footnoteReference",
+          "raw": "[^documentdetails]",
+          "len": 18,
+          "value": "documentdetails"
+        },
+        {
+          "type": "text",
+          "raw": ".",
+          "len": 1,
+          "value": "."
+        }
+      ]
+    },
+    {
+      "type": "footnoteDefinition",
+      "raw": "[^documentdetails]: Depending on the **final** form of your document, of course. See the documentation and experiment.\n\n    This footnote has a second [paragraph][].\n\n        code in footnote\n\n",
+      "len": 193,
+      "children": [
+        {
+          "type": "paragraph",
+          "raw": "Depending on the **final** form of your document, of course. See the documentation and experiment.\n\n",
+          "len": 100,
+          "children": [
+            {
+              "type": "text",
+              "raw": "Depending on the ",
+              "len": 17,
+              "value": "Depending on the "
+            },
+            {
+              "type": "strong",
+              "raw": "**final**",
+              "len": 9,
+              "children": [
+                {
+                  "type": "text",
+                  "raw": "final",
+                  "len": 5,
+                  "value": "final"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "raw": " form of your document, of course. See the documentation and experiment.",
+              "len": 72,
+              "value": " form of your document, of course. See the documentation and experiment."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "raw": "This footnote has a second [paragraph][].\n\n",
+          "len": 43,
+          "children": [
+            {
+              "type": "text",
+              "raw": "This footnote has a second ",
+              "len": 27,
+              "value": "This footnote has a second "
+            },
+            {
+              "type": "linkReference",
+              "raw": "[paragraph][]",
+              "len": 13,
+              "children": [
+                {
+                  "type": "text",
+                  "raw": "paragraph",
+                  "len": 9,
+                  "value": "paragraph"
+                }
+              ],
+              "identifier": "paragraph",
+              "referenceType": "collapsed"
+            },
+            {
+              "type": "text",
+              "raw": ".",
+              "len": 1,
+              "value": "."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "raw": "    code in footnote\n\n",
+          "len": 22,
+          "value": "code in footnote",
+          "lang": null
+        }
+      ],
+      "identifier": "documentdetails"
+    },
+    {
+      "type": "definition",
+      "raw": "[paragraph]: http://example.com\n",
+      "len": 32,
+      "identifier": "paragraph",
+      "title": null,
+      "url": "http://example.com"
+    }
+  ],
+  "len": 498
+}

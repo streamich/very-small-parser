@@ -27,7 +27,8 @@
 				"noParameterAssign": "off",
 				"noCommaOperator": "off",
 				"useSingleVarDeclarator": "off",
-				"useLiteralEnumMembers": "off"
+				"useLiteralEnumMembers": "off",
+				"noUnusedTemplateLiteral": "off"
 			},
 			"suspicious": {
 				"noExplicitAny": "off",

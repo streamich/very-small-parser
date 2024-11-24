@@ -1,0 +1,125 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "paragraph",
+      "raw": "[test1][test11] [test2][] [test3].\n\n",
+      "len": 36,
+      "children": [
+        {
+          "type": "linkReference",
+          "raw": "[test1][test11]",
+          "len": 15,
+          "children": [
+            {
+              "type": "text",
+              "raw": "test1",
+              "len": 5,
+              "value": "test1"
+            }
+          ],
+          "identifier": "test11",
+          "referenceType": "full"
+        },
+        {
+          "type": "text",
+          "raw": " ",
+          "len": 1,
+          "value": " "
+        },
+        {
+          "type": "linkReference",
+          "raw": "[test2][]",
+          "len": 9,
+          "children": [
+            {
+              "type": "text",
+              "raw": "test2",
+              "len": 5,
+              "value": "test2"
+            }
+          ],
+          "identifier": "test2",
+          "referenceType": "collapsed"
+        },
+        {
+          "type": "text",
+          "raw": " ",
+          "len": 1,
+          "value": " "
+        },
+        {
+          "type": "linkReference",
+          "raw": "[test3]",
+          "len": 7,
+          "children": [
+            {
+              "type": "text",
+              "raw": "test3",
+              "len": 5,
+              "value": "test3"
+            }
+          ],
+          "identifier": "test3",
+          "referenceType": "shortcut"
+        },
+        {
+          "type": "text",
+          "raw": ".",
+          "len": 1,
+          "value": "."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "raw": "![test1][test12] ![test2][] ![test3].\n",
+      "len": 38,
+      "children": [
+        {
+          "type": "imageReference",
+          "raw": "![test1][test12]",
+          "len": 16,
+          "identifier": "test12",
+          "referenceType": "full",
+          "alt": "test1"
+        },
+        {
+          "type": "text",
+          "raw": " ",
+          "len": 1,
+          "value": " "
+        },
+        {
+          "type": "imageReference",
+          "raw": "![test2][]",
+          "len": 10,
+          "identifier": "test2",
+          "referenceType": "collapsed",
+          "alt": "test2"
+        },
+        {
+          "type": "text",
+          "raw": " ",
+          "len": 1,
+          "value": " "
+        },
+        {
+          "type": "imageReference",
+          "raw": "![test3]",
+          "len": 8,
+          "identifier": "test3",
+          "referenceType": "shortcut",
+          "alt": "test3"
+        },
+        {
+          "type": "text",
+          "raw": ".",
+          "len": 1,
+          "value": "."
+        }
+      ]
+    }
+  ],
+  "len": 74
+}

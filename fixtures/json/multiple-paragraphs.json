@@ -1,0 +1,221 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "heading",
+      "len": 9,
+      "children": [
+        {
+          "type": "text",
+          "len": 4,
+          "value": "Why?"
+        }
+      ],
+      "depth": 2
+    },
+    {
+      "type": "heading",
+      "len": 45,
+      "children": [
+        {
+          "type": "text",
+          "len": 39,
+          "value": "Lint Your Package to Strict ES2018 Spec"
+        }
+      ],
+      "depth": 3
+    },
+    {
+      "type": "code",
+      "len": 206,
+      "value": "$ standard-pkg --dist lib/\n  » Linting lib/...\n  ⚠️ [lib/index.js 2:0] Imported file does not exist.\n                        Missing file extension for import \"./some/import\".\n  ✘  1 issues found.",
+      "lang": "",
+      "meta": ""
+    },
+    {
+      "type": "heading",
+      "len": 49,
+      "children": [
+        {
+          "type": "text",
+          "len": 43,
+          "value": "Publish Modern JavaScript With Your Package"
+        }
+      ],
+      "depth": 3
+    },
+    {
+      "type": "code",
+      "len": 110,
+      "value": "{\n    \"scripts\": {\"build\": \"standard-pkg --src src/ --lib lib/\"},\n    \"esnext\": \"lib/index.js\"\n}",
+      "lang": "json",
+      "meta": ""
+    },
+    {
+      "type": "heading",
+      "len": 60,
+      "children": [
+        {
+          "type": "text",
+          "len": 54,
+          "value": "Use Existing Tools with Experimental Language Features"
+        }
+      ],
+      "depth": 3
+    },
+    {
+      "type": "paragraph",
+      "len": 225,
+      "children": [
+        {
+          "type": "text",
+          "len": 223,
+          "value": "Builds to a standard language target for other tooling to consume (or to publish directly with your package). Especially useful if you’re using TypeScript or experimental language features that your tooling may not support."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "len": 15,
+      "children": [
+        {
+          "type": "text",
+          "len": 10,
+          "value": "Exceptions"
+        }
+      ],
+      "depth": 2
+    },
+    {
+      "type": "paragraph",
+      "len": 168,
+      "children": [
+        {
+          "type": "text",
+          "len": 166,
+          "value": "While we try to match the ES2018 spec as strictly as possible, the following exceptions are required to support some common usecases where no other workaround exists:"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "len": 433,
+      "children": [
+        {
+          "type": "listItem",
+          "loose": false,
+          "checked": null,
+          "children": [
+            {
+              "type": "paragraph",
+              "len": 103,
+              "children": [
+                {
+                  "type": "text",
+                  "len": 103,
+                  "value": "Supports bare module specifiers: This is the npm standard, and modern tooling like bundlers support it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "loose": false,
+          "checked": null,
+          "children": [
+            {
+              "type": "paragraph",
+              "len": 150,
+              "children": [
+                {
+                  "type": "text",
+                  "len": 17,
+                  "value": "Supports dynamic "
+                },
+                {
+                  "type": "inlineCode",
+                  "len": 10,
+                  "value": "import()",
+                  "wrap": "`"
+                },
+                {
+                  "type": "text",
+                  "len": 12,
+                  "value": ": This is a "
+                },
+                {
+                  "type": "link",
+                  "len": 67,
+                  "children": [
+                    {
+                      "type": "text",
+                      "len": 16,
+                      "value": "stage 3 proposal"
+                    }
+                  ],
+                  "url": "https://github.com/tc39/proposal-dynamic-import"
+                },
+                {
+                  "type": "text",
+                  "len": 44,
+                  "value": " which allows dynamically importing modules."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "loose": false,
+          "checked": null,
+          "children": [
+            {
+              "type": "paragraph",
+              "len": 166,
+              "children": [
+                {
+                  "type": "text",
+                  "len": 9,
+                  "value": "Supports "
+                },
+                {
+                  "type": "inlineCode",
+                  "len": 17,
+                  "value": "import.meta.url",
+                  "wrap": "`"
+                },
+                {
+                  "type": "text",
+                  "len": 12,
+                  "value": ": This is a "
+                },
+                {
+                  "type": "link",
+                  "len": 64,
+                  "children": [
+                    {
+                      "type": "text",
+                      "len": 16,
+                      "value": "stage 3 proposal"
+                    }
+                  ],
+                  "url": "https://github.com/tc39/proposal-import-meta"
+                },
+                {
+                  "type": "text",
+                  "len": 63,
+                  "value": " which allows modules to read their location (filepath or URL)."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "ordered": true,
+      "start": 1,
+      "loose": false
+    }
+  ],
+  "len": 1320
+}

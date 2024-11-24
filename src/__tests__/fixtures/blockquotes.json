@@ -1,0 +1,45 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "blockquote",
+      "raw": "> This is a blockquote.",
+      "len": 23,
+      "children": [
+        {
+          "type": "paragraph",
+          "raw": "This is a blockquote.",
+          "len": 21,
+          "children": [
+            {
+              "type": "text",
+              "raw": "This is a blockquote.",
+              "len": 21,
+              "value": "This is a blockquote."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "raw": "> This is, in commonmark mode, another blockquote.",
+      "len": 50,
+      "children": [
+        {
+          "type": "paragraph",
+          "raw": "This is, in commonmark mode, another blockquote.",
+          "len": 48,
+          "children": [
+            {
+              "type": "text",
+              "raw": "This is, in commonmark mode, another blockquote.",
+              "len": 48,
+              "value": "This is, in commonmark mode, another blockquote."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

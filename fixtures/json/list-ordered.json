@@ -1,0 +1,51 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "list",
+      "len": 20,
+      "children": [
+        {
+          "type": "listItem",
+          "loose": false,
+          "checked": null,
+          "children": [
+            {
+              "type": "paragraph",
+              "len": 6,
+              "children": [
+                {
+                  "type": "text",
+                  "len": 6,
+                  "value": "Item 1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "loose": false,
+          "checked": null,
+          "children": [
+            {
+              "type": "paragraph",
+              "len": 7,
+              "children": [
+                {
+                  "type": "text",
+                  "len": 6,
+                  "value": "Item 2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "ordered": true,
+      "start": 1,
+      "loose": false
+    }
+  ],
+  "len": 20
+}

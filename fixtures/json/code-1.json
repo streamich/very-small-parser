@@ -1,0 +1,13 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "code",
+      "len": 34,
+      "value": "$ git status\n  Loading...",
+      "lang": "",
+      "meta": ""
+    }
+  ],
+  "len": 34
+}

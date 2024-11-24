@@ -160,6 +160,7 @@ const smarttext = (text: string) =>
     .replace(/'/g, '\u2019') // closing singles & apostrophes
     .replace(/(^|[-\u2014/(\[{\u2018\s])"/g, '$1\u201c') // opening doubles
     .replace(/"/g, '\u201d'); // closing doubles
+
 const REG_TEXT = new RegExp(
   '^[\\s\\S]+?(?=[\\<!\\[_*`:~\\|#@\\$\\^=\\+]| {2,}\\n|(' + urlInline.source + ')|\\\\n|\\\\`|$)',
 );

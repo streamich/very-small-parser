@@ -6,7 +6,7 @@ export interface MdInlineParserOpts<T extends TInlineToken> {
   parsers: TTokenizer<T, MdInlineParser<T>>[];
 }
 
-export class MdInlineParser<T extends TInlineToken> extends Parser<T> implements IParser<T> {
+export class MdInlineParser<T extends TInlineToken = TInlineToken> extends Parser<T> implements IParser<T> {
   constructor(opts: MdInlineParserOpts<T>) {
     super(opts);
   }

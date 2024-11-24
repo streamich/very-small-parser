@@ -1,15 +1,18 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import {create} from '../index';
+import {parse} from './setup';
 
 const check = (md: any, json: any) =>
   test(md, () => {
-    const parser = create();
     const mdFilepath = path.join(__dirname, 'fixtures', md);
-    const ast = parser.tokenizeBlock(fs.readFileSync(mdFilepath, 'utf8'));
+    const ast = parse(fs.readFileSync(mdFilepath, 'utf8'));
     const expected = require(path.join(__dirname, 'fixtures', json));
-
-    expect(ast).toMatchObject(expected);
+    try {
+      expect(ast).toMatchObject(expected);
+    } catch (error) {
+      console.log(JSON.stringify(ast, null, 2));
+      throw error;
+    }
   });
 
 describe('Integration', () => {

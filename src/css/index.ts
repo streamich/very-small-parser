@@ -1,4 +1,4 @@
-export const parseDeclarations = (src: string): Record<string, string> => {
+export const parseDecls = (src: string): Record<string, string> => {
   const declarations: Record<string, string> = {};
   const decls = src.split(';');
   const length = decls.length;

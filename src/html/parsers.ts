@@ -39,18 +39,21 @@ const element: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
     const attrs = src.matchAll(REG_ATTRS);
     for (const [, key, value] of attrs) properties[key] = value;
   }
-  const substr = src.slice(matchLength);
-  const fragment = parser.parseFragment(substr);
-  const fragmentLen = fragment.len;
-  const matchClose = substr.slice(fragmentLen).match(REG_CLOSE_TAG);
-  const len = matchLength + fragment.len + (matchClose?.[0].length ?? 0);
   const token: type.IElement = {
     type: 'element',
     tagName,
     properties,
-    children: <any>fragment.children,
-    len,
+    children: [],
+    len: matchLength,
   };
+  if (!selfClosing) {
+    const substr = src.slice(matchLength);
+    const fragment = parser.parseFragment(substr);
+    token.children = fragment.children as any;
+    const fragmentLen = fragment.len;
+    const matchClose = selfClosing ? null : substr.slice(fragmentLen).match(REG_CLOSE_TAG);
+    token.len += fragment.len + (matchClose?.[0].length ?? 0);
+  }
   return token;
 };
 

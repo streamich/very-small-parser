@@ -222,5 +222,58 @@ describe('parsers', () => {
         });
       });
     });
+
+    describe('self closing', () => {
+      test('can parse simple self-closing element', () => {
+        const ast = parse('<hr />');
+        expect(ast[0]).toMatchObject({
+          type: 'element',
+          tagName: 'hr',
+          properties: {},
+          children: [],
+        });
+      });
+
+      test('can parse simple self-closing element - 2', () => {
+        const ast = parse('<hr/>');
+        expect(ast[0]).toMatchObject({
+          type: 'element',
+          tagName: 'hr',
+          properties: {},
+          children: [],
+        });
+      });
+
+      test('can parse simple self-closing element with attributes', () => {
+        const ast = parse('<hr data-testid="very-important" />');
+        expect(ast[0]).toMatchObject({
+          type: 'element',
+          tagName: 'hr',
+          properties: {
+            ['data-testid']: 'very-important',
+          },
+          children: [],
+        });
+      });
+
+      test('nested in another tag', () => {
+        const ast = parse('<center>a <div /> </center>');
+        expect(ast[0]).toMatchObject({
+          type: 'element',
+          tagName: 'center',
+          properties: {},
+          children: [
+            {type: 'text', value: 'a '},
+            {
+              type: 'element',
+              tagName: 'div',
+              properties: {},
+              children: [],
+            },
+            {type: 'text', value: ' '},
+          ],
+        });
+      });
+    });
   });
 });

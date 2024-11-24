@@ -276,4 +276,52 @@ describe('parsers', () => {
       });
     });
   });
+
+  describe('fragment', () => {
+    test('text and an element', () => {
+      const ast = parse('text <b>bold</b>');
+      expect(ast).toMatchObject([
+        {type: 'text', value: 'text '},
+        {
+          type: 'element',
+          tagName: 'b',
+          children: [{type: 'text', value: 'bold'}],
+        },
+      ]);
+    });
+
+    test('two elements', () => {
+      const ast = parse('<i>em</i><b>bold</b>');
+      expect(ast).toMatchObject([
+        {
+          type: 'element',
+          tagName: 'i',
+          children: [{type: 'text', value: 'em'}],
+        },
+        {
+          type: 'element',
+          tagName: 'b',
+          children: [{type: 'text', value: 'bold'}],
+        },
+      ]);
+    });
+
+    test('unescaped "<" in the middle of text', () => {
+      const ast = parse('hello < world');
+      expect(ast).toMatchObject([
+        {
+          type: 'text',
+          value: 'hello ',
+        },
+        {
+          type: 'text',
+          value: '<',
+        },
+        {
+          type: 'text',
+          value: ' world',
+        },
+      ]);
+    });
+  });
 });

@@ -163,8 +163,9 @@ const REG_TEXT = new RegExp('^[\\s\\S]+?(?=[\\<!\\[_*`:~\\|#@\\$\\^=\\+]| {2,}\\
 const text: TTokenizer<types.IText> = (eat, src) => {
   const matches = src.match(REG_TEXT);
   if (!matches) return;
-  const value = smarttext(matches[0]);
-  return token<types.IText>(value, 'text', void 0, {value});
+  const match = matches[0];
+  const value = smarttext(match);
+  return token<types.IText>(value, 'text', void 0, {value}, match.length);
 };
 
 const REG_ESCAPE = /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/;

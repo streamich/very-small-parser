@@ -1,14 +1,12 @@
-import {create} from '../index';
+import {parse} from './setup';
 
 const check = (name: any, src: any, out: any) =>
   test(name, () => {
-    const parser = create();
-    const ast = parser.tokenizeInline(src);
-
+    const ast = parse(src);
     expect(ast).toMatchObject([{type: 'text', value: out}]);
   });
 
-describe('smartypants', () => {
+describe('smarttext', () => {
   check('...', '...', '…');
   check('(c)', '(c)', '©');
   check('(C)', '(C)', '©');
@@ -19,6 +17,7 @@ describe('smartypants', () => {
   check('(P)', '(P)', '§');
   check('+-', '+-', '±');
   check('---', '---', '\u2014');
+  check('--', '--', '\u2013');
   check('"quotes"', '"quotes"', '“quotes”');
   check("'quotes'", "'quotes'", '‘quotes’');
 });

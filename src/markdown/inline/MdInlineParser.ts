@@ -11,8 +11,8 @@ export class MdInlineParser<T extends TInlineToken = TInlineToken> extends Parse
     super(opts);
   }
 
-  public parse(value: string): T[] {
-    const tokens = super.parse(value);
+  public parse(src: string): T[] {
+    const tokens = super.parse(src);
     // Merge adjacent text tokens.
     const merged: T[] = [];
     const length = tokens.length;

@@ -12,7 +12,7 @@ export class Parser<T extends IToken> implements IParser<T> {
     this.parsers = opts.parsers;
   }
 
-  public parse(value: string): T[] {
-    return loop<T, this>(this, first<T, this>(this.parsers), value) as T[];
+  public parse(src: string): T[] {
+    return loop<T, this>(this, first<T, this>(this.parsers), src) as T[];
   }
 }

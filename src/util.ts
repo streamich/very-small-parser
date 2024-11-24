@@ -7,8 +7,9 @@ export const token = <T extends IToken>(
   type: T['type'],
   children?: any,
   overrides?: Partial<T>,
+  len: number = value.length,
 ): T => {
-  const tok = {type, len: value.length} as T;
+  const tok = {type, len} as T;
   if (isTest) tok.raw = value;
   if (children) tok.children = children;
   if (overrides) Object.assign(tok, overrides);

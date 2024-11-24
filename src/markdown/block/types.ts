@@ -1,5 +1,5 @@
 import type {IToken} from '../../types';
-import type {TInlineToken} from '../types';
+import type {TInlineToken} from '../inline/types';
 
 export type TTokenTypeBlock =
   | 'root'

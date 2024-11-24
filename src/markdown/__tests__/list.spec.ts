@@ -1,5 +1,5 @@
-import {create} from '../index';
-import type {IListItem} from '../types';
+import {parse} from './setup';
+import type {IListItem} from '../block/types';
 
 const tests = [
   {
@@ -500,9 +500,7 @@ const tests = [
 
 describe('list', () => {
   test('works for a single unordered list item', () => {
-    const parser = create();
-    const ast = parser.tokenizeBlock(`- foo`);
-
+    const ast = parse(`- foo`);
     expect(ast).toMatchObject({
       type: 'root',
       children: [
@@ -569,18 +567,13 @@ describe('list', () => {
       ],
       len: 5,
     };
-
-    const parser = create();
-
-    expect(parser.tokenizeBlock(`- foo`)).toMatchObject(result);
-    expect(parser.tokenizeBlock(`* foo`)).toMatchObject(result);
-    expect(parser.tokenizeBlock(`+ foo`)).toMatchObject(result);
+    expect(parse(`- foo`)).toMatchObject(result);
+    expect(parse(`* foo`)).toMatchObject(result);
+    expect(parse(`+ foo`)).toMatchObject(result);
   });
 
   test('supports ordered lists', () => {
-    const parser = create();
-    const ast = parser.tokenizeBlock(`1. foo`);
-
+    const ast = parse(`1. foo`);
     expect(ast).toMatchObject({
       type: 'root',
       children: [
@@ -614,9 +607,7 @@ describe('list', () => {
   });
 
   test('reports loose items', () => {
-    const parser = create();
-    const ast = parser.tokenizeBlock(`- foo\n\n  bar`);
-
+    const ast = parse(`- foo\n\n  bar`);
     expect(ast).toMatchObject({
       type: 'root',
       children: [
@@ -658,9 +649,7 @@ describe('list', () => {
   });
 
   test('two ordered list items on first level', () => {
-    const parser = create();
-    const ast = parser.tokenizeBlock('1. foo\n2. bar\n');
-
+    const ast = parse('1. foo\n2. bar\n');
     expect(ast).toMatchObject({
       type: 'root',
       children: [
@@ -681,9 +670,7 @@ describe('list', () => {
   });
 
   test('supports multiple items', () => {
-    const parser = create();
-    const ast = parser.tokenizeBlock(`- foo\n- bar\n- baz`);
-
+    const ast = parse(`- foo\n- bar\n- baz`);
     expect(ast).toMatchObject({
       type: 'root',
       children: [
@@ -748,9 +735,7 @@ describe('list', () => {
   });
 
   test('supports nested lists', () => {
-    const parser = create();
-    const ast = parser.tokenizeBlock(`- foo\n   - bar\n      - baz`);
-
+    const ast = parse(`- foo\n   - bar\n      - baz`);
     expect(ast).toMatchObject({
       type: 'root',
       children: [
@@ -832,16 +817,13 @@ describe('list', () => {
   });
 
   test('todo list', () => {
-    const parser = create();
-    const ast = parser.tokenizeBlock(`- [x] Done
+    const ast = parse(`- [x] Done
 - [ ] Todo
 - lol
 `);
-
     const item1 = ast!.children[0].children![0];
     const item2 = ast!.children[0].children![1];
     const item3 = ast!.children[0].children![2];
-
     expect((item1 as IListItem).checked).toBe(true);
     expect((item2 as IListItem).checked).toBe(false);
     expect((item3 as IListItem).checked).toBe(null);
@@ -850,9 +832,7 @@ describe('list', () => {
   describe('automated', () => {
     for (const {name, md, ast} of tests) {
       test(name, () => {
-        const parser = create();
-        const result = parser.tokenizeBlock(md);
-
+        const result = parse(md);
         expect(result).toMatchObject(ast);
       });
     }

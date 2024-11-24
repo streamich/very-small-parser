@@ -4,13 +4,13 @@ import type {TTokenizer} from '../../types';
 import type {MdBlockParser} from './MdBlockParser';
 import type * as type from './types';
 
-const REG_NEWLINE = /^\n+/;
+const REG_NEWLINE = /^[\n\r]+/;
 const newline: TTokenizer<type.INewline> = (_, src) => {
   const matches = src.match(REG_NEWLINE);
   if (matches) return token<type.INewline>(matches[0], 'newline');
 };
 
-const REG_CODE = /^(\s{4}[^\n]+\n*)+/;
+const REG_CODE = /^(\s{4}[^\n]+)+/;
 const code: TTokenizer<type.ICode> = (_, src) => {
   const matches = src.match(REG_CODE);
   if (!matches) return;
@@ -19,7 +19,7 @@ const code: TTokenizer<type.ICode> = (_, src) => {
     value: subvalue.replace(/^ {4}/gm, '').replace(/\n+$/, ''),
     lang: null,
   };
-  return token<type.ICode>(subvalue, 'code', void 0, overrides);
+  return token<type.ICode>(subvalue, 'code', void 0, overrides, subvalue.length);
 };
 
 const REG_FENCES = /^ *(`{3,}|~{3,})([^\s]*) *([^\n]*)\n([\s\S]*?)\s*\1 *(?:\n+|$)/;
@@ -113,7 +113,7 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
       type: 'listItem',
       loose: partLoose,
       checked,
-      children: parser.parseChildren(outdented),
+      children: parser.parse(outdented),
     });
   }
   return token<type.IList>(subvalue, 'list', children, {ordered, start, loose});

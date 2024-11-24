@@ -137,13 +137,13 @@ const link: TTokenizer<ILink | IImage> = (parser, value: string) => {
   });
 };
 
-const REG_WHITESPACE = /^\s+/;
-const whitespace: TTokenizer<IWhitespace> = (parser, value: string) => {
-  const matches = value.match(REG_WHITESPACE);
-  if (!matches) return;
-  const subvalue = matches[0];
-  return token<IWhitespace>(subvalue, 'whitespace', void 0, {length: subvalue.length});
-};
+// const REG_WHITESPACE = /^\s+/;
+// const whitespace: TTokenizer<IWhitespace> = (parser, value: string) => {
+//   const matches = value.match(REG_WHITESPACE);
+//   if (!matches) return;
+//   const subvalue = matches[0];
+//   return token<IWhitespace>(subvalue, 'whitespace', void 0, {length: subvalue.length});
+// };
 
 const REG_TEXT = new RegExp('^[\\s\\S]+?(?=[\\<!\\[_*`:~\\|#@\\$\\^=\\+]| {2,}\\n|(' + urlInline.source + ')|\\\\n|\\\\`|$)');
 const text: TTokenizer<IText> = (eat, value) => {
@@ -153,14 +153,22 @@ const text: TTokenizer<IText> = (eat, value) => {
   return token<IText>(matchedValue, 'text', void 0, {value: matchedValue});
 };
 
+const REG_ESCAPE = /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/;
+const inlineEscape: TTokenizer<IText> = (_, value) => {
+  const matches = value.match(REG_ESCAPE);
+  if (matches) return token<IText>(matches[0], 'text', void 0, {value: matches[1]});
+};
+
 export const parsers: TTokenizer<TInlineToken>[] = [
+  <TTokenizer<TInlineToken>>inlineEscape,
   <TTokenizer<TInlineToken>>inlineCode,
   <TTokenizer<TInlineToken>>strong,
   <TTokenizer<TInlineToken>>emphasis,
-  <TTokenizer<TInlineToken>>deletedText,
   <TTokenizer<TInlineToken>>spoiler,
+  <TTokenizer<TInlineToken>>deletedText,
   <TTokenizer<TInlineToken>>inlineMath,
   <TTokenizer<TInlineToken>>footnoteReference,
+  <TTokenizer<TInlineToken>>link,
   <TTokenizer<TInlineToken>>reference,
   <TTokenizer<TInlineToken>>inlineLink,
   <TTokenizer<TInlineToken>>sup,
@@ -170,7 +178,6 @@ export const parsers: TTokenizer<TInlineToken>[] = [
   <TTokenizer<TInlineToken>>underline,
   <TTokenizer<TInlineToken>>inlineBreak,
   <TTokenizer<TInlineToken>>icon(),
-  <TTokenizer<TInlineToken>>link,
-  <TTokenizer<TInlineToken>>whitespace,
+  // <TTokenizer<TInlineToken>>whitespace,
   <TTokenizer<TInlineToken>>text,
 ];

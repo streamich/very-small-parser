@@ -1,0 +1,75 @@
+{
+  "name": "very-small-parser",
+  "version": "0.0.1",
+  "description": "A very small Markdown, HTML, and CSS parser.",
+  "author": {
+    "name": "streamich",
+    "url": "https://github.com/streamich"
+  },
+  "homepage": "https://github.com/streamich/very-small-parser",
+  "repository": "streamich/very-small-parser",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/very-small-parser"
+  },
+  "keywords": [
+    "parser",
+    "peg",
+    "context",
+    "markdown",
+    "md",
+    "mdast",
+    "html",
+    "css",
+    "tiny",
+    "small"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "LICENSE",
+    "bin/",
+    "lib/",
+    "esm/"
+  ],
+  "scripts": {
+    "format": "biome format ./src",
+    "format:fix": "biome format --write ./src",
+    "lint": "biome lint ./src",
+    "lint:fix": "biome lint --apply ./src",
+    "clean": "npx rimraf@5.0.5 lib es6 es2019 es2020 esm typedocs coverage gh-pages yarn-error.log src/**/__bench__/node_modules src/**/__bench__/yarn-error.log",
+    "build:es2020": "tsc --project tsconfig.build.json --module commonjs --target es2020 --outDir lib",
+    "build:esm": "tsc --project tsconfig.build.json --module ESNext --target ESNEXT --outDir esm",
+    "build:all": "npx concurrently@8.2.2 \"yarn build:es2020\" \"yarn build:esm\"",
+    "build": "yarn build:es2020",
+    "test": "jest",
+    "coverage": "yarn test --collectCoverage",
+    "typedoc": "npx typedoc@0.25.13 --tsconfig tsconfig.build.json",
+    "build:pages": "npx rimraf@5.0.5 gh-pages && mkdir -p gh-pages && cp -r typedocs/* gh-pages && cp -r coverage gh-pages/coverage",
+    "deploy:pages": "gh-pages -d gh-pages"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/jest": "^29.5.14",
+    "config-galore": "^1.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "tslib": "^2.8.1",
+    "typescript": "^5.7.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      ".*/node_modules/.*"
+    ],
+    "testRegex": ".*/(__tests__|__jest__|demo)/.*\\.(test|spec)\\.ts$"
+  },
+  "packageManager": "yarn@4.5.1"
+}

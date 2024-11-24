@@ -1,11 +1,12 @@
 import {token} from '../util';
 import * as reg from '../markdown/regex';
 import type {TTokenizer} from '../types';
-import type * as type from './types';
 import type {HtmlParser} from './HtmlParser';
+import type * as type from './types';
 
-const comment: TTokenizer<type.IComment, HtmlParser> = (eat, value) => {
-  const matches = value.match(reg.comment);
+const REG_COMMENT = /^<!--(?!-?>)[\s\S]*?-->/;
+const comment: TTokenizer<type.IComment, HtmlParser> = (_, src) => {
+  const matches = src.match(REG_COMMENT);
   if (matches) {
     const match = matches[0];
     const value = match.slice(4, -3);
@@ -14,14 +15,40 @@ const comment: TTokenizer<type.IComment, HtmlParser> = (eat, value) => {
 };
 
 const REG_TEXT = /^[^<]+/;
-const text: TTokenizer<type.IText, HtmlParser> = (eat, src) => {
+const text: TTokenizer<type.IText, HtmlParser> = (_, src) => {
   const matches = src.match(REG_TEXT);
   if (!matches) return;
   const value = matches[0];
   return token<type.IText>(value, 'text', void 0, {value}, value.length);
 };
 
+const REG_OPEN_TAG = reg.replace(
+  /^<([a-z][\w-]*)(?:attr)*? *(\/?)>/,
+  {attr: reg.attr},
+);
+const REG_CLOSE_TAG = /^<\/([a-z][\w-]*)>/;
+const element: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
+  const matchOpen = src.match(REG_OPEN_TAG);
+  if (!matchOpen) return;
+  const [match, tagName, selfClosing] = matchOpen;
+  const matchLength = match.length;
+  const substr = src.slice(matchLength);
+  const fragment = parser.parseFragment(substr);
+  const fragmentLen = fragment.len;
+  const matchClose = substr.slice(fragmentLen).match(REG_CLOSE_TAG);
+  const len = matchLength + fragment.len + (matchClose?.[0].length ?? 0);
+  const token: type.IElement = {
+    type: 'element',
+    tagName,
+    properties: {},
+    children: <any>fragment.children,
+    len,
+  };
+  return token;
+};
+
 export const parsers: TTokenizer<type.THtmlToken, HtmlParser>[] = [
   <TTokenizer<type.THtmlToken, HtmlParser>>text,
   <TTokenizer<type.THtmlToken, HtmlParser>>comment,
+  <TTokenizer<type.THtmlToken, HtmlParser>>element,
 ];

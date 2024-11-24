@@ -32,6 +32,7 @@ export const tag = new RegExp(
     '|p|param|section|source|summary|table|tbody|td|tfoot|th|thead|title|tr' +
     '|track|ul',
 );
+export const attr = / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/;
 export const html = replace(
   new RegExp(
     '^ {0,3}(?:' + // optional indentation
@@ -41,13 +42,13 @@ export const html = replace(
       '|<![A-Z][\\s\\S]*?>\\n*' + // (4)
       '|<!\\[CDATA\\[[\\s\\S]*?\\]\\]>\\n*' + // (5)
       '|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:\\n{2,}|$)' + // (6)
-      '|<(?!script|pre|style)([a-z][\\w-]*)(?:attribute)*? */?>(?=\\h*\\n)[\\s\\S]*?(?:\\n{2,}|$)' + // (7) open tag
+      '|<(?!script|pre|style)([a-z][\\w-]*)(?:attr)*? */?>(?=\\h*\\n)[\\s\\S]*?(?:\\n{2,}|$)' + // (7) open tag
       '|</(?!script|pre|style)[a-z][\\w-]*\\s*>(?=\\h*\\n)[\\s\\S]*?(?:\\n{2,}|$)' + // (7) closing tag
       ')',
   ),
   {
     comment,
     tag,
-    attribute: / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/,
+    attr,
   },
 );

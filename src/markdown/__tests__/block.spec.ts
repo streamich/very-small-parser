@@ -1,11 +1,9 @@
-import {create} from '../index';
+import {parse} from './setup';
 
 describe('Block Markdown', () => {
   describe('code', () => {
     it('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('    alert(123);');
-
+      const ast = parse('    alert(123);');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -19,9 +17,7 @@ describe('Block Markdown', () => {
     });
 
     it('multiple lines', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('    alert(123);\n' + '    console.log(123);');
-
+      const ast = parse('    alert(123);\n' + '    console.log(123);');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -36,18 +32,18 @@ describe('Block Markdown', () => {
   });
 
   describe('newline', () => {
-    it('removes newline tokens', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('\n\n\n    alert(123);\n\n\n\n');
-
+    it('keeps newline tokens', () => {
+      const ast = parse('\n\n\n    alert(123);\n\n\n\n');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
+          {type: 'newline', len: 3},
           {
             type: 'code',
             value: 'alert(123);',
             lang: null,
           },
+          {type: 'newline', len: 4},
         ],
       });
     });
@@ -55,9 +51,7 @@ describe('Block Markdown', () => {
 
   describe('fences', () => {
     it('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('```js\nalert(123);\n```');
-
+      const ast = parse('```js\nalert(123);\n```');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -71,9 +65,7 @@ describe('Block Markdown', () => {
     });
 
     it('matches meta information', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('```js meta\nalert(123);\n```');
-
+      const ast = parse('```js meta\nalert(123);\n```');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -88,9 +80,7 @@ describe('Block Markdown', () => {
     });
 
     it('supports tilde separators', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('~~~js meta\nalert(123);\n~~~');
-
+      const ast = parse('~~~js meta\nalert(123);\n~~~');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -107,9 +97,7 @@ describe('Block Markdown', () => {
 
   describe('math', () => {
     it('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('$$\n1 + 1\n$$');
-
+      const ast = parse('$$\n1 + 1\n$$');
       expect(ast).toMatchObject({
         type: 'root',
         children: [{type: 'math', len: 11, value: '1 + 1'}],
@@ -118,9 +106,7 @@ describe('Block Markdown', () => {
     });
 
     it('multi-line', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('$$\n1 + 1\nf(n) = 123\n$$');
-
+      const ast = parse('$$\n1 + 1\nf(n) = 123\n$$');
       expect(ast).toMatchObject({
         type: 'root',
         children: [{type: 'math', len: 22, value: '1 + 1\nf(n) = 123'}],
@@ -131,9 +117,7 @@ describe('Block Markdown', () => {
 
   describe('thematicBreak', () => {
     it('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('---\n');
-
+      const ast = parse('---\n');
       expect(ast).toMatchObject({
         type: 'root',
         children: [{type: 'thematicBreak', value: '---'}],
@@ -141,9 +125,7 @@ describe('Block Markdown', () => {
     });
 
     it('supports asterisks', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('*****\n');
-
+      const ast = parse('*****\n');
       expect(ast).toMatchObject({
         type: 'root',
         children: [{type: 'thematicBreak', value: '*****'}],
@@ -151,9 +133,7 @@ describe('Block Markdown', () => {
     });
 
     it('supports underscores', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('_______\n');
-
+      const ast = parse('_______\n');
       expect(ast).toMatchObject({
         type: 'root',
         children: [{type: 'thematicBreak', value: '_______'}],
@@ -163,9 +143,7 @@ describe('Block Markdown', () => {
 
   describe('heading', () => {
     it('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('# Title');
-
+      const ast = parse('# Title');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -184,7 +162,6 @@ describe('Block Markdown', () => {
     });
 
     it('supports all h1-h6 heading levels', () => {
-      const parser = create();
       const result = (depth: any) => ({
         type: 'root',
         children: [
@@ -203,16 +180,13 @@ describe('Block Markdown', () => {
 
       for (let i = 1; i < 7; i++) {
         const src = new Array(i + 1).join('#') + ' Title';
-        const ast = parser.tokenizeBlock(src);
-
+        const ast = parse(src);
         expect(ast).toMatchObject(result(i));
       }
     });
 
     it('supports only up to h6 depth', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('####### Title');
-
+      const ast = parse('####### Title');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -231,9 +205,7 @@ describe('Block Markdown', () => {
     });
 
     it('supports orthodox heading h1', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('Title\n' + '-----');
-
+      const ast = parse('Title\n' + '-----');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -252,9 +224,7 @@ describe('Block Markdown', () => {
     });
 
     it('supports orthodox heading h2', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('Title\n' + '=====');
-
+      const ast = parse('Title\n' + '=====');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -275,9 +245,7 @@ describe('Block Markdown', () => {
 
   describe('blockquote', () => {
     it('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('> foobar');
-
+      const ast = parse('> foobar');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -300,9 +268,7 @@ describe('Block Markdown', () => {
     });
 
     it('multiple paragraphs', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('> foo\n>\n> bar');
-
+      const ast = parse('> foo\n>\n> bar');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -334,9 +300,7 @@ describe('Block Markdown', () => {
     });
 
     it('code blocks', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('>     git-cz\n>\n> ```js\n> console.log(123)\n> ```\n');
-
+      const ast = parse('>     git-cz\n>\n> ```js\n> console.log(123)\n> ```\n');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -346,13 +310,17 @@ describe('Block Markdown', () => {
               {
                 type: 'code',
                 value: 'git-cz',
+                lang: null,
               },
+              {type: 'newline'},
               {
                 type: 'code',
                 value: 'console.log(123)',
+                lang: 'js',
               },
             ],
           },
+          {type: 'newline'},
         ],
       });
     });
@@ -360,9 +328,7 @@ describe('Block Markdown', () => {
 
   describe('paragraph', () => {
     it('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('hello world');
-
+      const ast = parse('hello world');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -380,9 +346,7 @@ describe('Block Markdown', () => {
     });
 
     it('trims spacing', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('hello world\n');
-
+      const ast = parse('hello world\n');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -400,13 +364,11 @@ describe('Block Markdown', () => {
     });
 
     it('Multiple paragraphs', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock(`hello
+      const ast = parse(`hello
 
 world
 
 trololo`);
-
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -451,9 +413,7 @@ trololo`);
 
   describe('definition', () => {
     it('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('[alpha]: http://example.com');
-
+      const ast = parse('[alpha]: http://example.com');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -470,9 +430,7 @@ trololo`);
 
   describe('footnoteDefinition', () => {
     it('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('[^alpha]: foobar');
-
+      const ast = parse('[^alpha]: foobar');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -496,9 +454,7 @@ trololo`);
     });
 
     it('supports multiple paragraphs', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('[^alpha]: foo\n\n  bar');
-
+      const ast = parse('[^alpha]: foo\n\n  bar');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -536,10 +492,7 @@ trololo`);
       const table = `| Table |
             | ----- |
             | *hello* |`;
-
-      const parser = create();
-      const ast = parser.tokenizeBlock(table);
-
+      const ast = parse(table);
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -596,10 +549,7 @@ trololo`);
 | ------------- |:-------------:| -----:|
 | zebra stripes | are neat      |    $1 |
 | zebra stripes | are neat 2    |    $2 |`;
-
-      const parser = create();
-      const ast = parser.tokenizeBlock(table);
-
+      const ast = parse(table);
       expect(ast).toMatchObject({
         type: 'root',
         children: [
@@ -723,9 +673,7 @@ trololo`);
 
   describe('html', () => {
     it('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeBlock('<div>foobar</div>');
-
+      const ast = parse('<div>foobar</div>');
       expect(ast).toMatchObject({
         type: 'root',
         children: [{type: 'html', len: 17, value: '<div>foobar</div>'}],
@@ -733,38 +681,4 @@ trololo`);
       });
     });
   });
-
-  /*
-    test('returns raw text', () => {
-        const parser = create();
-        const ast = parser.tokenizeBlock('*asdf*');
-
-        expect(ast).toMatchObject({
-            type: 'root',
-            children: [
-                {
-                    type: 'paragraph',
-                    raw: '*asdf*',
-                    len: 6,
-                    children: [
-                        {
-                            type: 'emphasis',
-                            raw: '*asdf*',
-                            len: 6,
-                            children: [
-                                {
-                                    type: 'text',
-                                    raw: 'asdf',
-                                    len: 4,
-                                    value: 'asdf',
-                                },
-                            ],
-                        },
-                    ],
-                },
-            ],
-            len: 6,
-        });
-    });
-    */
 });

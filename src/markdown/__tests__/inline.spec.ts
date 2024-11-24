@@ -1,10 +1,8 @@
-import {create} from '../index';
+import {parseInline} from './setup';
 
 describe('Inline Markdown', () => {
   test('icons in text', () => {
-    const parser = create();
-    const ast = parser.tokenizeInline('Hello :world:!');
-
+    const ast = parseInline('Hello :world:!');
     expect(ast).toMatchObject([
       {type: 'text', len: 6, value: 'Hello '},
       {type: 'icon', len: 7, emoji: 'world'},
@@ -13,9 +11,7 @@ describe('Inline Markdown', () => {
   });
 
   test('multiple icons', () => {
-    const parser = create();
-    const ast = parser.tokenizeInline(':smile: foo ::+1:: bar ::tada::');
-
+    const ast = parseInline(':smile: foo ::+1:: bar ::tada::');
     expect(ast).toMatchObject([
       {type: 'icon', len: 7, emoji: 'smile'},
       {type: 'text', len: 5, value: ' foo '},
@@ -26,9 +22,7 @@ describe('Inline Markdown', () => {
   });
 
   test('marked text', () => {
-    const parser = create();
-    const ast = parser.tokenizeInline('I ==really== want this!');
-
+    const ast = parseInline('I ==really== want this!');
     expect(ast).toMatchObject([
       {type: 'text', len: 2, value: 'I '},
       {
@@ -42,9 +36,7 @@ describe('Inline Markdown', () => {
 
   describe('link', () => {
     test('basic case', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('[me](http://example.com)');
-
+      const ast = parseInline('[me](http://example.com)');
       expect(ast).toMatchObject([
         {
           type: 'link',
@@ -65,16 +57,12 @@ describe('Inline Markdown', () => {
           title: 'foo bar',
         },
       ];
-      const parser = create();
-
-      expect(parser.tokenizeInline("[me](http://example.com 'foo bar')")).toMatchObject(result);
-      expect(parser.tokenizeInline('[me](http://example.com "foo bar")')).toMatchObject(result);
+      expect(parseInline("[me](http://example.com 'foo bar')")).toMatchObject(result);
+      expect(parseInline('[me](http://example.com "foo bar")')).toMatchObject(result);
     });
 
     test('tokenizes a link', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('Click [me](http://example.com)!');
-
+      const ast = parseInline('Click [me](http://example.com)!');
       expect(ast).toMatchObject([
         {type: 'text', len: 6, value: 'Click '},
         {type: 'link', len: 24, children: [{type: 'text', len: 2, value: 'me'}], url: 'http://example.com'},
@@ -83,9 +71,7 @@ describe('Inline Markdown', () => {
     });
 
     test('tokenizes link text', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('Click [this ==higlighted== text :smile:](http://example.com)!');
-
+      const ast = parseInline('Click [this ==higlighted== text :smile:](http://example.com)!');
       expect(ast).toMatchObject([
         {type: 'text', len: 6, value: 'Click '},
         {
@@ -132,9 +118,7 @@ describe('Inline Markdown', () => {
 
   describe('image', () => {
     test('basic case', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('![me](http://example.com)');
-
+      const ast = parseInline('![me](http://example.com)');
       expect(ast).toMatchObject([
         {
           type: 'image',
@@ -146,9 +130,7 @@ describe('Inline Markdown', () => {
     });
 
     test('with title', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('![me](http://example.com "title goes here")');
-
+      const ast = parseInline('![me](http://example.com "title goes here")');
       expect(ast).toMatchObject([
         {
           type: 'image',
@@ -163,9 +145,7 @@ describe('Inline Markdown', () => {
 
   describe('inline code', () => {
     test('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('See this: `console.log(123)`');
-
+      const ast = parseInline('See this: `console.log(123)`');
       expect(ast).toMatchObject([
         {type: 'text', len: 10, value: 'See this: '},
         {type: 'inlineCode', len: 18, value: 'console.log(123)', wrap: '`'},
@@ -173,9 +153,7 @@ describe('Inline Markdown', () => {
     });
 
     test('supports double back-ticks', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('See this: ``console.log(123)``');
-
+      const ast = parseInline('See this: ``console.log(123)``');
       expect(ast).toMatchObject([
         {type: 'text', len: 10, value: 'See this: '},
         {type: 'inlineCode', len: 20, value: 'console.log(123)', wrap: '``'},
@@ -200,16 +178,12 @@ describe('Inline Markdown', () => {
     ];
 
     test('asterisk', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('Hello *world*! *OK*');
-
+      const ast = parseInline('Hello *world*! *OK*');
       expect(ast).toMatchObject(result);
     });
 
     test('underscore', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('Hello _world_! _OK_');
-
+      const ast = parseInline('Hello _world_! _OK_');
       expect(ast).toMatchObject(result);
     });
   });
@@ -231,23 +205,17 @@ describe('Inline Markdown', () => {
     ];
 
     test('asterisk', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('Hello **world**! **OK**');
-
+      const ast = parseInline('Hello **world**! **OK**');
       expect(ast).toMatchObject(result);
     });
 
     test('underscore', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('Hello __world__! __OK__');
-
+      const ast = parseInline('Hello __world__! __OK__');
       expect(ast).toMatchObject(result);
     });
 
     test('together with emphasis', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('*em1* **strong** *em2*');
-
+      const ast = parseInline('*em1* **strong** *em2*');
       expect(ast).toMatchObject([
         {
           type: 'emphasis',
@@ -270,9 +238,7 @@ describe('Inline Markdown', () => {
     });
 
     test('bold inside italic', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('*italic __bold__*');
-
+      const ast = parseInline('*italic __bold__*');
       expect(ast).toMatchObject([
         {
           type: 'emphasis',
@@ -300,9 +266,7 @@ describe('Inline Markdown', () => {
     });
 
     test('italic inside bold', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('**bold _italic_**');
-
+      const ast = parseInline('**bold _italic_**');
       expect(ast).toMatchObject([
         {
           type: 'strong',
@@ -332,9 +296,7 @@ describe('Inline Markdown', () => {
 
   describe('delete text', () => {
     test('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('~~123~~');
-
+      const ast = parseInline('~~123~~');
       expect(ast).toMatchObject([
         {
           type: 'delete',
@@ -349,9 +311,7 @@ describe('Inline Markdown', () => {
     });
 
     test('parses inline text', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('~~*1*~~');
-
+      const ast = parseInline('~~*1*~~');
       expect(ast).toMatchObject([
         {
           type: 'delete',
@@ -376,8 +336,7 @@ describe('Inline Markdown', () => {
 
   describe('spoiler text', () => {
     test('works when spoiler text is the only token', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('~~~foobar~~~');
+      const ast = parseInline('~~~foobar~~~');
       expect(ast).toMatchObject([
         {
           type: 'spoiler',
@@ -392,8 +351,7 @@ describe('Inline Markdown', () => {
     });
 
     test('works when inside other inline text', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('hello ~~~ foobar ~~~ world');
+      const ast = parseInline('hello ~~~ foobar ~~~ world');
       expect(ast).toMatchObject([
         {type: 'text', value: 'hello '},
         {
@@ -410,8 +368,7 @@ describe('Inline Markdown', () => {
     });
 
     test('works when surrounded by deleted text', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('~~hello~~ ~~~ foobar ~~~ ~~world~~');
+      const ast = parseInline('~~hello~~ ~~~ foobar ~~~ ~~world~~');
       expect(ast).toMatchObject([
         {
           type: 'delete',
@@ -448,9 +405,7 @@ describe('Inline Markdown', () => {
 
   describe('math', () => {
     test('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('$$1+1$$');
-
+      const ast = parseInline('$$1+1$$');
       expect(ast).toMatchObject([
         {
           type: 'inlineMath',
@@ -460,9 +415,7 @@ describe('Inline Markdown', () => {
     });
 
     test('single dollar inline math works', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('$1+1$');
-
+      const ast = parseInline('$1+1$');
       expect(ast).toMatchObject([
         {
           type: 'inlineMath',
@@ -472,9 +425,7 @@ describe('Inline Markdown', () => {
     });
 
     test('in text', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('Hey, look $$f(x) = Y ^ 2$$ is a real function.');
-
+      const ast = parseInline('Hey, look $$f(x) = Y ^ 2$$ is a real function.');
       expect(ast).toMatchObject([
         {type: 'text', len: 10, value: 'Hey, look '},
         {type: 'inlineMath', len: 16, value: 'f(x) = Y ^ 2'},
@@ -483,9 +434,7 @@ describe('Inline Markdown', () => {
     });
 
     test('single dollar inline math, in text', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('Hey, look $f(x) = Y ^ 2$ is a real function.');
-
+      const ast = parseInline('Hey, look $f(x) = Y ^ 2$ is a real function.');
       expect(ast).toMatchObject([
         {type: 'text', len: 10, value: 'Hey, look '},
         {type: 'inlineMath', len: 14, value: 'f(x) = Y ^ 2'},
@@ -494,9 +443,7 @@ describe('Inline Markdown', () => {
     });
 
     test('emphasized', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('*$$123$$*');
-
+      const ast = parseInline('*$$123$$*');
       expect(ast).toMatchObject([
         {
           type: 'emphasis',
@@ -509,9 +456,7 @@ describe('Inline Markdown', () => {
 
   describe('footnoteReference', () => {
     test('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('[^1]');
-
+      const ast = parseInline('[^1]');
       expect(ast).toMatchObject([
         {
           type: 'footnoteReference',
@@ -521,9 +466,7 @@ describe('Inline Markdown', () => {
     });
 
     test('end of sentence', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('To be, or not to be.[^my-ref]');
-
+      const ast = parseInline('To be, or not to be.[^my-ref]');
       expect(ast).toMatchObject([
         {type: 'text', len: 20, value: 'To be, or not to be.'},
         {type: 'footnoteReference', len: 9, value: 'my-ref'},
@@ -533,9 +476,7 @@ describe('Inline Markdown', () => {
 
   describe('linkReference', () => {
     test('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('[1][2]');
-
+      const ast = parseInline('[1][2]');
       expect(ast).toMatchObject([
         {
           type: 'linkReference',
@@ -548,9 +489,7 @@ describe('Inline Markdown', () => {
     });
 
     test('full and collapsed', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('See [this][link-1] and [foo][].');
-
+      const ast = parseInline('See [this][link-1] and [foo][].');
       expect(ast).toMatchObject([
         {type: 'text', len: 4, value: 'See '},
         {
@@ -575,9 +514,7 @@ describe('Inline Markdown', () => {
 
   describe('inlineLink', () => {
     test('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('http://google.com');
-
+      const ast = parseInline('http://google.com');
       expect(ast).toMatchObject([
         {
           type: 'inlineLink',
@@ -587,9 +524,7 @@ describe('Inline Markdown', () => {
     });
 
     test('finds link in text', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('Hey, check this http://google.com out!');
-
+      const ast = parseInline('Hey, check this http://google.com out!');
       expect(ast).toMatchObject([
         {type: 'text', len: 16, value: 'Hey, check this '},
         {type: 'inlineLink', len: 17, value: 'http://google.com'},
@@ -600,9 +535,7 @@ describe('Inline Markdown', () => {
 
   describe('sup', () => {
     test('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('^foo^');
-
+      const ast = parseInline('^foo^');
       expect(ast).toMatchObject([
         {
           type: 'sup',
@@ -617,9 +550,7 @@ describe('Inline Markdown', () => {
     });
 
     test('complex example', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('^foo^ *okay ^bar^* hello ^world^');
-
+      const ast = parseInline('^foo^ *okay ^bar^* hello ^world^');
       expect(ast).toMatchObject([
         {
           type: 'sup',
@@ -681,9 +612,7 @@ describe('Inline Markdown', () => {
 
   describe('sub', () => {
     test('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('~foo~');
-
+      const ast = parseInline('~foo~');
       expect(ast).toMatchObject([
         {
           type: 'sub',
@@ -698,9 +627,7 @@ describe('Inline Markdown', () => {
     });
 
     test('complex example', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('~foo~ *okay ~bar~* hello ~world~');
-
+      const ast = parseInline('~foo~ *okay ~bar~* hello ~world~');
       expect(ast).toMatchObject([
         {
           type: 'sub',
@@ -762,23 +689,21 @@ describe('Inline Markdown', () => {
 
   describe('handle', () => {
     test('works', () => {
-      const parser = create();
-
-      expect(parser.tokenizeInline('@foo')).toMatchObject([
+      expect(parseInline('@foo')).toMatchObject([
         {
           type: 'handle',
           value: 'foo',
           prefix: '@',
         },
       ]);
-      expect(parser.tokenizeInline('~foo')).toMatchObject([
+      expect(parseInline('~foo')).toMatchObject([
         {
           type: 'handle',
           value: 'foo',
           prefix: '~',
         },
       ]);
-      expect(parser.tokenizeInline('#foo')).toMatchObject([
+      expect(parseInline('#foo')).toMatchObject([
         {
           type: 'handle',
           value: 'foo',
@@ -788,23 +713,21 @@ describe('Inline Markdown', () => {
     });
 
     test('complex value', () => {
-      const parser = create();
-
-      expect(parser.tokenizeInline('@{foo bar}')).toMatchObject([
+      expect(parseInline('@{foo bar}')).toMatchObject([
         {
           type: 'handle',
           value: 'foo bar',
           prefix: '@',
         },
       ]);
-      expect(parser.tokenizeInline('~{foo bar}')).toMatchObject([
+      expect(parseInline('~{foo bar}')).toMatchObject([
         {
           type: 'handle',
           value: 'foo bar',
           prefix: '~',
         },
       ]);
-      expect(parser.tokenizeInline('#{foo bar}')).toMatchObject([
+      expect(parseInline('#{foo bar}')).toMatchObject([
         {
           type: 'handle',
           value: 'foo bar',
@@ -814,23 +737,21 @@ describe('Inline Markdown', () => {
     });
 
     test('allows = in complex value', () => {
-      const parser = create();
-
-      expect(parser.tokenizeInline('@{foo=bar}')).toMatchObject([
+      expect(parseInline('@{foo=bar}')).toMatchObject([
         {
           type: 'handle',
           value: 'foo=bar',
           prefix: '@',
         },
       ]);
-      expect(parser.tokenizeInline('~{foo=bar}')).toMatchObject([
+      expect(parseInline('~{foo=bar}')).toMatchObject([
         {
           type: 'handle',
           value: 'foo=bar',
           prefix: '~',
         },
       ]);
-      expect(parser.tokenizeInline('#{foo=bar}')).toMatchObject([
+      expect(parseInline('#{foo=bar}')).toMatchObject([
         {
           type: 'handle',
           value: 'foo=bar',
@@ -840,9 +761,7 @@ describe('Inline Markdown', () => {
     });
 
     test('in various positions in text', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('#foo hello @bar world *@baz*');
-
+      const ast = parseInline('#foo hello @bar world *@baz*');
       expect(ast).toMatchObject([
         {type: 'handle', len: 4, value: 'foo', prefix: '#'},
         {type: 'text', len: 7, value: ' hello '},
@@ -859,9 +778,7 @@ describe('Inline Markdown', () => {
 
   describe('underline', () => {
     test('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('++foo++');
-
+      const ast = parseInline('++foo++');
       expect(ast).toMatchObject([
         {
           type: 'underline',
@@ -876,9 +793,7 @@ describe('Inline Markdown', () => {
     });
 
     test('complex example', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('++foo++ *okay ++bar++* hello ++world++');
-
+      const ast = parseInline('++foo++ *okay ++bar++* hello ++world++');
       expect(ast).toMatchObject([
         {
           type: 'underline',
@@ -940,9 +855,7 @@ describe('Inline Markdown', () => {
 
   describe('break', () => {
     it('two spaces before linebreak', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('foo  \nbar');
-
+      const ast = parseInline('foo  \nbar');
       expect(ast).toMatchObject([
         {type: 'text', len: 3, value: 'foo'},
         {type: 'break', len: 3},
@@ -951,9 +864,7 @@ describe('Inline Markdown', () => {
     });
 
     it('escaped linebrak \\n character', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('foo\\nbar');
-
+      const ast = parseInline('foo\\nbar');
       expect(ast).toMatchObject([
         {type: 'text', len: 3, value: 'foo'},
         {type: 'break', len: 2},
@@ -964,9 +875,7 @@ describe('Inline Markdown', () => {
 
   describe('escape', () => {
     it('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('\\[\\$\\@');
-
+      const ast = parseInline('\\[\\$\\@');
       expect(ast).toMatchObject([
         {
           type: 'text',
@@ -978,9 +887,7 @@ describe('Inline Markdown', () => {
 
   describe('imageReference', () => {
     test('works', () => {
-      const parser = create();
-      const ast = parser.tokenizeInline('![alt][ref]');
-
+      const ast = parseInline('![alt][ref]');
       expect(ast).toMatchObject([
         {
           type: 'imageReference',

@@ -1,10 +1,8 @@
-import {create} from '../index';
+import {parse} from './setup';
 
 describe('Fenced code block', () => {
   it('simple, one line, no language', () => {
-    const parser = create();
-    const ast = parser.tokenizeBlock('```\ngit status\n```');
-
+    const ast = parse('```\ngit status\n```');
     expect(ast).toMatchObject({
       type: 'root',
       children: [
@@ -18,9 +16,7 @@ describe('Fenced code block', () => {
   });
 
   it('multi-line, no language', () => {
-    const parser = create();
-    const ast = parser.tokenizeBlock('```\n$ git status\n    Loading...\n```');
-
+    const ast = parse('```\n$ git status\n    Loading...\n```');
     expect(ast).toMatchObject({
       type: 'root',
       children: [
@@ -34,9 +30,7 @@ describe('Fenced code block', () => {
   });
 
   it('multi-line, with language', () => {
-    const parser = create();
-    const ast = parser.tokenizeBlock('```js\n$ git status\n    Loading...\n```');
-
+    const ast = parse('```js\n$ git status\n    Loading...\n```');
     expect(ast).toMatchObject({
       type: 'root',
       children: [
@@ -50,9 +44,7 @@ describe('Fenced code block', () => {
   });
 
   it('multi-line, with language and meta', () => {
-    const parser = create();
-    const ast = parser.tokenizeBlock('```js {foo: "bar"}\n$ git status\n    Loading...\n```');
-
+    const ast = parse('```js {foo: "bar"}\n$ git status\n    Loading...\n```');
     expect(ast).toMatchObject({
       type: 'root',
       children: [

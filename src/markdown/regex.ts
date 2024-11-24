@@ -1,10 +1,6 @@
 export const replace = (reg: RegExp, map: {[s: string]: RegExp}) => {
   let source = reg.source;
-
-  for (const key in map) {
-    source = source.replace(new RegExp(key, 'g'), map[key].source);
-  }
-
+  for (const key in map) source = source.replace(new RegExp(key, 'g'), map[key].source);
   return new RegExp(source, reg.flags);
 };
 

@@ -10,6 +10,8 @@
 
 ## Usage
 
+[__Live demo__](https://jsfiddle.net/yd5eL1cb/)
+
 On the web you can simply import the module using a script tag.
 
 Using ESM.sh:

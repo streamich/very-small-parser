@@ -5,3 +5,61 @@
 - No dependencies.
 - Markdown is parsed into [MDAST (Markdown Abstract Syntax Tree)](https://github.com/syntax-tree/mdast).
 - HTML is parsed into [HAST (Hypertext Abstract Syntax Tree)](https://github.com/syntax-tree/hast).
+
+
+## Usage
+
+On the web you can simply import the module using a script tag.
+
+Using ESM.sh:
+
+```html
+<script type="module">
+  import { markdown } from "https://esm.sh/very-small-parser";
+
+  const ast = markdown.block.parse('Hello __world__!');
+  console.log(ast);
+</script>
+```
+
+Using jsDelivr:
+
+```html
+<script type="module">
+  import { markdown } from "https://cdn.jsdelivr.net/npm/very-small-parser/dist/module.js";
+
+  const ast = markdown.block.parse('Hello __world__!');
+  console.log(ast);
+</script>
+```
+
+To use TypeScript types or import into a Node.js project, you can install the package from npm:
+
+```sh
+npm install very-small-parser
+```
+
+
+## Reference
+
+Parse Markdown document (block elements):
+
+```js
+import { markdown } from "very-small-parser";
+
+const ast = markdown.block.parse('Hello __world__!');
+```
+
+Parse Markdown inline markup only:
+
+```js
+const ast = markdown.inline.parse('Hello __world__!');
+```
+
+Parse HTML:
+
+```js
+import { html } from "very-small-parser";
+
+const ast = html.parse('<b>Hello</b> <i>world</i>!');
+```

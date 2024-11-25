@@ -1,6 +1,7 @@
 # `very-small-parser`
 
-- A tiny JavaScript parser for Markdown, HTML, and CSS.
+- A tiny JavaScript parser for Markdown, HTML, and inline CSS.
+- Tiny, just over 4KB.
 - Runs in browser and Node.js.
 - No dependencies.
 - Markdown is parsed into [MDAST (Markdown Abstract Syntax Tree)](https://github.com/syntax-tree/mdast).

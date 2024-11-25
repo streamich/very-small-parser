@@ -29,7 +29,7 @@ Using jsDelivr:
 
 ```html
 <script type="module">
-  import { markdown } from "https://cdn.jsdelivr.net/npm/very-small-parser/dist/module.js";
+  import { markdown } from "//esm.run/very-small-parser";
 
   const ast = markdown.block.parse('Hello __world__!');
   console.log(ast);

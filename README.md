@@ -15,7 +15,7 @@ Using ESM.sh:
 
 ```html
 <script type="module">
-  import { markdown } from "https://esm.sh/very-small-parser";
+  import { markdown } from "//esm.sh/very-small-parser";
 
   const ast = markdown.block.parse('Hello __world__!');
   console.log(ast);

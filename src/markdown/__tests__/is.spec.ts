@@ -38,6 +38,10 @@ describe('true', () => {
     ['horizontal rule', '\n\n----\n\n'],
     ['horizontal rule with whitespace', '\n\n  ----\n\n'],
     ['horizontal rule with newlines', '\n\n\n\n----\n\n\n\n'],
+    ['heading', '# Heading\n\na'],
+    ['heading with whitespace', '  # Heading\n\na'],
+    ['heading in the middle of content', 'copy this\n\n# Heading\n\n    console.log("asdf");\n\n'],
+    ['H6', '###### Heading\n\na'],
   ];
 
   for (const [name, src] of cases) {

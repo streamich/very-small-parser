@@ -21,7 +21,10 @@ const ol = /(?:^|\n)\s{0,5}\d+\.\s{1}[^\n]+\n\s{0,15}\d+\.\s/;
 // Horizontal rule.
 const hr = /\n{2} {0,3}\-{2,48}\n{2}/;
 
-const REG = replace(/(h1)|(bold)|(link)|(code)|(ul)|(ol)|(hr)/, {h1, bold, link, code, ul, ol, hr});
+// Fenced code block.
+const fences = /(?:\n|^)(`{3}|~{3})(?!`|~)[^\s]{0,64} {0,64}[^\n]{0,64}\n[\s\S]{0,9999}?\s*\1 {0,64}(?:\n+|$)/;
+
+const REG = replace(/(h1)|(bold)|(link)|(code)|(ul)|(ol)|(hr)|(fences)/, {h1, bold, link, code, ul, ol, hr, fences});
 
 /**
  * Returns `true` if the source text might be a markdown document.

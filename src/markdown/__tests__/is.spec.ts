@@ -42,6 +42,10 @@ describe('true', () => {
     ['heading with whitespace', '  # Heading\n\na'],
     ['heading in the middle of content', 'copy this\n\n# Heading\n\n    console.log("asdf");\n\n'],
     ['H6', '###### Heading\n\na'],
+    ['fences', '```\nconsole.log("asdf");\n```'],
+    ['fences with language', '```js\nconsole.log("asdf");\n```'],
+    ['fences in the middle of content', 'copy this\n\n```\nconsole.log("asdf");\n```\n\n'],
+    ['fences with tilde', '~~~\nconsole.log("asdf");\n~~~'],
   ];
 
   for (const [name, src] of cases) {

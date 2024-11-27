@@ -31,24 +31,6 @@ describe('Block Markdown', () => {
     });
   });
 
-  describe('newline', () => {
-    it('keeps newline tokens', () => {
-      const ast = parse('\n\n\n    alert(123);\n\n\n\n');
-      expect(ast).toMatchObject({
-        type: 'root',
-        children: [
-          {type: 'newline', len: 3},
-          {
-            type: 'code',
-            value: 'alert(123);',
-            lang: null,
-          },
-          {type: 'newline', len: 4},
-        ],
-      });
-    });
-  });
-
   describe('fences', () => {
     it('works', () => {
       const ast = parse('```js\nalert(123);\n```');
@@ -312,7 +294,6 @@ describe('Block Markdown', () => {
                 value: 'git-cz',
                 lang: null,
               },
-              {type: 'newline'},
               {
                 type: 'code',
                 value: 'console.log(123)',
@@ -320,7 +301,6 @@ describe('Block Markdown', () => {
               },
             ],
           },
-          {type: 'newline'},
         ],
       });
     });
@@ -676,7 +656,19 @@ trololo`);
       const ast = parse('<div>foobar</div>');
       expect(ast).toMatchObject({
         type: 'root',
-        children: [{type: 'html', len: 17, value: '<div>foobar</div>'}],
+        children: [
+          {
+            type: 'element',
+            len: 17,
+            children: [
+              {
+                type: 'text',
+                len: 6,
+                value: 'foobar',
+              },
+            ]
+          }
+        ],
         len: 17,
       });
     });

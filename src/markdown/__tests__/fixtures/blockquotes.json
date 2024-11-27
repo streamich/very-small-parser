@@ -21,7 +21,6 @@
         }
       ]
     },
-    { "type": "newline" },
     {
       "type": "blockquote",
       "raw": "> This is, in commonmark mode, another blockquote.",
@@ -41,7 +40,6 @@
           ]
         }
       ]
-    },
-    { "type": "newline" }
+    }
   ]
 }

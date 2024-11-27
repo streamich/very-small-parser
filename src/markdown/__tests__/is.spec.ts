@@ -10,7 +10,9 @@ describe('false', () => {
     ['heading without following', 'asdf asdf \n\n# Heading\n\n'],
     ['code in the middle of word', 'copy`this`haha'],
     ['a single <ol>', 'asdf\n\n1. List\n\n'],
-    ['code', `
+    [
+      'code',
+      `
 public htmlTag(): string {
   const tag = this.tag();
   switch (typeof tag) {
@@ -40,7 +42,8 @@ public jsonMlNode(): JsonMlElement {
 
 public attr(): Attr | undefined {
   return this.marker?.data() as Attr | undefined;
-}`],
+}`,
+    ],
   ];
 
   for (const [name, src] of cases) {

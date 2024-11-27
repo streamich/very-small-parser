@@ -1,4 +1,4 @@
-import {rep} from "../util";
+import {rep} from '../util';
 
 export const replace = (reg: RegExp, map: {[s: string]: RegExp}) => {
   let source = reg.source;

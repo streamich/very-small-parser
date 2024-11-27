@@ -139,7 +139,7 @@ const link: TTokenizer<types.ILink | types.IImage> = (parser, value: string) => 
 };
 
 const smarttext = (text: string): string =>
-  // biome-disable format: keep functional formatting
+  // biome-ignore format: keep functional formatting
   repAll('...', '…',
   repAll('(P)', '§',
   repAll('+-', '±',

@@ -10,6 +10,7 @@ describe('smarttext', () => {
   check('...', '...', '…');
   check('(c)', '(c)', '©');
   check('(C)', '(C)', '©');
+  check('two (c)', '(C) and (c)', '© and ©');
   check('(r)', '(r)', '®');
   check('(R)', '(R)', '®');
   check('(tm)', '(tm)', '™');

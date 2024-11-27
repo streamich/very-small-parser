@@ -1,3 +1,4 @@
+import type {IElement} from '../../html/types';
 import type {IToken} from '../../types';
 import type {TInlineToken} from '../inline/types';
 
@@ -25,7 +26,7 @@ export interface IRoot extends IToken {
 }
 
 export interface INewline extends IToken {
-  type: 'newline';
+  type: '';
 }
 
 export interface ICode extends IToken {
@@ -122,4 +123,5 @@ export type TBlockToken =
   | ITableCell
   | IDefinition
   | IFootnoteDefinition
+  | IElement
   | IParagraph;

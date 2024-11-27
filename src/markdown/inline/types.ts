@@ -1,3 +1,4 @@
+import type {IElement} from '../../html/types';
 import type {IToken} from '../../types';
 
 export type TTokenTypeInline =
@@ -146,5 +147,6 @@ export type TInlineToken =
   | IUnderline
   | IBreak
   | IIcon
+  | IElement
   | IText
   | IWhitespace;

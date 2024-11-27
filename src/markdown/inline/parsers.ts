@@ -1,5 +1,7 @@
-import {regexParser, token} from '../../util';
-import {replace, label, urlInline, url, title} from '../regex';
+import {regexParser, rep, repAll, token} from '../../util';
+import {replace, label, urlInline, title} from '../regex';
+import {html as htmlParser} from '../../html';
+import type {IElement} from '../../html/types';
 import type {TTokenizer} from '../../types';
 import type * as types from './types';
 
@@ -119,7 +121,9 @@ const icon = (maxLength: number = 32): TTokenizer<types.IIcon> => {
   };
 };
 
-const REG_LINK = replace(/^!?\[(label)\]\(url(?:\s+(title))?\s*\)/, {label, url, title});
+// biome-ignore lint: allow control characters in regexp
+const REG_URL = /\s*(<(?:\\[<>]?|[^\s<>\\])*>|(?:\\[()]?|\([^\s\x00-\x1f()\\]*\)|[^\s\x00-\x1f()\\])*?)/;
+const REG_LINK = replace(/^!?\[(r1)\]\(r2(?:\s+(title))?\s*\)/, {r1: label, r2: REG_URL, title});
 const link: TTokenizer<types.ILink | types.IImage> = (parser, value: string) => {
   const matches = value.match(REG_LINK);
   if (!matches) return;
@@ -138,28 +142,21 @@ const link: TTokenizer<types.ILink | types.IImage> = (parser, value: string) => 
   });
 };
 
-// const REG_WHITESPACE = /^\s+/;
-// const whitespace: TTokenizer<IWhitespace> = (parser, value: string) => {
-//   const matches = value.match(REG_WHITESPACE);
-//   if (!matches) return;
-//   const subvalue = matches[0];
-//   return token<IWhitespace>(subvalue, 'whitespace', void 0, {length: subvalue.length});
-// };
-
-const smarttext = (text: string) =>
-  text
-    .replace(/\.{3}/g, '\u2026')
-    .replace(/\(C\)/gi, '©')
-    .replace(/\(R\)/gi, '®')
-    .replace(/\(TM\)/gi, '™')
-    .replace(/\(P\)/g, '§')
-    .replace(/\+\-/g, '±')
-    .replace(/---/g, '\u2014')
-    .replace(/--/g, '\u2013')
-    .replace(/(^|[-\u2014/(\[{"\s])'/g, '$1\u2018') // opening singles
-    .replace(/'/g, '\u2019') // closing singles & apostrophes
-    .replace(/(^|[-\u2014/(\[{\u2018\s])"/g, '$1\u201c') // opening doubles
-    .replace(/"/g, '\u201d'); // closing doubles
+const smarttext = (text: string): string =>
+  // biome-ignore format: keep functional formatting
+  repAll('...', '…',
+  repAll('(P)', '§',
+  repAll('+-', '±',
+  repAll('--', '–',
+  repAll('---', '—',
+  repAll("'", '’',
+  repAll('"', '”',
+  rep(/\(c\)/gi, '©',
+  rep(/\(r\)/gi, '®',
+  rep(/\(tm\)/gi, '™',
+  rep(/^'(?=\S)/, '\u2018', // opening singles
+  rep(/^"(?=\S)/, '\u201c', // opening doubles
+  text))))))))))));
 
 const REG_TEXT = new RegExp(
   '^[\\s\\S]+?(?=[\\<!\\[_*`:~\\|#@\\$\\^=\\+]| {2,}\\n|(' + urlInline.source + ')|\\\\n|\\\\`|$)',
@@ -177,6 +174,8 @@ const inlineEscape: TTokenizer<types.IText> = (_, value) => {
   const matches = value.match(REG_ESCAPE);
   if (matches) return token<types.IText>(matches[0], 'text', void 0, {value: matches[1]});
 };
+
+const html: TTokenizer<IElement> = (_, src) => htmlParser.el(src);
 
 export const parsers: TTokenizer<types.TInlineToken>[] = [
   <TTokenizer<types.TInlineToken>>inlineEscape,
@@ -197,6 +196,6 @@ export const parsers: TTokenizer<types.TInlineToken>[] = [
   <TTokenizer<types.TInlineToken>>underline,
   <TTokenizer<types.TInlineToken>>inlineBreak,
   <TTokenizer<types.TInlineToken>>icon(),
-  // <TTokenizer<TInlineToken>>whitespace,
+  <TTokenizer<IElement>>html,
   <TTokenizer<types.TInlineToken>>text,
 ];

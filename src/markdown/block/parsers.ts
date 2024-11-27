@@ -1,13 +1,15 @@
-import {token} from '../../util';
+import {rep, token} from '../../util';
 import * as reg from '../regex';
+import {html as htmlParser} from '../../html';
 import type {TTokenizer} from '../../types';
 import type {MdBlockParser} from './MdBlockParser';
 import type * as type from './types';
+import type {IElement} from '../../html/types';
 
 const REG_NEWLINE = /^[\n\r]+/;
 const newline: TTokenizer<type.INewline> = (_, src) => {
   const matches = src.match(REG_NEWLINE);
-  if (matches) return token<type.INewline>(matches[0], 'newline');
+  if (matches) return token<type.INewline>(matches[0], '');
 };
 
 const REG_CODE = /^(\s{4}[^\n]+)+/;
@@ -16,7 +18,7 @@ const code: TTokenizer<type.ICode> = (_, src) => {
   if (!matches) return;
   const subvalue = matches[0];
   const overrides = {
-    value: subvalue.replace(/^ {4}/gm, '').replace(/\n+$/, ''),
+    value: rep(/\n+$/, '', rep(/^ {4}/gm, '', subvalue)),
     lang: null,
   };
   return token<type.ICode>(subvalue, 'code', void 0, overrides, subvalue.length);
@@ -46,35 +48,44 @@ const thematicBreak: TTokenizer<type.IThematicBreak> = (_, src) => {
   if (matches) return token<type.IThematicBreak>(matches[0], 'thematicBreak', void 0, {value: matches[1]});
 };
 
+const REG_HEADING1 = /^ *(#{1,6}) *([^\n]+?) *(?:#+ *)?(?:\n+|$)/;
+const REG_HEADING2 = /^([^\n]+)\n *(=|-){2,} *(?:\n+|$)/;
 const heading: TTokenizer<type.IHeading, MdBlockParser<type.TBlockToken>> = (parser, src) => {
-  let matches = src.match(reg.heading);
+  let matches = src.match(REG_HEADING1);
   if (matches) {
     const subvalue = matches[2];
-    return token<type.IHeading>(matches[0], 'heading', parser.parseInline(subvalue), {depth: matches[1].length});
+    return token<type.IHeading>(matches[0], 'heading', parser.parsei(subvalue), {depth: matches[1].length});
   }
-  matches = src.match(reg.lheading);
+  matches = src.match(REG_HEADING2);
   if (matches) {
     const subvalue = matches[1];
-    return token<type.IHeading>(matches[0], 'heading', parser.parseInline(subvalue), {
+    return token<type.IHeading>(matches[0], 'heading', parser.parsei(subvalue), {
       depth: matches[2] === '-' ? 1 : 2,
     });
   }
 };
 
+const REG_BLOCKQUOTE = /^( *>[^\n]+(\n(?!^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$))[^\n]+)*)+/;
 const blockquote: TTokenizer<type.IBlockquote, MdBlockParser<type.TBlockToken>> = (parser, src) => {
-  const matches = src.match(reg.blockquote);
+  const matches = src.match(REG_BLOCKQUOTE);
   if (!matches) return;
   const subvalue = matches[0];
-  const innerValue = subvalue.replace(/^ *> ?/gm, '');
+  const innerValue = rep(/^ *> ?/gm, '', subvalue);
   const children = parser.parse(innerValue);
   return token<type.IBlockquote>(subvalue, 'blockquote', children);
 };
 
 const REG_BULLET = /^(\s*)([*+-]|\d\.)(\s{1,2}|\t)/;
 const REG_LOOSE = /\n\n(?!\s*$)/;
-const getParts = (subvalue: string): string[] | null => subvalue.match(reg.item);
+const REG_ITEM = reg.replace(/^( *)(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/gm, {bull: reg.bull});
+const REG_LIST = reg.replace(/^( *)(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?!\1bull )\n*|\s*$)/, {
+  bull: reg.bull,
+  hr: reg.hr,
+  def: reg.def,
+});
+const getParts = (subvalue: string): string[] | null => subvalue.match(REG_ITEM);
 const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, value) => {
-  const matches = value.match(reg.list);
+  const matches = value.match(REG_LIST);
   if (!matches) return;
   const subvalue = matches[0];
   const parts = getParts(subvalue);
@@ -94,7 +105,7 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
       ordered = true;
       start = Number.parseInt(bulletMarker, 10);
     }
-    let outdented = sansBullet.replace(/^ {1,4}/gm, '');
+    let outdented = rep(/^ {1,4}/gm, '', sansBullet);
     let checked: null | boolean = null;
     if (outdented[0] === '[' && outdented[2] === ']') {
       switch (outdented[1]) {
@@ -121,19 +132,14 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
   return token<type.IList>(subvalue, 'list', children, {ordered, start, loose});
 };
 
-const html: TTokenizer<type.IHtml> = (eat, value) => {
-  const matches = value.match(reg.html);
-  if (matches) return token<type.IHtml>(matches[0], 'html', void 0, {value: matches[0]});
-};
-
 const REG_TABLE = /^ *\|(.+)\n *\|?( *[-:]+[-| :]*)(?:\n((?: *[^>\n ].*(?:\n|$))*)\n*|$)/;
 const splitCells = (tableRow: string, count?: number) => {
-  const cells = tableRow.replace(/([^\\])\|/g, '$1 |').split(/ +\| */);
+  const cells = rep(/([^\\])\|/g, '$1 |', tableRow).split(/ +\| */);
   if (count !== void 0) {
     if (cells.length > count) cells.splice(count);
     else while (cells.length < count) cells.push('');
   }
-  for (let i = 0; i < cells.length; i++) cells[i] = cells[i].replace(/\\\|/g, '|');
+  for (let i = 0; i < cells.length; i++) cells[i] = rep(/\\\|/g, '|', cells[i]);
   return cells;
 };
 const table: TTokenizer<type.ITable, MdBlockParser<type.TBlockToken>> = (parser, value) => {
@@ -141,8 +147,7 @@ const table: TTokenizer<type.ITable, MdBlockParser<type.TBlockToken>> = (parser,
   if (!matches) return;
   const subvalue = matches[0];
   const header = matches[1];
-  const align = matches[2]
-    .replace(/^ *|\| *$/g, '')
+  const align = rep(/^ *|\| *$/g, '', matches[2])
     .split(/ *\| */)
     .map((spec) => {
       spec = spec.trim();
@@ -154,11 +159,11 @@ const table: TTokenizer<type.ITable, MdBlockParser<type.TBlockToken>> = (parser,
           ? 'right'
           : null;
     });
-  const rows = matches[3] ? matches[3].replace(/(?: *\| *)?\n$/, '').split('\n') : [];
+  const rows = matches[3] ? rep(/(?: *\| *)?\n$/, '', matches[3]).split('\n') : [];
   const children: type.ITableRow[] = [];
-  const headers = splitCells(header.replace(/^ *| *\| *$/g, '')).map((headerText) => ({
+  const headers = splitCells(rep(/^ *| *\| *$/g, '', header)).map((headerText) => ({
     type: 'tableCell',
-    children: parser.parseInline(headerText),
+    children: parser.parsei(headerText),
   }));
   children.push({
     type: 'tableRow',
@@ -167,12 +172,12 @@ const table: TTokenizer<type.ITable, MdBlockParser<type.TBlockToken>> = (parser,
   if (rows && rows.length) {
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i];
-      const cells = splitCells(row.replace(/^ *\| *| *\| *$/g, ''), headers.length);
+      const cells = splitCells(rep(/^ *\| *| *\| *$/g, '', row), headers.length);
       children.push({
         type: 'tableRow',
         children: cells.map((cellRawValue) => ({
           type: 'tableCell',
-          children: parser.parseInline(cellRawValue),
+          children: parser.parsei(cellRawValue),
         })),
       } as type.ITableRow);
     }
@@ -186,7 +191,7 @@ const footnoteDefinition: TTokenizer<type.IFootnoteDefinition, MdBlockParser<typ
   if (!matches) return;
   const subvalue = matches[0];
   const identifier = matches[1];
-  const outdented = matches[2].replace(/^ {1,4}/gm, '');
+  const outdented = rep(/^ {1,4}/gm, '', matches[2]);
   const children = parser.parse(outdented);
   return token<type.IFootnoteDefinition>(subvalue, 'footnoteDefinition', children, {identifier});
 };
@@ -202,9 +207,12 @@ const definition: TTokenizer<type.IDefinition> = (_, value) => {
   });
 };
 
+const html: TTokenizer<IElement> = (_, src) => htmlParser.el(src);
+
+const REG_PARAGRAPH = reg.replace(/^((?:[^\n]+(\n(?!\s{0,3}bull))?)+)\n*/, {bull: reg.bull});
 const paragraph: TTokenizer<type.IParagraph, MdBlockParser<type.TBlockToken>> = (parser, value) => {
-  const matches = value.match(reg.paragraph);
-  if (matches) return token<type.IParagraph>(matches[0], 'paragraph', parser.parseInline(matches[1].trim()));
+  const matches = value.match(REG_PARAGRAPH);
+  if (matches) return token<type.IParagraph>(matches[0], 'paragraph', parser.parsei(matches[1].trim()));
 };
 
 export const parsers: TTokenizer<type.TBlockToken, MdBlockParser<type.TBlockToken>>[] = [
@@ -216,9 +224,9 @@ export const parsers: TTokenizer<type.TBlockToken, MdBlockParser<type.TBlockToke
   <TTokenizer<type.TBlockToken>>heading,
   <TTokenizer<type.TBlockToken>>blockquote,
   <TTokenizer<type.TBlockToken>>list,
-  <TTokenizer<type.TBlockToken>>html,
   <TTokenizer<type.TBlockToken>>table,
   <TTokenizer<type.TBlockToken>>footnoteDefinition,
   <TTokenizer<type.TBlockToken>>definition,
+  <TTokenizer<IElement>>html,
   <TTokenizer<type.TBlockToken>>paragraph,
 ];

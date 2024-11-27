@@ -28,7 +28,7 @@ export const loop0 = <T extends IToken, P extends IParser<T>>(
   while (length < end) {
     const tok = tokenizer(parser, remaining);
     if (!tok) break;
-    children.push(tok);
+    if (tok.type) children.push(tok);
     length += tok.len || 0;
     remaining = remaining.slice(tok.len);
   }
@@ -59,3 +59,6 @@ export const regexParser =
     const matches = value.match(reg);
     return matches ? token<T>(matches[0], type, parser.parse(matches[childrenMatchIndex])) : void 0;
   };
+
+export const rep = (search: RegExp, replace: string, str: string): string => str.replace(search, replace);
+export const repAll = (search: string, replace: string, str: string): string => str.replaceAll(search, replace);

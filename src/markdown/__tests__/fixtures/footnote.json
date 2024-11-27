@@ -170,11 +170,6 @@
           "raw": "    code in footnote",
           "value": "code in footnote",
           "lang": null
-        },
-        {
-          "type": "newline",
-          "len": 2,
-          "raw": "\n\n"
         }
       ],
       "identifier": "documentdetails"

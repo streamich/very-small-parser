@@ -22,10 +22,11 @@ const text: TTokenizer<type.IText, HtmlParser> = (_, src) => {
   return token<type.IText>(value, 'text', void 0, {value}, value.length);
 };
 
-const REG_OPEN_TAG = reg.replace(/^<([a-z][\w-]*)(?:attr)*? *(\/?)>/, {attr: reg.attr});
+const REG_ATTR = / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/;
+const REG_OPEN_TAG = reg.replace(/^<([a-z][\w-]*)(?:attr)*? *(\/?)>/, {attr: REG_ATTR});
 const REG_ATTRS = /([\w|data-]+)=["']?((?:.(?!["']?\s+(?:\S+)=|\s*\/?[>"']))+.)["']?/gm;
 const REG_CLOSE_TAG = /^<\/([a-z][\w-]*)>/;
-const element: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
+export const el: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
   const matchOpen = src.match(REG_OPEN_TAG);
   if (!matchOpen) return;
   const [match, tagName, selfClosing] = matchOpen;
@@ -45,7 +46,7 @@ const element: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
   };
   if (!selfClosing) {
     const substr = src.slice(matchLength);
-    const fragment = parser.parseFragment(substr);
+    const fragment = parser.parsef(substr);
     const fragmentLen = fragment.len;
     if (selfClosing) {
       token.len += fragment.len;
@@ -62,5 +63,5 @@ const element: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
 export const parsers: TTokenizer<type.THtmlToken, HtmlParser>[] = [
   <TTokenizer<type.THtmlToken, HtmlParser>>text,
   <TTokenizer<type.THtmlToken, HtmlParser>>comment,
-  <TTokenizer<type.THtmlToken, HtmlParser>>element,
+  <TTokenizer<type.THtmlToken, HtmlParser>>el,
 ];

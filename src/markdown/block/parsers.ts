@@ -1,13 +1,15 @@
 import {rep, token} from '../../util';
 import * as reg from '../regex';
+import {html as htmlParser} from '../../html';
 import type {TTokenizer} from '../../types';
 import type {MdBlockParser} from './MdBlockParser';
 import type * as type from './types';
+import type {IElement} from '../../html/types';
 
 const REG_NEWLINE = /^[\n\r]+/;
 const newline: TTokenizer<type.INewline> = (_, src) => {
   const matches = src.match(REG_NEWLINE);
-  if (matches) return token<type.INewline>(matches[0], 'newline');
+  if (matches) return token<type.INewline>(matches[0], '');
 };
 
 const REG_CODE = /^(\s{4}[^\n]+)+/;
@@ -121,11 +123,6 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
   return token<type.IList>(subvalue, 'list', children, {ordered, start, loose});
 };
 
-const html: TTokenizer<type.IHtml> = (eat, value) => {
-  const matches = value.match(reg.html);
-  if (matches) return token<type.IHtml>(matches[0], 'html', void 0, {value: matches[0]});
-};
-
 const REG_TABLE = /^ *\|(.+)\n *\|?( *[-:]+[-| :]*)(?:\n((?: *[^>\n ].*(?:\n|$))*)\n*|$)/;
 const splitCells = (tableRow: string, count?: number) => {
   const cells = rep(/([^\\])\|/g, '$1 |', tableRow).split(/ +\| */);
@@ -201,6 +198,8 @@ const definition: TTokenizer<type.IDefinition> = (_, value) => {
   });
 };
 
+const html: TTokenizer<IElement> = (_, src) => htmlParser.el(src);
+
 const paragraph: TTokenizer<type.IParagraph, MdBlockParser<type.TBlockToken>> = (parser, value) => {
   const matches = value.match(reg.paragraph);
   if (matches) return token<type.IParagraph>(matches[0], 'paragraph', parser.parseInline(matches[1].trim()));
@@ -215,9 +214,9 @@ export const parsers: TTokenizer<type.TBlockToken, MdBlockParser<type.TBlockToke
   <TTokenizer<type.TBlockToken>>heading,
   <TTokenizer<type.TBlockToken>>blockquote,
   <TTokenizer<type.TBlockToken>>list,
-  <TTokenizer<type.TBlockToken>>html,
   <TTokenizer<type.TBlockToken>>table,
   <TTokenizer<type.TBlockToken>>footnoteDefinition,
   <TTokenizer<type.TBlockToken>>definition,
+  <TTokenizer<IElement>>html,
   <TTokenizer<type.TBlockToken>>paragraph,
 ];

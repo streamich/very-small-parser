@@ -28,7 +28,7 @@ export const loop0 = <T extends IToken, P extends IParser<T>>(
   while (length < end) {
     const tok = tokenizer(parser, remaining);
     if (!tok) break;
-    children.push(tok);
+    if (tok.type) children.push(tok);
     length += tok.len || 0;
     remaining = remaining.slice(tok.len);
   }

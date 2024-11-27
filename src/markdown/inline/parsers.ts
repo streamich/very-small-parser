@@ -1,5 +1,7 @@
 import {regexParser, rep, repAll, token} from '../../util';
 import {replace, label, urlInline, url, title} from '../regex';
+import {html as htmlParser} from '../../html';
+import type {IElement} from '../../html/types';
 import type {TTokenizer} from '../../types';
 import type * as types from './types';
 
@@ -171,6 +173,8 @@ const inlineEscape: TTokenizer<types.IText> = (_, value) => {
   if (matches) return token<types.IText>(matches[0], 'text', void 0, {value: matches[1]});
 };
 
+const html: TTokenizer<IElement> = (_, src) => htmlParser.el(src);
+
 export const parsers: TTokenizer<types.TInlineToken>[] = [
   <TTokenizer<types.TInlineToken>>inlineEscape,
   <TTokenizer<types.TInlineToken>>inlineCode,
@@ -190,6 +194,6 @@ export const parsers: TTokenizer<types.TInlineToken>[] = [
   <TTokenizer<types.TInlineToken>>underline,
   <TTokenizer<types.TInlineToken>>inlineBreak,
   <TTokenizer<types.TInlineToken>>icon(),
-  // <TTokenizer<TInlineToken>>whitespace,
+  <TTokenizer<IElement>>html,
   <TTokenizer<types.TInlineToken>>text,
 ];

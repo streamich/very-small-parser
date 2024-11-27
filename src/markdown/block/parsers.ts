@@ -1,4 +1,4 @@
-import {token} from '../../util';
+import {rep, token} from '../../util';
 import * as reg from '../regex';
 import type {TTokenizer} from '../../types';
 import type {MdBlockParser} from './MdBlockParser';
@@ -16,7 +16,7 @@ const code: TTokenizer<type.ICode> = (_, src) => {
   if (!matches) return;
   const subvalue = matches[0];
   const overrides = {
-    value: subvalue.replace(/^ {4}/gm, '').replace(/\n+$/, ''),
+    value: rep(/\n+$/, '', rep(/^ {4}/gm, '', subvalue)),
     lang: null,
   };
   return token<type.ICode>(subvalue, 'code', void 0, overrides, subvalue.length);
@@ -65,7 +65,7 @@ const blockquote: TTokenizer<type.IBlockquote, MdBlockParser<type.TBlockToken>> 
   const matches = src.match(reg.blockquote);
   if (!matches) return;
   const subvalue = matches[0];
-  const innerValue = subvalue.replace(/^ *> ?/gm, '');
+  const innerValue = rep(/^ *> ?/gm, '', subvalue);
   const children = parser.parse(innerValue);
   return token<type.IBlockquote>(subvalue, 'blockquote', children);
 };
@@ -94,7 +94,7 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
       ordered = true;
       start = Number.parseInt(bulletMarker, 10);
     }
-    let outdented = sansBullet.replace(/^ {1,4}/gm, '');
+    let outdented = rep(/^ {1,4}/gm, '', sansBullet);
     let checked: null | boolean = null;
     if (outdented[0] === '[' && outdented[2] === ']') {
       switch (outdented[1]) {
@@ -128,12 +128,12 @@ const html: TTokenizer<type.IHtml> = (eat, value) => {
 
 const REG_TABLE = /^ *\|(.+)\n *\|?( *[-:]+[-| :]*)(?:\n((?: *[^>\n ].*(?:\n|$))*)\n*|$)/;
 const splitCells = (tableRow: string, count?: number) => {
-  const cells = tableRow.replace(/([^\\])\|/g, '$1 |').split(/ +\| */);
+  const cells = rep(/([^\\])\|/g, '$1 |', tableRow).split(/ +\| */);
   if (count !== void 0) {
     if (cells.length > count) cells.splice(count);
     else while (cells.length < count) cells.push('');
   }
-  for (let i = 0; i < cells.length; i++) cells[i] = cells[i].replace(/\\\|/g, '|');
+  for (let i = 0; i < cells.length; i++) cells[i] = rep(/\\\|/g, '|', cells[i]);
   return cells;
 };
 const table: TTokenizer<type.ITable, MdBlockParser<type.TBlockToken>> = (parser, value) => {
@@ -141,8 +141,7 @@ const table: TTokenizer<type.ITable, MdBlockParser<type.TBlockToken>> = (parser,
   if (!matches) return;
   const subvalue = matches[0];
   const header = matches[1];
-  const align = matches[2]
-    .replace(/^ *|\| *$/g, '')
+  const align = rep(/^ *|\| *$/g, '', matches[2])
     .split(/ *\| */)
     .map((spec) => {
       spec = spec.trim();
@@ -154,9 +153,9 @@ const table: TTokenizer<type.ITable, MdBlockParser<type.TBlockToken>> = (parser,
           ? 'right'
           : null;
     });
-  const rows = matches[3] ? matches[3].replace(/(?: *\| *)?\n$/, '').split('\n') : [];
+  const rows = matches[3] ? rep(/(?: *\| *)?\n$/, '', matches[3]).split('\n') : [];
   const children: type.ITableRow[] = [];
-  const headers = splitCells(header.replace(/^ *| *\| *$/g, '')).map((headerText) => ({
+  const headers = splitCells(rep(/^ *| *\| *$/g, '', header)).map((headerText) => ({
     type: 'tableCell',
     children: parser.parseInline(headerText),
   }));
@@ -167,7 +166,7 @@ const table: TTokenizer<type.ITable, MdBlockParser<type.TBlockToken>> = (parser,
   if (rows && rows.length) {
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i];
-      const cells = splitCells(row.replace(/^ *\| *| *\| *$/g, ''), headers.length);
+      const cells = splitCells(rep(/^ *\| *| *\| *$/g, '', row), headers.length);
       children.push({
         type: 'tableRow',
         children: cells.map((cellRawValue) => ({
@@ -186,7 +185,7 @@ const footnoteDefinition: TTokenizer<type.IFootnoteDefinition, MdBlockParser<typ
   if (!matches) return;
   const subvalue = matches[0];
   const identifier = matches[1];
-  const outdented = matches[2].replace(/^ {1,4}/gm, '');
+  const outdented = rep(/^ {1,4}/gm, '', matches[2]);
   const children = parser.parse(outdented);
   return token<type.IFootnoteDefinition>(subvalue, 'footnoteDefinition', children, {identifier});
 };

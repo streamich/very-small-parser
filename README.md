@@ -59,6 +59,15 @@ Parse Markdown inline markup only:
 const ast = markdown.inline.parse('Hello __world__!');
 ```
 
+Detect if text is likely to be a Markdown document:
+
+```js
+import { is } from 'very-small-parser/lib/markdown/is';
+
+is('Hello __world__!');     // true
+is('<b>Hello</b>!');        // false
+```
+
 Parse HTML:
 
 ```js

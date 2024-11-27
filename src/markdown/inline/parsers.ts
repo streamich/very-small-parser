@@ -1,4 +1,4 @@
-import {regexParser, token} from '../../util';
+import {regexParser, rep, repAll, token} from '../../util';
 import {replace, label, urlInline, url, title} from '../regex';
 import type {TTokenizer} from '../../types';
 import type * as types from './types';
@@ -138,28 +138,21 @@ const link: TTokenizer<types.ILink | types.IImage> = (parser, value: string) => 
   });
 };
 
-// const REG_WHITESPACE = /^\s+/;
-// const whitespace: TTokenizer<IWhitespace> = (parser, value: string) => {
-//   const matches = value.match(REG_WHITESPACE);
-//   if (!matches) return;
-//   const subvalue = matches[0];
-//   return token<IWhitespace>(subvalue, 'whitespace', void 0, {length: subvalue.length});
-// };
-
-const smarttext = (text: string) =>
-  text
-    .replace(/\.{3}/g, '\u2026')
-    .replace(/\(C\)/gi, '©')
-    .replace(/\(R\)/gi, '®')
-    .replace(/\(TM\)/gi, '™')
-    .replace(/\(P\)/g, '§')
-    .replace(/\+\-/g, '±')
-    .replace(/---/g, '\u2014')
-    .replace(/--/g, '\u2013')
-    .replace(/(^|[-\u2014/(\[{"\s])'/g, '$1\u2018') // opening singles
-    .replace(/'/g, '\u2019') // closing singles & apostrophes
-    .replace(/(^|[-\u2014/(\[{\u2018\s])"/g, '$1\u201c') // opening doubles
-    .replace(/"/g, '\u201d'); // closing doubles
+const smarttext = (text: string): string =>
+  // biome-disable format: keep functional formatting
+  repAll('...', '…',
+  repAll('(P)', '§',
+  repAll('+-', '±',
+  repAll('--', '–',
+  repAll('---', '—',
+  repAll("'", '’',
+  repAll('"', '”',
+  rep(/\(c\)/gi, '©',
+  rep(/\(r\)/gi, '®',
+  rep(/\(tm\)/gi, '™',
+  rep(/^'(?=\S)/, '\u2018', // opening singles
+  rep(/^"(?=\S)/, '\u201c', // opening doubles
+  text))))))))))));
 
 const REG_TEXT = new RegExp(
   '^[\\s\\S]+?(?=[\\<!\\[_*`:~\\|#@\\$\\^=\\+]| {2,}\\n|(' + urlInline.source + ')|\\\\n|\\\\`|$)',

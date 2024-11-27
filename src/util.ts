@@ -59,3 +59,6 @@ export const regexParser =
     const matches = value.match(reg);
     return matches ? token<T>(matches[0], type, parser.parse(matches[childrenMatchIndex])) : void 0;
   };
+
+export const rep = (search: RegExp, replace: string, str: string): string => str.replace(search, replace);
+export const repAll = (search: string, replace: string, str: string): string => str.replaceAll(search, replace);

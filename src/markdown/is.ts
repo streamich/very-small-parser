@@ -1,5 +1,3 @@
-import {replace} from './regex';
-
 // Headings H1-H6.
 const h1 = /(^|\n) {0,3}#{1,6} {1,8}[^\n]{1,64}\r?\n\r?\n\s{0,32}\S/;
 
@@ -22,13 +20,27 @@ const ol = /(?:^|\n)\s{0,5}\d+\.\s{1}[^\n]+\n\s{0,15}\d+\.\s/;
 const hr = /\n{2} {0,3}\-{2,48}\n{2}/;
 
 // Fenced code block.
-const fences = /(?:\n|^)(`{3}|~{3})(?!`|~)[^\s]{0,64} {0,64}[^\n]{0,64}\n[\s\S]{0,9999}?\s*\1 {0,64}(?:\n+|$)/;
+const fences = /(?:\n|^)(```|~~~|\$\$)(?!`|~)[^\s]{0,64} {0,64}[^\n]{0,64}\n[\s\S]{0,9999}?\s*\1 {0,64}(?:\n+|$)/;
 
-const REG = replace(/(h1)|(bold)|(link)|(code)|(ul)|(ol)|(hr)|(fences)/, {h1, bold, link, code, ul, ol, hr, fences});
+// Classical underlined H1 and H2 headings.
+const title = /(?:\n|^)(?!\s)\w[^\n]{0,64}\r?\n(\-|=)\1{0,64}\n\n\s{0,64}(\w|$)/;
+
+// Blockquote.
+const blockquote = /(?:^|(\r?\n\r?\n))( {0,3}>[^\n]{1,333}\n){1,999}($|(\r?\n))/;
 
 /**
  * Returns `true` if the source text might be a markdown document.
  *
  * @param src Source text to analyze.
  */
-export const is = (src: string): boolean => REG.test(src);
+export const is = (src: string): boolean =>
+  h1.test(src) ||
+  bold.test(src) ||
+  link.test(src) ||
+  code.test(src) ||
+  ul.test(src) ||
+  ol.test(src) ||
+  hr.test(src) ||
+  fences.test(src) ||
+  title.test(src) ||
+  blockquote.test(src);

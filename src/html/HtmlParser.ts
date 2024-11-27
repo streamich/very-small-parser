@@ -1,7 +1,8 @@
 import {Parser, type ParserOpts} from '../Parser';
 import {first, loop0} from '../util';
-import type {IRoot, IText, THtmlToken} from './types';
-import type {IParser, TTokenizer} from '../types';
+import {el} from './parsers';
+import type {IElement, IRoot, IText, THtmlToken} from './types';
+import type {IParser, TNullableToken, TTokenizer} from '../types';
 
 export interface HtmlParserOpts extends ParserOpts<THtmlToken, HtmlParser> {
   parsers: TTokenizer<THtmlToken, HtmlParser>[];
@@ -50,5 +51,9 @@ export class HtmlParser extends Parser<THtmlToken> implements IParser<THtmlToken
     const [children, len] = loop0(this, this.first, src);
     const root: IRoot = {type: 'root', children, len};
     return root;
+  }
+
+  public el(src: string): TNullableToken<IElement> {
+    return el(this, src);
   }
 }

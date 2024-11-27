@@ -25,7 +25,7 @@ const text: TTokenizer<type.IText, HtmlParser> = (_, src) => {
 const REG_OPEN_TAG = reg.replace(/^<([a-z][\w-]*)(?:attr)*? *(\/?)>/, {attr: reg.attr});
 const REG_ATTRS = /([\w|data-]+)=["']?((?:.(?!["']?\s+(?:\S+)=|\s*\/?[>"']))+.)["']?/gm;
 const REG_CLOSE_TAG = /^<\/([a-z][\w-]*)>/;
-const element: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
+export const el: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
   const matchOpen = src.match(REG_OPEN_TAG);
   if (!matchOpen) return;
   const [match, tagName, selfClosing] = matchOpen;
@@ -62,5 +62,5 @@ const element: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
 export const parsers: TTokenizer<type.THtmlToken, HtmlParser>[] = [
   <TTokenizer<type.THtmlToken, HtmlParser>>text,
   <TTokenizer<type.THtmlToken, HtmlParser>>comment,
-  <TTokenizer<type.THtmlToken, HtmlParser>>element,
+  <TTokenizer<type.THtmlToken, HtmlParser>>el,
 ];

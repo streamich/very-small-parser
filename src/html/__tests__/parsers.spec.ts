@@ -1,4 +1,3 @@
-import {tag} from '../../markdown/regex';
 import {parse} from './setup';
 
 describe('parsers', () => {

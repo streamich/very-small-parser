@@ -48,13 +48,15 @@ const thematicBreak: TTokenizer<type.IThematicBreak> = (_, src) => {
   if (matches) return token<type.IThematicBreak>(matches[0], 'thematicBreak', void 0, {value: matches[1]});
 };
 
+const REG_HEADING1 = /^ *(#{1,6}) *([^\n]+?) *(?:#+ *)?(?:\n+|$)/;
+const REG_HEADING2 = /^([^\n]+)\n *(=|-){2,} *(?:\n+|$)/;
 const heading: TTokenizer<type.IHeading, MdBlockParser<type.TBlockToken>> = (parser, src) => {
-  let matches = src.match(reg.heading);
+  let matches = src.match(REG_HEADING1);
   if (matches) {
     const subvalue = matches[2];
     return token<type.IHeading>(matches[0], 'heading', parser.parseInline(subvalue), {depth: matches[1].length});
   }
-  matches = src.match(reg.lheading);
+  matches = src.match(REG_HEADING2);
   if (matches) {
     const subvalue = matches[1];
     return token<type.IHeading>(matches[0], 'heading', parser.parseInline(subvalue), {
@@ -63,8 +65,10 @@ const heading: TTokenizer<type.IHeading, MdBlockParser<type.TBlockToken>> = (par
   }
 };
 
+const REG_BLOCKQUOTE =
+  /^( *>[^\n]+(\n(?!^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$))[^\n]+)*)+/;
 const blockquote: TTokenizer<type.IBlockquote, MdBlockParser<type.TBlockToken>> = (parser, src) => {
-  const matches = src.match(reg.blockquote);
+  const matches = src.match(REG_BLOCKQUOTE);
   if (!matches) return;
   const subvalue = matches[0];
   const innerValue = rep(/^ *> ?/gm, '', subvalue);
@@ -74,9 +78,11 @@ const blockquote: TTokenizer<type.IBlockquote, MdBlockParser<type.TBlockToken>> 
 
 const REG_BULLET = /^(\s*)([*+-]|\d\.)(\s{1,2}|\t)/;
 const REG_LOOSE = /\n\n(?!\s*$)/;
-const getParts = (subvalue: string): string[] | null => subvalue.match(reg.item);
+const REG_ITEM = reg.replace(/^( *)(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/gm, {bull: reg.bull});
+const REG_LIST = reg.replace(/^( *)(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?!\1bull )\n*|\s*$)/, {bull: reg.bull, hr: reg.hr, def: reg.def});
+const getParts = (subvalue: string): string[] | null => subvalue.match(REG_ITEM);
 const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, value) => {
-  const matches = value.match(reg.list);
+  const matches = value.match(REG_LIST);
   if (!matches) return;
   const subvalue = matches[0];
   const parts = getParts(subvalue);
@@ -200,8 +206,9 @@ const definition: TTokenizer<type.IDefinition> = (_, value) => {
 
 const html: TTokenizer<IElement> = (_, src) => htmlParser.el(src);
 
+const REG_PARAGRAPH = reg.replace(/^((?:[^\n]+(\n(?!\s{0,3}bull))?)+)\n*/, {bull: reg.bull});
 const paragraph: TTokenizer<type.IParagraph, MdBlockParser<type.TBlockToken>> = (parser, value) => {
-  const matches = value.match(reg.paragraph);
+  const matches = value.match(REG_PARAGRAPH);
   if (matches) return token<type.IParagraph>(matches[0], 'paragraph', parser.parseInline(matches[1].trim()));
 };
 

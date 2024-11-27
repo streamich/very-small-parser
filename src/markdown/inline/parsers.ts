@@ -1,5 +1,5 @@
 import {regexParser, rep, repAll, token} from '../../util';
-import {replace, label, urlInline, url, title} from '../regex';
+import {replace, label, urlInline, title} from '../regex';
 import {html as htmlParser} from '../../html';
 import type {IElement} from '../../html/types';
 import type {TTokenizer} from '../../types';
@@ -121,7 +121,8 @@ const icon = (maxLength: number = 32): TTokenizer<types.IIcon> => {
   };
 };
 
-const REG_LINK = replace(/^!?\[(label)\]\(url(?:\s+(title))?\s*\)/, {label, url, title});
+const REG_URL = /\s*(<(?:\\[<>]?|[^\s<>\\])*>|(?:\\[()]?|\([^\s\x00-\x1f()\\]*\)|[^\s\x00-\x1f()\\])*?)/;
+const REG_LINK = replace(/^!?\[(r1)\]\(r2(?:\s+(title))?\s*\)/, {r1: label, r2: REG_URL, title});
 const link: TTokenizer<types.ILink | types.IImage> = (parser, value: string) => {
   const matches = value.match(REG_LINK);
   if (!matches) return;

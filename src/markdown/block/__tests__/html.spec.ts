@@ -12,9 +12,9 @@ describe('HTML', () => {
           {
             type: 'text',
             value: 'text',
-          }
+          },
         ],
-      }
+      },
     ]);
   });
 
@@ -27,7 +27,7 @@ describe('HTML', () => {
           {
             type: 'text',
             value: 'hello',
-          }
+          },
         ],
       },
       {
@@ -43,7 +43,7 @@ describe('HTML', () => {
               alt: 'image',
             },
             children: [],
-          }
+          },
         ],
       },
       {
@@ -52,9 +52,9 @@ describe('HTML', () => {
           {
             type: 'text',
             value: 'world',
-          }
+          },
         ],
-      }
+      },
     ]);
   });
 });

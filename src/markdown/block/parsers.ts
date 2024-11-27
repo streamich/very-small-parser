@@ -65,8 +65,7 @@ const heading: TTokenizer<type.IHeading, MdBlockParser<type.TBlockToken>> = (par
   }
 };
 
-const REG_BLOCKQUOTE =
-  /^( *>[^\n]+(\n(?!^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$))[^\n]+)*)+/;
+const REG_BLOCKQUOTE = /^( *>[^\n]+(\n(?!^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$))[^\n]+)*)+/;
 const blockquote: TTokenizer<type.IBlockquote, MdBlockParser<type.TBlockToken>> = (parser, src) => {
   const matches = src.match(REG_BLOCKQUOTE);
   if (!matches) return;
@@ -79,7 +78,11 @@ const blockquote: TTokenizer<type.IBlockquote, MdBlockParser<type.TBlockToken>> 
 const REG_BULLET = /^(\s*)([*+-]|\d\.)(\s{1,2}|\t)/;
 const REG_LOOSE = /\n\n(?!\s*$)/;
 const REG_ITEM = reg.replace(/^( *)(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/gm, {bull: reg.bull});
-const REG_LIST = reg.replace(/^( *)(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?!\1bull )\n*|\s*$)/, {bull: reg.bull, hr: reg.hr, def: reg.def});
+const REG_LIST = reg.replace(/^( *)(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?!\1bull )\n*|\s*$)/, {
+  bull: reg.bull,
+  hr: reg.hr,
+  def: reg.def,
+});
 const getParts = (subvalue: string): string[] | null => subvalue.match(REG_ITEM);
 const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, value) => {
   const matches = value.match(REG_LIST);

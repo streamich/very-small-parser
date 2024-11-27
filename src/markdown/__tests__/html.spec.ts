@@ -28,8 +28,8 @@ describe('HTML', () => {
               type: 'text',
               value: '!',
             },
-          ]
-        }
+          ],
+        },
       ],
     });
   });

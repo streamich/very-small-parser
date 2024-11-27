@@ -121,6 +121,7 @@ const icon = (maxLength: number = 32): TTokenizer<types.IIcon> => {
   };
 };
 
+// biome-ignore lint: allow control characters in regexp
 const REG_URL = /\s*(<(?:\\[<>]?|[^\s<>\\])*>|(?:\\[()]?|\([^\s\x00-\x1f()\\]*\)|[^\s\x00-\x1f()\\])*?)/;
 const REG_LINK = replace(/^!?\[(r1)\]\(r2(?:\s+(title))?\s*\)/, {r1: label, r2: REG_URL, title});
 const link: TTokenizer<types.ILink | types.IImage> = (parser, value: string) => {

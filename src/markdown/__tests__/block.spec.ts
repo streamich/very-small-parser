@@ -666,8 +666,8 @@ trololo`);
                 len: 6,
                 value: 'foobar',
               },
-            ]
-          }
+            ],
+          },
         ],
         len: 17,
       });

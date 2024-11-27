@@ -7,7 +7,6 @@ export const replace = (reg: RegExp, map: {[s: string]: RegExp}) => {
 };
 
 export const label = /(?:\[[^\[\]]*\]|\\[\[\]]?|`[^`]*`|[^\[\]\\])*?/;
-// biome-ignore lint: allow control characters in regexp
 export const title = /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/;
 export const urlInline =
   /(https?:\/\/)(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}(\.[a-z]{2,4})?\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=,\*]*)/;
@@ -17,4 +16,3 @@ export const def = replace(/^ {0,3}\[(label)\]: *\n? *<?([^\s>]+)>?(?:(?: +\n? *
   label,
   title,
 });
-

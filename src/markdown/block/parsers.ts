@@ -54,12 +54,12 @@ const heading: TTokenizer<type.IHeading, MdBlockParser<type.TBlockToken>> = (par
   let matches = src.match(REG_HEADING1);
   if (matches) {
     const subvalue = matches[2];
-    return token<type.IHeading>(matches[0], 'heading', parser.parseInline(subvalue), {depth: matches[1].length});
+    return token<type.IHeading>(matches[0], 'heading', parser.parsei(subvalue), {depth: matches[1].length});
   }
   matches = src.match(REG_HEADING2);
   if (matches) {
     const subvalue = matches[1];
-    return token<type.IHeading>(matches[0], 'heading', parser.parseInline(subvalue), {
+    return token<type.IHeading>(matches[0], 'heading', parser.parsei(subvalue), {
       depth: matches[2] === '-' ? 1 : 2,
     });
   }
@@ -163,7 +163,7 @@ const table: TTokenizer<type.ITable, MdBlockParser<type.TBlockToken>> = (parser,
   const children: type.ITableRow[] = [];
   const headers = splitCells(rep(/^ *| *\| *$/g, '', header)).map((headerText) => ({
     type: 'tableCell',
-    children: parser.parseInline(headerText),
+    children: parser.parsei(headerText),
   }));
   children.push({
     type: 'tableRow',
@@ -177,7 +177,7 @@ const table: TTokenizer<type.ITable, MdBlockParser<type.TBlockToken>> = (parser,
         type: 'tableRow',
         children: cells.map((cellRawValue) => ({
           type: 'tableCell',
-          children: parser.parseInline(cellRawValue),
+          children: parser.parsei(cellRawValue),
         })),
       } as type.ITableRow);
     }
@@ -212,7 +212,7 @@ const html: TTokenizer<IElement> = (_, src) => htmlParser.el(src);
 const REG_PARAGRAPH = reg.replace(/^((?:[^\n]+(\n(?!\s{0,3}bull))?)+)\n*/, {bull: reg.bull});
 const paragraph: TTokenizer<type.IParagraph, MdBlockParser<type.TBlockToken>> = (parser, value) => {
   const matches = value.match(REG_PARAGRAPH);
-  if (matches) return token<type.IParagraph>(matches[0], 'paragraph', parser.parseInline(matches[1].trim()));
+  if (matches) return token<type.IParagraph>(matches[0], 'paragraph', parser.parsei(matches[1].trim()));
 };
 
 export const parsers: TTokenizer<type.TBlockToken, MdBlockParser<type.TBlockToken>>[] = [

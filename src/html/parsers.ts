@@ -46,7 +46,7 @@ export const el: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
   };
   if (!selfClosing) {
     const substr = src.slice(matchLength);
-    const fragment = parser.parseFragment(substr);
+    const fragment = parser.parsef(substr);
     const fragmentLen = fragment.len;
     if (selfClosing) {
       token.len += fragment.len;

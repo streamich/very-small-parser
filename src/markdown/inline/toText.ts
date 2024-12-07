@@ -2,15 +2,19 @@ import {toText as hastToText} from '../../html/toText';
 import type {IToken} from '../../types';
 import type {TInlineToken} from './types';
 
-const toTextChildren = (children?: IToken[]): string => {
+const toTextChildren = (children?: IToken[], ctx?: ToTextContext): string => {
   if (!children) return '';
   let str = '';
   const length = children.length;
-  for (let i = 0; i < length; i++) str += toText(children[i]);
+  for (let i = 0; i < length; i++) str += toText(children[i], ctx);
   return str;
 };
 
-export const toText = (node: IToken | IToken[]): string => {
+export interface ToTextContext {
+  b: '_' | '*';
+}
+
+export const toText = (node: IToken | IToken[], ctx: ToTextContext = {b: '_'}): string => {
   if (Array.isArray(node)) return toTextChildren(node);
   const inline = node as TInlineToken;
   const type = inline.type;
@@ -19,10 +23,14 @@ export const toText = (node: IToken | IToken[]): string => {
       return inline.value;
     case 'inlineCode':
       return '`' + node.value + '`';
-    case 'strong':
-      return '__' + toTextChildren(inline.children) + '__';
-    case 'emphasis':
-      return '*' + toTextChildren(inline.children) + '*';
+    case 'strong': {
+      const markup = ctx.b + ctx.b;
+      return markup + toTextChildren(inline.children, {...ctx, b: ctx.b === '_' ? '*' : '_'}) + markup;
+    }
+    case 'emphasis': {
+      const markup = ctx.b;
+      return markup + toTextChildren(inline.children, {...ctx, b: ctx.b === '_' ? '*' : '_'}) + markup;
+    }
     case 'delete':
       return '~~' + toTextChildren(inline.children) + '~~';
     case 'spoiler':

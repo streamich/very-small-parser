@@ -7,8 +7,8 @@ describe('toText', () => {
     ['', '', 'empty string'],
     ['__bold__'],
     ['**bold**', '__bold__'],
-    ['*italic*'],
-    ['_italic_', '*italic*'],
+    ['*italic*', '_italic_'],
+    ['_italic_'],
     ['`code`'],
     ['~~strike~~'],
     ['||spoiler||'],
@@ -41,11 +41,17 @@ describe('toText', () => {
     ['++underline++'],
     ['\n', '\n', 'newline'],
     ['foo\nbar', 'foo\nbar', 'newline in text'],
-    [':smile:', ':smile:', 'emoji'],
-    ['::smile::', ':smile:', 'emoji'],
+    [':smile:', ':smile:'],
+    ['::smile::', ':smile:'],
     ['<b>bold</b>'],
     ['<font color="red">text</font>'],
     ['a <font color="red">b</font> c'],
+
+    // complex cases, with nested elements
+    ['**bold _italic_**', '__bold *italic*__'],
+    ['__bold **strong**__', '__bold **strong**__'],
+    ['[**bold** link](https://example.com)', '[__bold__ link](https://example.com)'],
+    ['[`code(**args**)`](https://example.com)', '[`code(**args**)`](https://example.com)'],
   ];
 
   testCases.forEach(([src, expected = src, name = src]) => {

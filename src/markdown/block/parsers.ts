@@ -94,9 +94,14 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
   const children: any[] = [];
   let ordered = false;
   let start = null;
-  let loose = false;
+  let spread = false;
   for (let i = 0; i < length; i++) {
-    const part = parts[i];
+    let part = parts[i];
+    if (part[part.length - 1] === '\n') {
+      const isLast = i === length - 1;
+      if (!isLast) spread = true;
+      part = part.trimEnd();
+    }
     const bulletMatch = part.match(REG_BULLET);
     if (!bulletMatch) return;
     const sansBullet = part.slice(bulletMatch[0].length);
@@ -120,16 +125,16 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
           break;
       }
     }
-    const partLoose = REG_LOOSE.test(sansBullet);
-    if (partLoose) loose = true;
+    const partSpread = REG_LOOSE.test(sansBullet);
+    if (partSpread) spread = true;
     children.push({
       type: 'listItem',
-      spread: partLoose,
+      spread: partSpread,
       checked,
       children: parser.parse(outdented),
     });
   }
-  return token<type.IList>(subvalue, 'list', children, {ordered, start, spread: loose});
+  return token<type.IList>(subvalue, 'list', children, {ordered, start, spread: spread});
 };
 
 const REG_TABLE = /^ *\|(.+)\n *\|?( *[-:]+[-| :]*)(?:\n((?: *[^>\n ].*(?:\n|$))*)\n*|$)/;

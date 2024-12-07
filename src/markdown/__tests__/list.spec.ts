@@ -606,43 +606,44 @@ describe('list', () => {
     });
   });
 
-  test('reports loose items', () => {
-    const ast = parse(`- foo\n\n  bar`);
-    expect(ast).toMatchObject({
+  test('reports loose (spread) items', () => {
+    const ast1 = parse(`- foo\n\n- bar\n- baz\n\n`);
+    expect(ast1).toMatchObject({
       type: 'root',
       children: [
         {
           type: 'list',
-          children: [
-            {
-              type: 'listItem',
-              // spread: true,
-              checked: null,
-              children: [
-                {
-                  type: 'paragraph',
-                  children: [
-                    {
-                      type: 'text',
-                      value: 'foo',
-                    },
-                  ],
-                },
-                {
-                  type: 'paragraph',
-                  children: [
-                    {
-                      type: 'text',
-                      value: 'bar',
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-          ordered: false,
-          start: null,
-          // spread: true,
+          spread: true,
+        },
+      ],
+    });
+    const ast2 = parse(`- foo\n- bar\n\n- baz\n\n`);
+    expect(ast2).toMatchObject({
+      type: 'root',
+      children: [
+        {
+          type: 'list',
+          spread: true,
+        },
+      ],
+    });
+    const ast3 = parse(`- foo\n\n- bar\n\n- baz\n\n`);
+    expect(ast3).toMatchObject({
+      type: 'root',
+      children: [
+        {
+          type: 'list',
+          spread: true,
+        },
+      ],
+    });
+    const ast4 = parse(`- foo\n- bar\n-baz\n\n`);
+    expect(ast4).toMatchObject({
+      type: 'root',
+      children: [
+        {
+          type: 'list',
+          spread: false,
         },
       ],
     });

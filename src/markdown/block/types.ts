@@ -67,7 +67,7 @@ export interface IList extends IToken {
 
 export interface IListItem extends IToken {
   type: 'listItem';
-  spread: boolean;
+  spread?: boolean;
   checked: boolean | null;
   children: TBlockToken[];
 }

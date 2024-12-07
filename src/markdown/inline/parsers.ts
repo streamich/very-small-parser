@@ -94,7 +94,7 @@ const sub: TTokenizer<types.ISub> = regexParser('sub', REG_SUB, 1);
 const REG_MARK = /^==(?=\S)([\s\S]*?\S)==/;
 const mark: TTokenizer<types.IMark> = regexParser('mark', REG_MARK, 1);
 
-const REG_HANDLE = /^([#~@])(([\w\-_\.\/#]{1,64})|(\{([\w\-_\.\/#=\/ ]{1,64})\}))/;
+const REG_HANDLE = /^([#~@])(?![#~@])(([\w\-_\.\/#]{1,64})|(\{([\w\-_\.\/#=\/ ]{1,64})\}))/;
 const handle: TTokenizer<types.IHandle> = (_, value) => {
   const matches = value.match(REG_HANDLE);
   if (!matches) return;

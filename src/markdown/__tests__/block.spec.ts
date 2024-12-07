@@ -173,12 +173,11 @@ describe('Block Markdown', () => {
         type: 'root',
         children: [
           {
-            type: 'heading',
-            depth: 6,
+            type: 'paragraph',
             children: [
               {
                 type: 'text',
-                value: '# Title',
+                value: '####### Title',
               },
             ],
           },

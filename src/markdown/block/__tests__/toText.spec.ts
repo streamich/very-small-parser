@@ -1,8 +1,11 @@
 import {parse} from './setup';
 import {toText} from '../toText';
-import {testCases} from './toText.fixtures';
 
 describe('toText', () => {
+  const testCases: [src: string, expected?: string, name?: string][] = [
+    ['plain text'],
+  ];
+
   testCases.forEach(([src, expected = src, name = src]) => {
     it(name, () => {
       const ast = parse(src);

@@ -29,13 +29,20 @@ describe('toText', () => {
     ['> blockquote\n> \n> with multiple blocks', void 0, 'blockquote with multiple blocks'],
     ['> blockquote\n> \n> ```\n> with multiple blocks\n> ```', void 0, 'blockquote with multiple blocks and code'],
     ['- single list item'],
+    ['- first\n- second', void 0, 'multiple list items'],
+    ['- first\n\n- second', '- first\n\n- second', 'multiple *loose* list items'],
+    ['- first\n\n\n- second', '- first\n\n- second', 'multiple *loose* list items'],
+    ['* first\n* second', '- first\n- second', 'two list items with "*" bullet'],
+    ['+ first\n+ second\n+ third', '- first\n- second\n- third', 'three list items with "+" bullet'],
+    ['- single list item\n  \n  with multiple lines', '- single list item\n  \n  with multiple lines', 'list item with multiple lines'],
   ];
 
   for (const [src, expected = src, name = src] of testCases) {
     it(name, () => {
       const ast = parse(src);
-      // console.log(ast);
+      // console.log(JSON.stringify(ast, null, 2));
       const text = toText(ast);
+      // console.log(JSON.stringify(text));
       expect(text).toBe(expected);
     });
   }

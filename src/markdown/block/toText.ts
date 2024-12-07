@@ -38,9 +38,19 @@ export const toText = (node: IToken | IToken[]): string => {
       return '> ' + toTextBlockChildren(inline.children).replace(/\n/g, '\n> ');
     }
     case 'list': {
-      const {ordered, start} = inline;
-      const prefix = ordered ? (start || 1) + '. ' : '- ';
-      return inline.children.map((item) => prefix + toTextBlockChildren(item.children)).join('\n');
+      const {ordered, start, spread} = inline;
+      const bullet = ordered ? (start || 1) + '. ' : '- ';
+      const separator = spread ? '\n\n' : '\n';
+      const children = inline.children;
+      const last = children.length - 1;
+      let str = '';
+      for (let i = 0; i <= last; i++) {
+        const child = children[i];
+        const content = toTextBlockChildren(child.children).replace(/\n/g, '\n  ');
+        str += bullet + content;
+        if (i !== last) str += separator;
+      }
+      return str;
     }
     case 'thematicBreak':
       return '---';

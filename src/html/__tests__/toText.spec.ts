@@ -1,5 +1,5 @@
 import {toText} from '../toText';
-import {IElement} from '../types';
+import type {IElement} from '../types';
 import {parse} from './setup';
 
 describe('toText', () => {
@@ -59,9 +59,13 @@ describe('toText', () => {
     });
 
     test('nested nodes', () => {
-      const ast = parse('<div><b>bold</b> text</div><p>Hello world</p><blockquote><p>Hello <b><u>world</u></b><i>!!!</i></p></blockquote>');
+      const ast = parse(
+        '<div><b>bold</b> text</div><p>Hello world</p><blockquote><p>Hello <b><u>world</u></b><i>!!!</i></p></blockquote>',
+      );
       const text = toText(ast);
-      expect(text).toBe('<div><b>bold</b> text</div><p>Hello world</p><blockquote><p>Hello <b><u>world</u></b><i>!!!</i></p></blockquote>');
+      expect(text).toBe(
+        '<div><b>bold</b> text</div><p>Hello world</p><blockquote><p>Hello <b><u>world</u></b><i>!!!</i></p></blockquote>',
+      );
     });
   });
 
@@ -107,7 +111,7 @@ describe('toText', () => {
     test('can escape attribute values', () => {
       const ast = parse('<span class="test<a:not(asdf)&test">text</span>');
       const text = toText(ast);
-      expect(text).toBe('<span class=\"test&lt;a:not(asdf)&amp;test\">text</span>');
+      expect(text).toBe('<span class="test&lt;a:not(asdf)&amp;test">text</span>');
     });
   });
 
@@ -117,7 +121,7 @@ describe('toText', () => {
       const text = toText(ast, '  ');
       expect(text).toBe('<div>\n  <hr foo="bar" />\n  <span>text</span>\n</div>');
     });
-    
+
     test('can format HTML fragment with tabbing', () => {
       const ast = parse('<hr foo="bar" /><span>text</span>');
       const text = toText(ast, '  ');
@@ -129,7 +133,7 @@ describe('toText', () => {
       const text = toText(ast, '  ');
       expect(text).toBe('<div>\n  <b>Hello</b>\n  <i>world</i>\n  !\n</div>');
     });
-    
+
     test('can format HTML fragment with tabbing - 2', () => {
       const ast: IElement = {
         type: 'element',
@@ -153,11 +157,11 @@ describe('toText', () => {
                 tagName: 'span',
                 properties: {},
                 len: 0,
-                children: [{type: 'text', value: 'text'}]
+                children: [{type: 'text', value: 'text'}],
               } as IElement,
             ],
           },
-        ]
+        ],
       };
       const text = toText(ast, '  ');
       expect(text).toBe('<div>\n  <hr foo="bar" />\n  <span>text</span>\n</div>');

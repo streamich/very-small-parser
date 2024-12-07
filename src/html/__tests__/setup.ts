@@ -1,5 +1,5 @@
 import {html} from '..';
-import {THtmlToken} from '../types';
+import type {THtmlToken} from '../types';
 
 export const parse = (text: string): THtmlToken[] => {
   const ast = html.parse(text);

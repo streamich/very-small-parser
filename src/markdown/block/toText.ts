@@ -26,8 +26,30 @@ export const toText = (node: IToken | IToken[]): string => {
   switch (type) {
     case 'paragraph':
       return toTextInlineChildren(inline.children);
+    case 'code': {
+      return '```' + (inline.lang || '') + (inline.meta ? ' ' + inline.meta : '') + '\n' + inline.value + '\n```';
+    }
+    case 'heading': {
+      const depth = inline.depth;
+      const prefix = '#'.repeat(depth);
+      return prefix + ' ' + toTextInlineChildren(inline.children);
+    }
+    case 'blockquote': {
+      return '> ' + toTextBlockChildren(inline.children).replace(/\n/g, '\n> ');
+    }
+    case 'list': {
+      const {ordered, start} = inline;
+      const prefix = ordered ? (start || 1) + '. ' : '- ';
+      return inline.children.map((item) => prefix + toTextBlockChildren(item.children)).join('\n');
+    }
+    case 'thematicBreak':
+      return '---';
+    case 'math':
+      return '$$\n' + inline.value + '\n$$';
     case 'element':
       return toTextHtml(inline);
+    case '': // newline
+      return '\n\n';
     default:
       return toTextInline(inline);
   }

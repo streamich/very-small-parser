@@ -31,5 +31,6 @@ export const toText = (node: IToken | IToken[]): string => {
     default:
       return toTextInline(inline);
   }
+  // biome-ignore lint: unreachable code
   return toTextInlineChildren((inline as any).children);
 };

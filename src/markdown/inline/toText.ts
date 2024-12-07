@@ -45,10 +45,13 @@ export const toText = (node: IToken | IToken[], ctx: ToTextContext = {b: '_'}): 
       const start = type === 'imageReference' ? '![' : '[';
       switch (referenceType) {
         case 'full':
-          return start + (type === 'imageReference' ? inline.alt : toTextChildren(inline.children)) + '][' + identifier + ']';
+          return (
+            start + (type === 'imageReference' ? inline.alt : toTextChildren(inline.children)) + '][' + identifier + ']'
+          );
         case 'collapsed':
           return start + identifier + '][]';
-        case 'shortcut':
+        // case 'shortcut':
+        default:
           return start + identifier + ']';
       }
     }

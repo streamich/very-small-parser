@@ -3,12 +3,12 @@ import {toText} from '../toText';
 import {testCases} from './toText.fixtures';
 
 describe('toText', () => {
-  testCases.forEach(([src, expected = src, name = src]) => {
+  for (const [src, expected = src, name = src] of testCases) {
     it(name, () => {
       const ast = parse(src);
       // console.log(ast);
       const text = toText(ast);
       expect(text).toBe(expected);
     });
-  });
+  }
 });

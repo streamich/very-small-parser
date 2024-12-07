@@ -185,14 +185,14 @@ describe('Block Markdown', () => {
       });
     });
 
-    it('supports orthodox heading h1', () => {
+    it('supports orthodox heading H2', () => {
       const ast = parse('Title\n' + '-----');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
           {
             type: 'heading',
-            depth: 1,
+            depth: 2,
             children: [
               {
                 type: 'text',
@@ -204,14 +204,14 @@ describe('Block Markdown', () => {
       });
     });
 
-    it('supports orthodox heading h2', () => {
+    it('supports orthodox heading H1', () => {
       const ast = parse('Title\n' + '=====');
       expect(ast).toMatchObject({
         type: 'root',
         children: [
           {
             type: 'heading',
-            depth: 2,
+            depth: 1,
             children: [
               {
                 type: 'text',

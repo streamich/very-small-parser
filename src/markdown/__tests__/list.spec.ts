@@ -507,12 +507,12 @@ describe('list', () => {
         {
           type: 'list',
           ordered: false,
-          loose: false,
+          spread: false,
           children: [
             {
               type: 'listItem',
               checked: null,
-              loose: false,
+              spread: false,
               children: [
                 {
                   type: 'paragraph',
@@ -540,13 +540,13 @@ describe('list', () => {
         {
           type: 'list',
           ordered: false,
-          loose: false,
+          spread: false,
           len: 5,
           children: [
             {
               type: 'listItem',
               checked: null,
-              loose: false,
+              spread: false,
               children: [
                 {
                   type: 'paragraph',
@@ -580,12 +580,12 @@ describe('list', () => {
         {
           type: 'list',
           ordered: true,
-          loose: false,
+          spread: false,
           children: [
             {
               type: 'listItem',
               checked: null,
-              loose: false,
+              spread: false,
               children: [
                 {
                   type: 'paragraph',
@@ -616,7 +616,7 @@ describe('list', () => {
           children: [
             {
               type: 'listItem',
-              // loose: true,
+              // spread: true,
               checked: null,
               children: [
                 {
@@ -642,7 +642,7 @@ describe('list', () => {
           ],
           ordered: false,
           start: null,
-          // loose: true,
+          // spread: true,
         },
       ],
     });
@@ -679,7 +679,7 @@ describe('list', () => {
           children: [
             {
               type: 'listItem',
-              loose: false,
+              spread: false,
               checked: null,
               children: [
                 {
@@ -695,7 +695,7 @@ describe('list', () => {
             },
             {
               type: 'listItem',
-              loose: false,
+              spread: false,
               checked: null,
               children: [
                 {
@@ -711,7 +711,7 @@ describe('list', () => {
             },
             {
               type: 'listItem',
-              loose: false,
+              spread: false,
               checked: null,
               children: [
                 {
@@ -728,7 +728,7 @@ describe('list', () => {
           ],
           ordered: false,
           start: null,
-          loose: false,
+          spread: false,
         },
       ],
     });
@@ -744,7 +744,7 @@ describe('list', () => {
           children: [
             {
               type: 'listItem',
-              loose: false,
+              spread: false,
               checked: null,
               children: [
                 {
@@ -761,7 +761,7 @@ describe('list', () => {
                   children: [
                     {
                       type: 'listItem',
-                      loose: false,
+                      spread: false,
                       checked: null,
                       children: [
                         {
@@ -779,7 +779,7 @@ describe('list', () => {
                           children: [
                             {
                               type: 'listItem',
-                              loose: false,
+                              spread: false,
                               checked: null,
                               children: [
                                 {
@@ -796,21 +796,21 @@ describe('list', () => {
                           ],
                           ordered: false,
                           start: null,
-                          loose: false,
+                          spread: false,
                         },
                       ],
                     },
                   ],
                   ordered: false,
                   start: null,
-                  loose: false,
+                  spread: false,
                 },
               ],
             },
           ],
           ordered: false,
           start: null,
-          loose: false,
+          spread: false,
         },
       ],
     });

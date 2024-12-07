@@ -10,7 +10,11 @@ describe('toText', () => {
     ['``` {"foo": "bar"}\ncode\n```', void 0, 'fenced with metadata'],
     ['~~~\ncode\n~~~', '```\ncode\n```', 'fenced code block, using tilde'],
     ['~~~ts\ncode\n~~~', '```ts\ncode\n```', 'fenced code block with language, using tilde'],
-    ['~~~ts colorful\ncode\n~~~', '```ts colorful\ncode\n```', 'fenced code block with language and metadata, using tilde'],
+    [
+      '~~~ts colorful\ncode\n~~~',
+      '```ts colorful\ncode\n```',
+      'fenced code block with language and metadata, using tilde',
+    ],
     ['~~~ colorful\ncode\n~~~', '``` colorful\ncode\n```', 'fenced code block with metadata, using tilde'],
     ['$$\nx^2\n$$', void 0, 'math block'],
     ['---'],
@@ -34,7 +38,11 @@ describe('toText', () => {
     ['- first\n\n\n- second', '- first\n\n- second', 'multiple *loose* list items'],
     ['* first\n* second', '- first\n- second', 'two list items with "*" bullet'],
     ['+ first\n+ second\n+ third', '- first\n- second\n- third', 'three list items with "+" bullet'],
-    ['- single list item\n  \n  with multiple lines', '- single list item\n  \n  with multiple lines', 'list item with multiple lines'],
+    [
+      '- single list item\n  \n  with multiple lines',
+      '- single list item\n  \n  with multiple lines',
+      'list item with multiple lines',
+    ],
   ];
 
   for (const [src, expected = src, name = src] of testCases) {

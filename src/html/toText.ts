@@ -1,8 +1,10 @@
-import {THtmlToken} from "./types";
+import {THtmlToken, IElement, IRoot} from "./types";
 
 const escapeText = (str: string): string => str.replace(/[\u00A0-\u9999<>\&]/gim, (i) => '&#' + i.charCodeAt(0) + ';');
 
 const escapeAttr = (str: string): string => str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+
+const PROPS = {};
 
 /**
  * Pretty-prints an HTML node to text.
@@ -13,7 +15,10 @@ const escapeAttr = (str: string): string => str.replace(/&/g, '&amp;').replace(/
  * @returns Text representation of the HTML node
  */
 export const toText = (node: THtmlToken | THtmlToken[], tab: string = '', ident: string = ''): string => {
-  if (Array.isArray(node)) return node.map((n) => toText(n, tab, ident)).join('');
+  if (Array.isArray(node)) {
+    const root: IRoot = {type: 'root', len: 0, children: node};
+    return toText(root, tab, ident);
+  }
   if (typeof node === 'string') return ident + escapeText(node);
   const {type} = node;
   switch (type) {
@@ -24,8 +29,15 @@ export const toText = (node: THtmlToken | THtmlToken[], tab: string = '', ident:
       return value ? ident + '<!--' + escapeText(value) + '-->' : '';
     }
     // case 'doctype': return '';
+    case 'root':
     case 'element': {
-      const {tagName, properties, children} = node;
+      const children = node.children;
+      let tagName: IElement['tagName'] = '';
+      let properties: IElement['properties'] = PROPS;
+      if (type === 'element') {
+        tagName = node.tagName;
+        properties = node.properties;
+      }
       const childrenLength = children.length;
       const isFragment = !tagName;
       const childrenIdent = ident + (isFragment ? '' : tab);

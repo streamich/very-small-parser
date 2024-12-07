@@ -78,7 +78,7 @@ const blockquote: TTokenizer<type.IBlockquote, MdBlockParser<type.TBlockToken>> 
 const REG_BULLET = /^(\s*)([*+-]|\d\.)(\s{1,2}|\t)/;
 const REG_LOOSE = /\n\n(?!\s*$)/;
 const REG_ITEM = reg.replace(/^( *)(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/gm, {bull: reg.bull});
-const REG_LIST = reg.replace(/^( *)(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?!\1bull )\n*|\s*$)/, {
+const REG_LIST = reg.replace(/^( *)(bull) [\s\S]+?(?:hr|def(?! )(?!\1bull )\n*|\s*$)/, {
   bull: reg.bull,
   hr: reg.hr,
   def: reg.def,

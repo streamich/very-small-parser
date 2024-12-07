@@ -627,7 +627,7 @@ describe('list', () => {
         },
       ],
     });
-    const ast3 = parse(`- foo\n\n- bar\n\n- baz\n\n`);
+    const ast3 = parse(`- foo\n\n\n- bar\n\n\n\n- baz\n\n`);
     expect(ast3).toMatchObject({
       type: 'root',
       children: [

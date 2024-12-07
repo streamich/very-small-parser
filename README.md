@@ -18,7 +18,7 @@ Using ESM.sh:
 
 ```html
 <script type="module">
-  import { markdown } from "//esm.sh/very-small-parser";
+  import { markdown } from '//esm.sh/very-small-parser';
 
   const ast = markdown.block.parse('Hello __world__!');
   console.log(ast);
@@ -29,7 +29,7 @@ Using jsDelivr:
 
 ```html
 <script type="module">
-  import { markdown } from "//esm.run/very-small-parser";
+  import { markdown } from '//esm.run/very-small-parser';
 
   const ast = markdown.block.parse('Hello __world__!');
   console.log(ast);
@@ -45,10 +45,12 @@ npm install very-small-parser
 
 ## Reference
 
+### Markdown
+
 Parse Markdown document (block elements):
 
 ```js
-import { markdown } from "very-small-parser";
+import { markdown } from 'very-small-parser';
 
 const ast = markdown.block.parse('Hello __world__!');
 ```
@@ -68,10 +70,39 @@ is('Hello __world__!');     // true
 is('<b>Hello</b>!');        // false
 ```
 
-Parse HTML:
+
+### HTML
+
+Parse HTML to HAST (Hypertext Abstract Syntax Tree):
 
 ```js
-import { html } from "very-small-parser";
+import { html } from 'very-small-parser';
 
 const ast = html.parse('<b>Hello</b> <i>world</i>!');
+```
+
+Pretty-print HAST to HTML:
+
+```js
+import { html } from 'very-small-parser';
+import { toText } from 'very-small-parser/lib/html/toText';
+
+const hast = html.parse('<b>Hello</b> <i>world</i>!');
+const html = toText(hast); // '<b>Hello</b> <i>world</i>!'
+```
+
+Specify tabulation size for indentation when pretty-printing:
+
+```js
+import { html } from 'very-small-parser';
+import { toText } from 'very-small-parser/lib/html/toText';
+
+const tab = '  ';
+const hast = html.parse('<div><b>Hello</b><i>world</i>!</div>', tab);
+const html = toText(hast);
+// <div>
+//   <b>Hello</b>
+//   <i>world</i>
+//   !
+// </div>
 ```

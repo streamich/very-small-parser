@@ -21,7 +21,7 @@ export interface IElement extends IToken {
   type: 'element';
   tagName: string;
   properties: Record<string, string>;
-  children: (IComment | IElement | IText)[];
+  children: (IComment | IElement | IText | IRoot)[];
 }
 
 export type THtmlToken = IRoot | IText | IComment | IDoctype | IElement;

@@ -123,6 +123,12 @@ describe('toText', () => {
       const text = toText(ast, '  ');
       expect(text).toBe('<hr foo="bar" />\n<span>text</span>');
     });
+
+    test('can format HTML element with tabbing', () => {
+      const ast = parse('<div><b>Hello</b><i>world</i>!</div>');
+      const text = toText(ast, '  ');
+      expect(text).toBe('<div>\n  <b>Hello</b>\n  <i>world</i>\n  !\n</div>');
+    });
     
     test('can format HTML fragment with tabbing - 2', () => {
       const ast: IElement = {

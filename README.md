@@ -90,3 +90,19 @@ import { toText } from 'very-small-parser/lib/html/toText';
 const hast = html.parse('<b>Hello</b> <i>world</i>!');
 const html = toText(hast); // '<b>Hello</b> <i>world</i>!'
 ```
+
+Specify tabulation size for indentation when pretty-printing:
+
+```js
+import { html } from 'very-small-parser';
+import { toText } from 'very-small-parser/lib/html/toText';
+
+const tab = '  ';
+const hast = html.parse('<div><b>Hello</b><i>world</i>!</div>', tab);
+const html = toText(hast);
+// <div>
+//   <b>Hello</b>
+//   <i>world</i>
+//   !
+// </div>
+```

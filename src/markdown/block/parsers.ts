@@ -60,7 +60,7 @@ const heading: TTokenizer<type.IHeading, MdBlockParser<type.TBlockToken>> = (par
   if (matches) {
     const subvalue = matches[1];
     return token<type.IHeading>(matches[0], 'heading', parser.parsei(subvalue), {
-      depth: matches[2] === '-' ? 1 : 2,
+      depth: matches[2] === '-' ? 2 : 1,
     });
   }
 };
@@ -124,12 +124,12 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
     if (partLoose) loose = true;
     children.push({
       type: 'listItem',
-      loose: partLoose,
+      spread: partLoose,
       checked,
       children: parser.parse(outdented),
     });
   }
-  return token<type.IList>(subvalue, 'list', children, {ordered, start, loose});
+  return token<type.IList>(subvalue, 'list', children, {ordered, start, spread: loose});
 };
 
 const REG_TABLE = /^ *\|(.+)\n *\|?( *[-:]+[-| :]*)(?:\n((?: *[^>\n ].*(?:\n|$))*)\n*|$)/;

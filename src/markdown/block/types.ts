@@ -61,13 +61,13 @@ export interface IList extends IToken {
   type: 'list';
   ordered: boolean;
   start: number | null;
-  loose: boolean;
+  spread: boolean;
   children: IListItem[];
 }
 
 export interface IListItem extends IToken {
   type: 'listItem';
-  loose: boolean;
+  spread: boolean;
   checked: boolean | null;
   children: TBlockToken[];
 }

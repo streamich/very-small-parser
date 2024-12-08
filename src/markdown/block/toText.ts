@@ -63,6 +63,8 @@ export const toText = (node: IToken | IToken[]): string => {
       const columnSizes: number[] = Array.from({length: align.length}, () => 1);
       const columnLength = align.length;
       const rowLength = rows.length;
+      let totalSize = 1 * columnLength;
+      // Compute column sizes and pre cell texts
       for (let i = 0; i < rowLength; i++) {
         const row = rows[i];
         const textRow: string[] = [];
@@ -73,52 +75,38 @@ export const toText = (node: IToken | IToken[]): string => {
           const text = toTextInlineChildren(cell.children);
           textRow.push(text);
           const size = text.length;
-          if (size > columnSizes[j]) columnSizes[j] = size;
+          if (size > columnSizes[j]) {
+            totalSize += size - columnSizes[j];
+            columnSizes[j] = size;
+          }
         }
       }
-      let headerSeparator = '';
-      for (let j = 0; j < columnLength; j++) {
-        const alignment = align[j];
-        const size = columnSizes[j];
-        let txt = '-'.padEnd(size, '-');
-        switch (alignment) {
-          case 'center':
-            txt = ':' + txt + ':';
-            break;
-          case 'right':
-            txt = '-' + txt + ':';
-            break;
-          case 'left':
-            txt = ':' + txt + '-';
-            break;
-          default:
-            txt = txt + '--';
-        }
-        headerSeparator += '|' + txt;
-      }
-      headerSeparator += '|';
+      const isWide = totalSize > 240;
+      // Format cells
       for (let i = 0; i < rowLength; i++) {
         const row = texts[i];
         for (let j = 0; j < columnLength; j++) {
           const alignment = align[j];
           const size = columnSizes[j];
-          let txt = row[j]; //.padEnd(size, ' ');
-          switch (alignment) {
-            case 'center':
-              const length = txt.length;
-              const left = Math.ceil((size - length) / 2);
-              txt = txt.padStart(left + length, ' ').padEnd(size, ' ');
-              break;
-            case 'right':
-              txt = txt.padStart(size, ' ');
-              break;
-            default:
-              txt = txt.padEnd(size, ' ');
-          }
+          let txt = row[j];
+          const length = txt.length;
+          const leftPadding = alignment === 'right'
+            ? size - length
+            : alignment === 'center' ?  Math.ceil((size - length) / 2) : 0;
+          if (!isWide) txt = row[j].padStart(leftPadding + length, ' ').padEnd(size, ' ');
           texts[i][j] = ' ' + txt + ' ';
         }
       }
-      let str = '|' + texts[0].join('|') + '|\n' + headerSeparator;
+      // Format first row (header)
+      let str = '|' + texts[0].join('|') + '|\n';
+      // Format header separator
+      for (let j = 0; j < columnLength; j++) {
+        const alignment = align[j];
+        let txt = isWide ? '-' : '-'.repeat(columnSizes[j]);
+        str += '|' + (alignment === 'center' || alignment === 'left' ? ':' : '-') + txt + (alignment === 'center' || alignment === 'right' ? ':' : '-');
+      }
+      str += '|';
+      // Format remaining rows
       for (let i = 1; i < rowLength; i++) str += '\n|' + texts[i].join('|') + '|';
       return str;
     }

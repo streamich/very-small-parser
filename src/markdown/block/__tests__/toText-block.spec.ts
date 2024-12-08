@@ -48,6 +48,14 @@ describe('toText', () => {
       void 0,
       'nested list items',
     ],
+    ['1. first\n2. second', '1. first\n1. second', 'ordered list items'],
+    ['4. first\n5. second', '4. first\n4. second', 'ordered list items starting at 4'],
+    ['4. first\n\n5. second', '4. first\n\n4. second', 'ordered list items starting at 4'],
+    ['- [ ] unchecked'],
+    ['- [x] checked'],
+    ['- [ ] unchecked\n- [x] checked', '- [ ] unchecked\n- [x] checked', 'list items with checkboxes'],
+    ['<b>html</b>'],
+    ['<center><a href="https://google.com">Click <em>me</em>!</a></center>'],
   ];
 
   for (const [src, expected = src, name = src] of testCases) {

@@ -48,7 +48,9 @@ export const toText = (node: IToken | IToken[]): string => {
         const item = children[i] as IListItem;
         const itemSeparator = item.spread ? '\n\n' : '\n';
         const content = toTextBlockChildren(item.children, itemSeparator).replace(/\n/g, '\n  ');
-        str += bullet + content;
+        const checked = item.checked;
+        if (typeof checked === 'boolean') str += (checked ? '- [x]' : '- [ ]') + ' ' + content;
+        else str += bullet + content;
         if (i !== last) str += separator;
       }
       return str;

@@ -133,9 +133,10 @@ bar`);
 
   it('parses out table column alignment', () => {
     const ast = parse(
-`| Left | Center | Right | None |
+      `| Left | Center | Right | None |
 |:---- |:------:| -----:|------|
-| foo  | bar    | baz   | qux  |`);
+| foo  | bar    | baz   | qux  |`,
+    );
     expect(ast).toMatchObject({
       type: 'root',
       children: [

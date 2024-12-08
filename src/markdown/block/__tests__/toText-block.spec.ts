@@ -43,11 +43,7 @@ describe('toText', () => {
       '- single list item\n  \n  with multiple lines',
       'list item with multiple lines',
     ],
-    [
-      '- single list item\n  - nested list item\n  - nested list item',
-      void 0,
-      'nested list items',
-    ],
+    ['- single list item\n  - nested list item\n  - nested list item', void 0, 'nested list items'],
     ['1. first\n2. second', '1. first\n1. second', 'ordered list items'],
     ['4. first\n5. second', '4. first\n4. second', 'ordered list items starting at 4'],
     ['4. first\n\n5. second', '4. first\n\n4. second', 'ordered list items starting at 4'],
@@ -59,53 +55,69 @@ describe('toText', () => {
     ['foo\n|---|\nbar', '| foo |\n|-----|\n| bar |', 'table'],
     ['foo\n|---|\nbar', '| foo |\n|-----|\n| bar |', 'table with alignment'],
 
-    [`| Header 1 | Header 2 |
+    [
+      `| Header 1 | Header 2 |
 | -------- | -------- |
-| Cell 1   | Cell \`2\` |`, `| Header 1 | Header 2 |
+| Cell 1   | Cell \`2\` |`,
+      `| Header 1 | Header 2 |
 |----------|----------|
-| Cell 1   | Cell \`2\` |`,  'basic table with cell padding'],
+| Cell 1   | Cell \`2\` |`,
+      'basic table with cell padding',
+    ],
 
-    [`| Left | Center | Right | None |
+    [
+      `| Left | Center | Right | None |
 |:---- |:------:| -----:|------|
 | foo  | bar    | baz   | qux  |
-| foo 1| bar 2  | baz 3 | qux 4|`, `| Left  | Center | Right | None  |
+| foo 1| bar 2  | baz 3 | qux 4|`,
+      `| Left  | Center | Right | None  |
 |:------|:------:|------:|-------|
 | foo   |   bar  |   baz | qux   |
-| foo 1 |  bar 2 | baz 3 | qux 4 |`,  'table with column alignment'],
+| foo 1 |  bar 2 | baz 3 | qux 4 |`,
+      'table with column alignment',
+    ],
 
-    [`| Syntax      | Description | Test Text     |
+    [
+      `| Syntax      | Description | Test Text     |
 | :---        |    :----:   |          ---: |
 | Header      | Title       | Heres this!   |
 | Paragraph   | Text, some very long text        | And more      |`,
-`| Syntax    |        Description        |   Test Text |
+      `| Syntax    |        Description        |   Test Text |
 |:----------|:-------------------------:|------------:|
 | Header    |           Title           | Heres this! |
-| Paragraph | Text, some very long text |    And more |`,  'example table from docs'],
+| Paragraph | Text, some very long text |    And more |`,
+      'example table from docs',
+    ],
 
-[`| Header 1 | Header 2 |
+    [
+      `| Header 1 | Header 2 |
 | -------- | -------- |
 | This is a very long cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell | x |
 | x | This is a very long cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell |`,
 
-`| Header 1 | Header 2 |
+      `| Header 1 | Header 2 |
 |---|---|
 | This is a very long cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell | x |
 | x | This is a very long cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell cell |`,
 
-'basic table with cell padding'],
+      'basic table with cell padding',
+    ],
 
-  ['[definition]: http://example.com'],
-  ['[Definition]: http://example.com "This is title"'],
-  ['[definition]: http://space.com/quote-"-yup/ "This is title"', '[definition]: <http://space.com/quote-"-yup/> "This is title"'],
-  ['[definition]: http://space.com (This "is" title)'],
-  [
-    '[Very-Long-Definition]: http://example.com/very-long-link-here "Some very long title, very very long"',
-    '[Very-Long-Definition]: http://example.com/very-long-link-here\n    "Some very long title, very very long"'
-  ],
-  ['[definition]: http://example.com\n\n[definition2]: http://example.com'],
-  ['[^footnote]: Footnote'],
-  ['[^1]: Footnote\n\n  second paragraph', '[^1]: Footnote\n  \n  second paragraph', 'footnote with two blocks'],
-];
+    ['[definition]: http://example.com'],
+    ['[Definition]: http://example.com "This is title"'],
+    [
+      '[definition]: http://space.com/quote-"-yup/ "This is title"',
+      '[definition]: <http://space.com/quote-"-yup/> "This is title"',
+    ],
+    ['[definition]: http://space.com (This "is" title)'],
+    [
+      '[Very-Long-Definition]: http://example.com/very-long-link-here "Some very long title, very very long"',
+      '[Very-Long-Definition]: http://example.com/very-long-link-here\n    "Some very long title, very very long"',
+    ],
+    ['[definition]: http://example.com\n\n[definition2]: http://example.com'],
+    ['[^footnote]: Footnote'],
+    ['[^1]: Footnote\n\n  second paragraph', '[^1]: Footnote\n  \n  second paragraph', 'footnote with two blocks'],
+  ];
 
   for (const [src, expected = src, name = src] of testCases) {
     it(name, () => {

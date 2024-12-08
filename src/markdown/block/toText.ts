@@ -90,9 +90,8 @@ export const toText = (node: IToken | IToken[]): string => {
           const size = columnSizes[j];
           let txt = row[j];
           const length = txt.length;
-          const leftPadding = alignment === 'right'
-            ? size - length
-            : alignment === 'center' ?  Math.ceil((size - length) / 2) : 0;
+          const leftPadding =
+            alignment === 'right' ? size - length : alignment === 'center' ? Math.ceil((size - length) / 2) : 0;
           if (!isWide) txt = row[j].padStart(leftPadding + length, ' ').padEnd(size, ' ');
           texts[i][j] = ' ' + txt + ' ';
         }
@@ -102,8 +101,12 @@ export const toText = (node: IToken | IToken[]): string => {
       // Format header separator
       for (let j = 0; j < columnLength; j++) {
         const alignment = align[j];
-        let txt = isWide ? '-' : '-'.repeat(columnSizes[j]);
-        str += '|' + (alignment === 'center' || alignment === 'left' ? ':' : '-') + txt + (alignment === 'center' || alignment === 'right' ? ':' : '-');
+        const txt = isWide ? '-' : '-'.repeat(columnSizes[j]);
+        str +=
+          '|' +
+          (alignment === 'center' || alignment === 'left' ? ':' : '-') +
+          txt +
+          (alignment === 'center' || alignment === 'right' ? ':' : '-');
       }
       str += '|';
       // Format remaining rows
@@ -116,7 +119,7 @@ export const toText = (node: IToken | IToken[]): string => {
       if (!url || url.includes('"')) str += '<' + url + '>';
       else str += url;
       if (title) {
-        str += (title.length + str.length > 80) ? '\n    ' : ' ';
+        str += title.length + str.length > 80 ? '\n    ' : ' ';
         const hasDoubleQuote = title.includes('"');
         str += hasDoubleQuote ? '(' + title + ')' : '"' + title + '"';
       }

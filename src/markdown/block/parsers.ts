@@ -48,7 +48,7 @@ const thematicBreak: TTokenizer<type.IThematicBreak> = (_, src) => {
   if (matches) return token<type.IThematicBreak>(matches[0], 'thematicBreak', void 0, {value: matches[1]});
 };
 
-const REG_HEADING1 = /^ *(#{1,6}) *([^\n]+?) *(?:#+ *)?(?:\n+|$)/;
+const REG_HEADING1 = /^ *(#{1,6}) +([^\n]+?) *(?:#+ *)?(?:\n+|$)/;
 const REG_HEADING2 = /^([^\n]+)\n *(=|-){2,} *(?:\n+|$)/;
 const heading: TTokenizer<type.IHeading, MdBlockParser<type.TBlockToken>> = (parser, src) => {
   let matches = src.match(REG_HEADING1);
@@ -60,7 +60,7 @@ const heading: TTokenizer<type.IHeading, MdBlockParser<type.TBlockToken>> = (par
   if (matches) {
     const subvalue = matches[1];
     return token<type.IHeading>(matches[0], 'heading', parser.parsei(subvalue), {
-      depth: matches[2] === '-' ? 1 : 2,
+      depth: matches[2] === '-' ? 2 : 1,
     });
   }
 };
@@ -75,11 +75,12 @@ const blockquote: TTokenizer<type.IBlockquote, MdBlockParser<type.TBlockToken>> 
   return token<type.IBlockquote>(subvalue, 'blockquote', children);
 };
 
-const REG_BULLET = /^(\s*)([*+-]|\d\.)(\s{1,2}|\t)/;
-const REG_LOOSE = /\n\n(?!\s*$)/;
-const REG_ITEM = reg.replace(/^( *)(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/gm, {bull: reg.bull});
-const REG_LIST = reg.replace(/^( *)(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?!\1bull )\n*|\s*$)/, {
-  bull: reg.bull,
+const REG_BULLET = /^\s{0,3}([*+-]|\d{1,3}\.)\s{1,42}/;
+const bull = /(?:[*+-]|\d{1,3}\.)/;
+const REG_LOOSE = /\n\s*\n(?!\s*$)/;
+const REG_ITEM = reg.replace(/^( {0,333})(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/gm, {bull});
+const REG_LIST = reg.replace(/^ {0,3}(?:bull) (?:(?!\r?\n\r?\n)[\s\S])+/, {
+  bull,
   hr: reg.hr,
   def: reg.def,
 });
@@ -92,47 +93,38 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
   if (!parts) return;
   const length = parts.length;
   const children: any[] = [];
-  let ordered = false;
-  let start = null;
-  let loose = false;
+  let start: null | number = null;
   for (let i = 0; i < length; i++) {
     const part = parts[i];
+    // if (part[part.length - 1] === '\n') part = part.trimEnd();
     const bulletMatch = part.match(REG_BULLET);
     if (!bulletMatch) return;
-    const sansBullet = part.slice(bulletMatch[0].length);
-    const bulletMarker = bulletMatch[2];
-    if (i === 0 && bulletMarker.length > 1) {
-      ordered = true;
-      start = Number.parseInt(bulletMarker, 10);
-    }
-    let outdented = rep(/^ {1,4}/gm, '', sansBullet);
+    const [bulletWithWhitespace, bullet] = bulletMatch;
+    let content = part.slice(bulletWithWhitespace.length);
+    if (i === 0 && bullet.length > 1) start = Number(bullet);
     let checked: null | boolean = null;
-    if (outdented[0] === '[' && outdented[2] === ']') {
-      switch (outdented[1]) {
-        case 'x':
-        case 'X':
-          outdented = outdented.substr(3);
-          checked = true;
-          break;
-        case ' ':
-          outdented = outdented.substr(3);
-          checked = false;
-          break;
-      }
+    if (content[0] === '[' && content[2] === ']' && content[3] === ' ') {
+      checked = content[1] !== ' ';
+      content = content.slice(4);
     }
-    const partLoose = REG_LOOSE.test(sansBullet);
-    if (partLoose) loose = true;
+    const newLinePos = content.indexOf('\n');
+    if (newLinePos > 0) {
+      let outdentSize = 0;
+      for (let pos = newLinePos + 1; pos < newLinePos + 4; pos++)
+        if (content[pos] === ' ') outdentSize++;
+        else break;
+      if (outdentSize) content = rep(new RegExp('^ {1,' + outdentSize + '}', 'gm'), '', content);
+    }
     children.push({
       type: 'listItem',
-      loose: partLoose,
+      spread: REG_LOOSE.test(content),
       checked,
-      children: parser.parse(outdented),
+      children: parser.parse(content),
     });
   }
-  return token<type.IList>(subvalue, 'list', children, {ordered, start, loose});
+  return token<type.IList>(subvalue, 'list', children, {ordered: start !== null, start});
 };
 
-const REG_TABLE = /^ *\|(.+)\n *\|?( *[-:]+[-| :]*)(?:\n((?: *[^>\n ].*(?:\n|$))*)\n*|$)/;
 const splitCells = (tableRow: string, count?: number) => {
   const cells = rep(/([^\\])\|/g, '$1 |', tableRow).split(/ +\| */);
   if (count !== void 0) {
@@ -142,6 +134,7 @@ const splitCells = (tableRow: string, count?: number) => {
   for (let i = 0; i < cells.length; i++) cells[i] = rep(/\\\|/g, '|', cells[i]);
   return cells;
 };
+const REG_TABLE = /^ *\|?(.+)\n *\|?( *[-:]+[-| :]*)(?:\n((?: *[^>\n ].*(?:\n|$))*)\n*|$)/;
 const table: TTokenizer<type.ITable, MdBlockParser<type.TBlockToken>> = (parser, value) => {
   const matches = value.match(REG_TABLE);
   if (!matches) return;
@@ -190,26 +183,30 @@ const footnoteDefinition: TTokenizer<type.IFootnoteDefinition, MdBlockParser<typ
   const matches = value.match(REG_FOOTNOTE_DEF);
   if (!matches) return;
   const subvalue = matches[0];
-  const identifier = matches[1];
+  const label = matches[1];
+  const identifier = label.toLowerCase();
   const outdented = rep(/^ {1,4}/gm, '', matches[2]);
   const children = parser.parse(outdented);
-  return token<type.IFootnoteDefinition>(subvalue, 'footnoteDefinition', children, {identifier});
+  return token<type.IFootnoteDefinition>(subvalue, 'footnoteDefinition', children, {label, identifier});
 };
 
 const definition: TTokenizer<type.IDefinition> = (_, value) => {
   const matches = value.match(reg.def);
   if (!matches) return;
   const subvalue = matches[0];
+  const label = matches[1];
+  const title = matches[3];
   return token<type.IDefinition>(subvalue, 'definition', void 0, {
-    identifier: matches[1],
-    title: matches[3] || null,
+    label: label,
+    identifier: label.toLowerCase(),
+    title: title ? title.slice(1, -1) : null,
     url: matches[2],
   });
 };
 
 const html: TTokenizer<IElement> = (_, src) => htmlParser.el(src);
 
-const REG_PARAGRAPH = reg.replace(/^((?:[^\n]+(\n(?!\s{0,3}bull))?)+)\n*/, {bull: reg.bull});
+const REG_PARAGRAPH = reg.replace(/^((?:[^\n]+(\n(?!\s{0,3}bull))?)+)\n*/, {bull});
 const paragraph: TTokenizer<type.IParagraph, MdBlockParser<type.TBlockToken>> = (parser, value) => {
   const matches = value.match(REG_PARAGRAPH);
   if (matches) return token<type.IParagraph>(matches[0], 'paragraph', parser.parsei(matches[1].trim()));

@@ -18,11 +18,26 @@ export class MdBlockParser<T extends TBlockToken> extends Parser<T> implements I
   }
 
   public parser(src: string): IRoot {
+    const tokens = this.parse(src) as TBlockToken[];
     const token: IRoot = {
       type: 'root',
-      children: this.parse(src) as TBlockToken[],
+      children: tokens,
       len: src.length,
     };
+    // Merge adjacent "list" tokens.
+    const length = tokens.length;
+    for (let i = 0; i < length - 1; i++) {
+      const tok1 = tokens[i];
+      if (tok1?.type === 'list') {
+        const tok2 = tokens[i + 1];
+        if (tok2?.type === 'list') {
+          tok1.spread = true;
+          tok1.children.push(...tok2.children);
+          tokens.splice(i + 1, 1);
+          i--;
+        }
+      }
+    }
     return token;
   }
 

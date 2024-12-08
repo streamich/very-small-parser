@@ -476,9 +476,9 @@ const tests = [
   {
     name: 'can have paragraphs in list',
     md: `- paragraph 1
-
+  
   paragraph 2
-
+  
   paragraph 3
         `,
     ast: {
@@ -507,12 +507,10 @@ describe('list', () => {
         {
           type: 'list',
           ordered: false,
-          loose: false,
           children: [
             {
               type: 'listItem',
               checked: null,
-              loose: false,
               children: [
                 {
                   type: 'paragraph',
@@ -540,13 +538,11 @@ describe('list', () => {
         {
           type: 'list',
           ordered: false,
-          loose: false,
           len: 5,
           children: [
             {
               type: 'listItem',
               checked: null,
-              loose: false,
               children: [
                 {
                   type: 'paragraph',
@@ -580,12 +576,10 @@ describe('list', () => {
         {
           type: 'list',
           ordered: true,
-          loose: false,
           children: [
             {
               type: 'listItem',
               checked: null,
-              loose: false,
               children: [
                 {
                   type: 'paragraph',
@@ -606,43 +600,43 @@ describe('list', () => {
     });
   });
 
-  test('reports loose items', () => {
-    const ast = parse(`- foo\n\n  bar`);
-    expect(ast).toMatchObject({
+  test('reports loose (spread) items', () => {
+    const ast1 = parse(`- foo\n\n- bar\n- baz\n\n`);
+    expect(ast1).toMatchObject({
       type: 'root',
       children: [
         {
           type: 'list',
-          children: [
-            {
-              type: 'listItem',
-              // loose: true,
-              checked: null,
-              children: [
-                {
-                  type: 'paragraph',
-                  children: [
-                    {
-                      type: 'text',
-                      value: 'foo',
-                    },
-                  ],
-                },
-                {
-                  type: 'paragraph',
-                  children: [
-                    {
-                      type: 'text',
-                      value: 'bar',
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-          ordered: false,
-          start: null,
-          // loose: true,
+          spread: true,
+        },
+      ],
+    });
+    const ast2 = parse(`- foo\n- bar\n\n- baz\n\n`);
+    expect(ast2).toMatchObject({
+      type: 'root',
+      children: [
+        {
+          type: 'list',
+          spread: true,
+        },
+      ],
+    });
+    const ast3 = parse(`- foo\n\n\n- bar\n\n\n\n- baz\n\n`);
+    expect(ast3).toMatchObject({
+      type: 'root',
+      children: [
+        {
+          type: 'list',
+          spread: true,
+        },
+      ],
+    });
+    const ast4 = parse(`- foo\n- bar\n-baz\n\n`);
+    expect(ast4).toMatchObject({
+      type: 'root',
+      children: [
+        {
+          type: 'list',
         },
       ],
     });
@@ -679,7 +673,6 @@ describe('list', () => {
           children: [
             {
               type: 'listItem',
-              loose: false,
               checked: null,
               children: [
                 {
@@ -695,7 +688,6 @@ describe('list', () => {
             },
             {
               type: 'listItem',
-              loose: false,
               checked: null,
               children: [
                 {
@@ -711,7 +703,6 @@ describe('list', () => {
             },
             {
               type: 'listItem',
-              loose: false,
               checked: null,
               children: [
                 {
@@ -728,7 +719,6 @@ describe('list', () => {
           ],
           ordered: false,
           start: null,
-          loose: false,
         },
       ],
     });
@@ -744,7 +734,6 @@ describe('list', () => {
           children: [
             {
               type: 'listItem',
-              loose: false,
               checked: null,
               children: [
                 {
@@ -761,7 +750,6 @@ describe('list', () => {
                   children: [
                     {
                       type: 'listItem',
-                      loose: false,
                       checked: null,
                       children: [
                         {
@@ -779,7 +767,6 @@ describe('list', () => {
                           children: [
                             {
                               type: 'listItem',
-                              loose: false,
                               checked: null,
                               children: [
                                 {
@@ -796,21 +783,18 @@ describe('list', () => {
                           ],
                           ordered: false,
                           start: null,
-                          loose: false,
                         },
                       ],
                     },
                   ],
                   ordered: false,
                   start: null,
-                  loose: false,
                 },
               ],
             },
           ],
           ordered: false,
           start: null,
-          loose: false,
         },
       ],
     });
@@ -827,6 +811,233 @@ describe('list', () => {
     expect((item1 as IListItem).checked).toBe(true);
     expect((item2 as IListItem).checked).toBe(false);
     expect((item3 as IListItem).checked).toBe(null);
+  });
+
+  test('todo list', () => {
+    const ast = parse(`
+Lists are complicated. The simplest list is a single unordered list item:
+
+- Item 1
+
+Lists can have multiple items:
+
+- Item 1
+- Item 2
+
+Lists can have nested items:
+
+- Item 1
+  - Item 1.1
+  - Item 1.2
+- Item 2
+- Item 3
+  - Item 3.1
+    - Item 3.1.1
+`);
+    //  console.log(JSON.stringify(ast, null, 2));
+
+    expect(ast).toMatchObject({
+      type: 'root',
+      children: [
+        {
+          type: 'paragraph',
+          children: [
+            {
+              type: 'text',
+              value: 'Lists are complicated. The simplest list is a single unordered list item:',
+            },
+          ],
+        },
+        {
+          type: 'list',
+          children: [
+            {
+              type: 'listItem',
+              children: [
+                {
+                  type: 'paragraph',
+                  children: [
+                    {
+                      type: 'text',
+                      value: 'Item 1',
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'paragraph',
+          children: [
+            {
+              type: 'text',
+              value: 'Lists can have multiple items:',
+            },
+          ],
+        },
+        {
+          type: 'list',
+          children: [
+            {
+              type: 'listItem',
+              children: [
+                {
+                  type: 'paragraph',
+                  children: [
+                    {
+                      type: 'text',
+                      value: 'Item 1',
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'listItem',
+              children: [
+                {
+                  type: 'paragraph',
+                  children: [
+                    {
+                      type: 'text',
+                      value: 'Item 2',
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'paragraph',
+          children: [
+            {
+              type: 'text',
+              value: 'Lists can have nested items:',
+            },
+          ],
+        },
+        {
+          type: 'list',
+          children: [
+            {
+              type: 'listItem',
+              children: [
+                {
+                  type: 'paragraph',
+                  children: [
+                    {
+                      type: 'text',
+                      value: 'Item 1',
+                    },
+                  ],
+                },
+                {
+                  type: 'list',
+                  children: [
+                    {
+                      type: 'listItem',
+                      children: [
+                        {
+                          type: 'paragraph',
+                          children: [
+                            {
+                              type: 'text',
+                              value: 'Item 1.1',
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: 'listItem',
+                      children: [
+                        {
+                          type: 'paragraph',
+                          children: [
+                            {
+                              type: 'text',
+                              value: 'Item 1.2',
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'listItem',
+              children: [
+                {
+                  type: 'paragraph',
+                  children: [
+                    {
+                      type: 'text',
+                      value: 'Item 2',
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'listItem',
+              children: [
+                {
+                  type: 'paragraph',
+                  children: [
+                    {
+                      type: 'text',
+                      value: 'Item 3',
+                    },
+                  ],
+                },
+                {
+                  type: 'list',
+                  children: [
+                    {
+                      type: 'listItem',
+                      children: [
+                        {
+                          type: 'paragraph',
+                          children: [
+                            {
+                              type: 'text',
+                              value: 'Item 3.1',
+                            },
+                          ],
+                        },
+                        {
+                          type: 'list',
+                          children: [
+                            {
+                              type: 'listItem',
+                              children: [
+                                {
+                                  type: 'paragraph',
+                                  children: [
+                                    {
+                                      type: 'text',
+                                      value: 'Item 3.1.1',
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
   });
 
   describe('automated', () => {

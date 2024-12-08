@@ -59,15 +59,15 @@ export interface IBlockquote extends IToken {
 
 export interface IList extends IToken {
   type: 'list';
-  ordered: boolean;
-  start: number | null;
-  loose: boolean;
+  ordered?: boolean;
+  start?: number | null;
+  spread?: boolean;
   children: IListItem[];
 }
 
 export interface IListItem extends IToken {
   type: 'listItem';
-  loose: boolean;
+  spread?: boolean;
   checked: boolean | null;
   children: TBlockToken[];
 }
@@ -80,10 +80,12 @@ export interface IHtml extends IToken {
 export interface ITable extends IToken {
   type: 'table';
   align: ('left' | 'right' | 'center' | null)[];
+  children: ITableRow[];
 }
 
 export interface ITableRow extends IToken {
   type: 'tableRow';
+  children: ITableCell[];
 }
 
 export interface ITableCell extends IToken {
@@ -93,12 +95,14 @@ export interface ITableCell extends IToken {
 export interface IDefinition extends IToken {
   type: 'definition';
   identifier: string;
-  title: string | null;
+  label: string;
+  title?: string | null;
   url: string;
 }
 
 export interface IFootnoteDefinition extends IToken {
   type: 'footnoteDefinition';
+  label: string;
   identifier: string;
   children: TBlockToken[];
 }

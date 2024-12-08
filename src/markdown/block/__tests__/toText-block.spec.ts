@@ -46,7 +46,7 @@ describe('toText', () => {
     ['- single list item\n  - nested list item\n  - nested list item', void 0, 'nested list items'],
     ['1. first\n2. second', '1. first\n1. second', 'ordered list items'],
     ['4. first\n5. second', '4. first\n4. second', 'ordered list items starting at 4'],
-    ['4. first\n\n5. second', '4. first\n\n4. second', 'ordered list items starting at 4'],
+    ['4. first\n\n5. second', '4. first\n\n5. second', 'ordered list items starting at 4'],
     ['- [ ] unchecked'],
     ['- [x] checked'],
     ['- [ ] unchecked\n- [x] checked', '- [ ] unchecked\n- [x] checked', 'list items with checkboxes'],

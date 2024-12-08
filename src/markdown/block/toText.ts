@@ -136,6 +136,5 @@ export const toText = (node: IToken | IToken[]): string => {
     case '': // newline
       return '\n\n';
   }
-  // biome-ignore lint: unreachable code
   return toTextBlockChildren((block as any).children);
 };

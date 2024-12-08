@@ -834,7 +834,7 @@ Lists can have nested items:
   - Item 3.1
     - Item 3.1.1
 `);
-  //  console.log(JSON.stringify(ast, null, 2));
+    //  console.log(JSON.stringify(ast, null, 2));
 
     expect(ast).toMatchObject({
       type: 'root',
@@ -906,7 +906,7 @@ Lists can have nested items:
                   ],
                 },
               ],
-            }
+            },
           ],
         },
         {

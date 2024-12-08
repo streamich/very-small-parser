@@ -4,13 +4,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe('toText', () => {
-  const files = [
-    'basic.md',
-    'blockquotes.md',
-    'references.md',
-    'all-nodes.md',
-  ];
-  
+  const files = ['basic.md', 'blockquotes.md', 'references.md', 'all-nodes.md'];
+
   describe('can reprint a Markdown file', () => {
     for (const file of files) {
       test(file, () => {

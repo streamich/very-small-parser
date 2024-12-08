@@ -95,7 +95,7 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
   const children: any[] = [];
   let start: null | number = null;
   for (let i = 0; i < length; i++) {
-    let part = parts[i];
+    const part = parts[i];
     // if (part[part.length - 1] === '\n') part = part.trimEnd();
     const bulletMatch = part.match(REG_BULLET);
     if (!bulletMatch) return;
@@ -111,7 +111,8 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
     if (newLinePos > 0) {
       let outdentSize = 0;
       for (let pos = newLinePos + 1; pos < newLinePos + 4; pos++)
-        if (content[pos] === ' ') outdentSize++; else break;
+        if (content[pos] === ' ') outdentSize++;
+        else break;
       if (outdentSize) content = rep(new RegExp('^ {1,' + outdentSize + '}', 'gm'), '', content);
     }
     children.push({

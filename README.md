@@ -70,6 +70,16 @@ is('Hello __world__!');     // true
 is('<b>Hello</b>!');        // false
 ```
 
+Pretty-print MDAST back to text:
+
+```js
+import { markdown } from 'very-small-parser';
+import { toText } from 'very-small-parser/lib/markdown/block/toText';
+
+const ast = markdown.block.parse('Hello __world__!');
+const text = toText(hast); // Hello __world__!
+```
+
 
 ### HTML
 

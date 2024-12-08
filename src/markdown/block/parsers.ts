@@ -94,14 +94,9 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
   const length = parts.length;
   const children: any[] = [];
   let start: null | number = null;
-  let spread: boolean = false;
   for (let i = 0; i < length; i++) {
     let part = parts[i];
-    if (part[part.length - 1] === '\n') {
-      const isLast = i === length - 1;
-      if (!isLast) spread = true;
-      part = part.trimEnd();
-    }
+    // if (part[part.length - 1] === '\n') part = part.trimEnd();
     const bulletMatch = part.match(REG_BULLET);
     if (!bulletMatch) return;
     const [bulletWithWhitespace, bullet] = bulletMatch;
@@ -126,7 +121,7 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
       children: parser.parse(content),
     });
   }
-  return token<type.IList>(subvalue, 'list', children, {ordered: start !== null, start, spread});
+  return token<type.IList>(subvalue, 'list', children, {ordered: start !== null, start});
 };
 
 const splitCells = (tableRow: string, count?: number) => {

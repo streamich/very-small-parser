@@ -507,12 +507,10 @@ describe('list', () => {
         {
           type: 'list',
           ordered: false,
-          spread: false,
           children: [
             {
               type: 'listItem',
               checked: null,
-              spread: false,
               children: [
                 {
                   type: 'paragraph',
@@ -540,13 +538,11 @@ describe('list', () => {
         {
           type: 'list',
           ordered: false,
-          spread: false,
           len: 5,
           children: [
             {
               type: 'listItem',
               checked: null,
-              spread: false,
               children: [
                 {
                   type: 'paragraph',
@@ -580,12 +576,10 @@ describe('list', () => {
         {
           type: 'list',
           ordered: true,
-          spread: false,
           children: [
             {
               type: 'listItem',
               checked: null,
-              spread: false,
               children: [
                 {
                   type: 'paragraph',
@@ -617,36 +611,35 @@ describe('list', () => {
         },
       ],
     });
-    // const ast2 = parse(`- foo\n- bar\n\n- baz\n\n`);
-    // expect(ast2).toMatchObject({
-    //   type: 'root',
-    //   children: [
-    //     {
-    //       type: 'list',
-    //       spread: true,
-    //     },
-    //   ],
-    // });
-    // const ast3 = parse(`- foo\n\n\n- bar\n\n\n\n- baz\n\n`);
-    // expect(ast3).toMatchObject({
-    //   type: 'root',
-    //   children: [
-    //     {
-    //       type: 'list',
-    //       spread: true,
-    //     },
-    //   ],
-    // });
-    // const ast4 = parse(`- foo\n- bar\n-baz\n\n`);
-    // expect(ast4).toMatchObject({
-    //   type: 'root',
-    //   children: [
-    //     {
-    //       type: 'list',
-    //       spread: false,
-    //     },
-    //   ],
-    // });
+    const ast2 = parse(`- foo\n- bar\n\n- baz\n\n`);
+    expect(ast2).toMatchObject({
+      type: 'root',
+      children: [
+        {
+          type: 'list',
+          spread: true,
+        },
+      ],
+    });
+    const ast3 = parse(`- foo\n\n\n- bar\n\n\n\n- baz\n\n`);
+    expect(ast3).toMatchObject({
+      type: 'root',
+      children: [
+        {
+          type: 'list',
+          spread: true,
+        },
+      ],
+    });
+    const ast4 = parse(`- foo\n- bar\n-baz\n\n`);
+    expect(ast4).toMatchObject({
+      type: 'root',
+      children: [
+        {
+          type: 'list',
+        },
+      ],
+    });
   });
 
   test('two ordered list items on first level', () => {
@@ -680,7 +673,6 @@ describe('list', () => {
           children: [
             {
               type: 'listItem',
-              spread: false,
               checked: null,
               children: [
                 {
@@ -696,7 +688,6 @@ describe('list', () => {
             },
             {
               type: 'listItem',
-              spread: false,
               checked: null,
               children: [
                 {
@@ -712,7 +703,6 @@ describe('list', () => {
             },
             {
               type: 'listItem',
-              spread: false,
               checked: null,
               children: [
                 {
@@ -729,7 +719,6 @@ describe('list', () => {
           ],
           ordered: false,
           start: null,
-          spread: false,
         },
       ],
     });
@@ -745,7 +734,6 @@ describe('list', () => {
           children: [
             {
               type: 'listItem',
-              spread: false,
               checked: null,
               children: [
                 {
@@ -762,7 +750,6 @@ describe('list', () => {
                   children: [
                     {
                       type: 'listItem',
-                      spread: false,
                       checked: null,
                       children: [
                         {
@@ -780,7 +767,6 @@ describe('list', () => {
                           children: [
                             {
                               type: 'listItem',
-                              spread: false,
                               checked: null,
                               children: [
                                 {
@@ -797,21 +783,18 @@ describe('list', () => {
                           ],
                           ordered: false,
                           start: null,
-                          spread: false,
                         },
                       ],
                     },
                   ],
                   ordered: false,
                   start: null,
-                  spread: false,
                 },
               ],
             },
           ],
           ordered: false,
           start: null,
-          spread: false,
         },
       ],
     });

@@ -59,9 +59,9 @@ export interface IBlockquote extends IToken {
 
 export interface IList extends IToken {
   type: 'list';
-  ordered: boolean;
-  start: number | null;
-  spread: boolean;
+  ordered?: boolean;
+  start?: number | null;
+  spread?: boolean;
   children: IListItem[];
 }
 

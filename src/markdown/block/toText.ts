@@ -21,27 +21,27 @@ const toTextBlockChildren = (children?: IToken[], separator = '\n\n'): string =>
 
 export const toText = (node: IToken | IToken[]): string => {
   if (Array.isArray(node)) return toTextInlineChildren(node);
-  const inline = node as TBlockToken;
-  const type = inline.type;
+  const block = node as TBlockToken;
+  const type = block.type;
   switch (type) {
     case 'paragraph':
-      return toTextInlineChildren(inline.children);
+      return toTextInlineChildren(block.children);
     case 'code': {
-      return '```' + (inline.lang || '') + (inline.meta ? ' ' + inline.meta : '') + '\n' + inline.value + '\n```';
+      return '```' + (block.lang || '') + (block.meta ? ' ' + block.meta : '') + '\n' + block.value + '\n```';
     }
     case 'heading': {
-      const depth = inline.depth;
+      const depth = block.depth;
       const prefix = '#'.repeat(depth);
-      return prefix + ' ' + toTextInlineChildren(inline.children);
+      return prefix + ' ' + toTextInlineChildren(block.children);
     }
     case 'blockquote': {
-      return '> ' + toTextBlockChildren(inline.children).replace(/\n/g, '\n> ');
+      return '> ' + toTextBlockChildren(block.children).replace(/\n/g, '\n> ');
     }
     case 'list': {
-      const {ordered, start, spread} = inline;
+      const {ordered, start, spread} = block;
       const bullet = ordered ? (start || 1) + '. ' : '- ';
       const separator = spread ? '\n\n' : '\n';
-      const children = inline.children;
+      const children = block.children;
       const last = children.length - 1;
       let str = '';
       for (let i = 0; i <= last; i++) {
@@ -57,15 +57,80 @@ export const toText = (node: IToken | IToken[]): string => {
     }
     case 'thematicBreak':
       return '---';
+    case 'table': {
+      const {align, children: rows} = block;
+      const texts: string[][] = [];
+      const columnSizes: number[] = Array.from({length: align.length}, () => 1);
+      const columnLength = align.length;
+      const rowLength = rows.length;
+      for (let i = 0; i < rowLength; i++) {
+        const row = rows[i];
+        const textRow: string[] = [];
+        const cells = row.children;
+        texts.push(textRow);
+        for (let j = 0; j < columnLength; j++) {
+          const cell = cells[j];
+          const text = toTextInlineChildren(cell.children);
+          textRow.push(text);
+          const size = text.length;
+          if (size > columnSizes[j]) columnSizes[j] = size;
+        }
+      }
+      let headerSeparator = '';
+      for (let j = 0; j < columnLength; j++) {
+        const alignment = align[j];
+        const size = columnSizes[j];
+        let txt = '-'.padEnd(size, '-');
+        switch (alignment) {
+          case 'center':
+            txt = ':' + txt + ':';
+            break;
+          case 'right':
+            txt = '-' + txt + ':';
+            break;
+          case 'left':
+            txt = ':' + txt + '-';
+            break;
+          default:
+            txt = txt + '--';
+        }
+        headerSeparator += '|' + txt;
+      }
+      headerSeparator += '|';
+      for (let i = 0; i < rowLength; i++) {
+        const row = texts[i];
+        for (let j = 0; j < columnLength; j++) {
+          const alignment = align[j];
+          const size = columnSizes[j];
+          let txt = row[j]; //.padEnd(size, ' ');
+          switch (alignment) {
+            case 'center':
+              const length = txt.length;
+              const left = Math.ceil((size - length) / 2);
+              txt = txt.padStart(left + length, ' ').padEnd(size, ' ');
+              break;
+            case 'right':
+              txt = txt.padStart(size, ' ');
+              break;
+            default:
+              txt = txt.padEnd(size, ' ');
+          }
+          texts[i][j] = ' ' + txt + ' ';
+        }
+      }
+      let str = '|' + texts[0].join('|') + '|\n' + headerSeparator;
+      for (let i = 1; i < rowLength; i++) str += '\n|' + texts[i].join('|') + '|';
+      return str;
+    }
     case 'math':
-      return '$$\n' + inline.value + '\n$$';
+      return '$$\n' + block.value + '\n$$';
     case 'element':
-      return toTextHtml(inline);
+      return toTextHtml(block);
     case '': // newline
       return '\n\n';
     default:
-      return toTextInline(inline);
+      return toTextInline(block);
   }
   // biome-ignore lint: unreachable code
-  return toTextInlineChildren((inline as any).children);
+  return toTextInlineChildren((block as any).children);
 };

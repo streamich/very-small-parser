@@ -80,10 +80,12 @@ export interface IHtml extends IToken {
 export interface ITable extends IToken {
   type: 'table';
   align: ('left' | 'right' | 'center' | null)[];
+  children: ITableRow[];
 }
 
 export interface ITableRow extends IToken {
   type: 'tableRow';
+  children: ITableCell[];
 }
 
 export interface ITableCell extends IToken {

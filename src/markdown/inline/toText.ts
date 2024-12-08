@@ -1,5 +1,7 @@
 import {toText as hastToText} from '../../html/toText';
 import type {IToken} from '../../types';
+import {repAll} from '../../util';
+import {replace} from '../regex';
 import type {TInlineToken} from './types';
 
 const toTextChildren = (children?: IToken[], ctx?: ToTextContext): string => {

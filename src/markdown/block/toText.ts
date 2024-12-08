@@ -7,7 +7,7 @@ const toTextInlineChildren = (children?: IToken[]): string => {
   if (!children) return '';
   let str = '';
   const length = children.length;
-  for (let i = 0; i < length; i++) str += toText(children[i]);
+  for (let i = 0; i < length; i++) str += toTextInline(children[i]);
   return str;
 };
 
@@ -64,7 +64,7 @@ export const toText = (node: IToken | IToken[]): string => {
       const columnLength = align.length;
       const rowLength = rows.length;
       let totalSize = 1 * columnLength;
-      // Compute column sizes and pre cell texts
+      // Compute column sizes and pre-format cell texts
       for (let i = 0; i < rowLength; i++) {
         const row = rows[i];
         const textRow: string[] = [];
@@ -135,9 +135,7 @@ export const toText = (node: IToken | IToken[]): string => {
       return toTextHtml(block);
     case '': // newline
       return '\n\n';
-    default:
-      return toTextInline(block);
   }
   // biome-ignore lint: unreachable code
-  return toTextInlineChildren((block as any).children);
+  return toTextBlockChildren((block as any).children);
 };

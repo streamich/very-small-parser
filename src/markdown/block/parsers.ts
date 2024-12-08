@@ -137,7 +137,6 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
   return token<type.IList>(subvalue, 'list', children, {ordered, start, spread: spread});
 };
 
-const REG_TABLE = /^ *\|(.+)\n *\|?( *[-:]+[-| :]*)(?:\n((?: *[^>\n ].*(?:\n|$))*)\n*|$)/;
 const splitCells = (tableRow: string, count?: number) => {
   const cells = rep(/([^\\])\|/g, '$1 |', tableRow).split(/ +\| */);
   if (count !== void 0) {
@@ -147,6 +146,7 @@ const splitCells = (tableRow: string, count?: number) => {
   for (let i = 0; i < cells.length; i++) cells[i] = rep(/\\\|/g, '|', cells[i]);
   return cells;
 };
+const REG_TABLE = /^ *\|?(.+)\n *\|?( *[-:]+[-| :]*)(?:\n((?: *[^>\n ].*(?:\n|$))*)\n*|$)/;
 const table: TTokenizer<type.ITable, MdBlockParser<type.TBlockToken>> = (parser, value) => {
   const matches = value.match(REG_TABLE);
   if (!matches) return;

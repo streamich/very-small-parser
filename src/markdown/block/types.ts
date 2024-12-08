@@ -95,7 +95,8 @@ export interface ITableCell extends IToken {
 export interface IDefinition extends IToken {
   type: 'definition';
   identifier: string;
-  title: string | null;
+  label: string;
+  title?: string | null;
   url: string;
 }
 

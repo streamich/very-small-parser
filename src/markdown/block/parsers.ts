@@ -205,9 +205,12 @@ const definition: TTokenizer<type.IDefinition> = (_, value) => {
   const matches = value.match(reg.def);
   if (!matches) return;
   const subvalue = matches[0];
+  const label = matches[1];
+  const title = matches[3];
   return token<type.IDefinition>(subvalue, 'definition', void 0, {
-    identifier: matches[1],
-    title: matches[3] || null,
+    label: label,
+    identifier: label.toLowerCase(),
+    title: title ? title.slice(1, -1) : null,
     url: matches[2],
   });
 };

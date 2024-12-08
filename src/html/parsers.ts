@@ -49,11 +49,11 @@ export const el: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
     const fragment = parser.parsef(substr);
     const fragmentLen = fragment.len;
     if (selfClosing) {
-      token.len += fragment.len;
+      token.len! += fragment.len!;
     } else {
       const matchClose = substr.slice(fragmentLen).match(REG_CLOSE_TAG);
       if (!matchClose) return token;
-      token.len += fragment.len + (matchClose?.[0].length ?? 0);
+      token.len! += fragment.len! + (matchClose?.[0].length ?? 0);
     }
     token.children = fragment.children as any;
   }

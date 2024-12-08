@@ -23,7 +23,7 @@ export class MdInlineParser<T extends TInlineToken = TInlineToken> extends Parse
       if (tok.type === 'text') {
         if (text) {
           text.value += tok.value;
-          text.len += tok.len;
+          text.len! += tok.len!;
         } else merged.push(<T>(text = tok));
       } else {
         merged.push(tok);

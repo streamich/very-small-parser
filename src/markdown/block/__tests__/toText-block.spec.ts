@@ -61,9 +61,9 @@ describe('toText', () => {
 
     [`| Header 1 | Header 2 |
 | -------- | -------- |
-| Cell 1   | Cell 2   |`, `| Header 1 | Header 2 |
+| Cell 1   | Cell \`2\` |`, `| Header 1 | Header 2 |
 |----------|----------|
-| Cell 1   | Cell 2   |`,  'basic table with cell padding'],
+| Cell 1   | Cell \`2\` |`,  'basic table with cell padding'],
 
     [`| Left | Center | Right | None |
 |:---- |:------:| -----:|------|
@@ -94,6 +94,14 @@ describe('toText', () => {
 
 'basic table with cell padding'],
 
+  ['[definition]: http://example.com'],
+  ['[Definition]: http://example.com "This is title"'],
+  ['[definition]: http://space.com/quote-"-yup/ "This is title"', '[definition]: <http://space.com/quote-"-yup/> "This is title"'],
+  ['[definition]: http://space.com (This "is" title)'],
+  [
+    '[Very-Long-Definition]: http://example.com/very-long-link-here "Some very long title, very very long"',
+    '[Very-Long-Definition]: http://example.com/very-long-link-here\n    "Some very long title, very very long"'
+  ],
 ];
 
   for (const [src, expected = src, name = src] of testCases) {

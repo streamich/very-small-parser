@@ -81,7 +81,7 @@ export const toText = (node: IToken | IToken[]): string => {
           }
         }
       }
-      const isWide = totalSize > 240;
+      const isWide = totalSize > 200;
       // Format cells
       for (let i = 0; i < rowLength; i++) {
         const row = texts[i];
@@ -108,6 +108,18 @@ export const toText = (node: IToken | IToken[]): string => {
       str += '|';
       // Format remaining rows
       for (let i = 1; i < rowLength; i++) str += '\n|' + texts[i].join('|') + '|';
+      return str;
+    }
+    case 'definition': {
+      const {label, url, title} = block;
+      let str = '[' + label + ']: ';
+      if (!url || url.includes('"')) str += '<' + url + '>';
+      else str += url;
+      if (title) {
+        str += (title.length + str.length > 80) ? '\n    ' : ' ';
+        const hasDoubleQuote = title.includes('"');
+        str += hasDoubleQuote ? '(' + title + ')' : '"' + title + '"';
+      }
       return str;
     }
     case 'math':

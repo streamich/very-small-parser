@@ -195,10 +195,11 @@ const footnoteDefinition: TTokenizer<type.IFootnoteDefinition, MdBlockParser<typ
   const matches = value.match(REG_FOOTNOTE_DEF);
   if (!matches) return;
   const subvalue = matches[0];
-  const identifier = matches[1];
+  const label = matches[1];
+  const identifier = label.toLowerCase();
   const outdented = rep(/^ {1,4}/gm, '', matches[2]);
   const children = parser.parse(outdented);
-  return token<type.IFootnoteDefinition>(subvalue, 'footnoteDefinition', children, {identifier});
+  return token<type.IFootnoteDefinition>(subvalue, 'footnoteDefinition', children, {label, identifier});
 };
 
 const definition: TTokenizer<type.IDefinition> = (_, value) => {

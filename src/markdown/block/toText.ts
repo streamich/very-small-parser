@@ -20,7 +20,7 @@ const toTextBlockChildren = (children?: IToken[], separator = '\n\n'): string =>
 };
 
 export const toText = (node: IToken | IToken[]): string => {
-  if (Array.isArray(node)) return toTextInlineChildren(node);
+  if (Array.isArray(node)) return toTextBlockChildren(node);
   const block = node as TBlockToken;
   const type = block.type;
   switch (type) {
@@ -121,6 +121,10 @@ export const toText = (node: IToken | IToken[]): string => {
         str += hasDoubleQuote ? '(' + title + ')' : '"' + title + '"';
       }
       return str;
+    }
+    case 'footnoteDefinition': {
+      const {label, children} = block;
+      return '[^' + label + ']: ' + toTextBlockChildren(children).replace(/\n/g, '\n  ');
     }
     case 'math':
       return '$$\n' + block.value + '\n$$';

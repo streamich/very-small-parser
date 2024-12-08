@@ -102,6 +102,9 @@ describe('toText', () => {
     '[Very-Long-Definition]: http://example.com/very-long-link-here "Some very long title, very very long"',
     '[Very-Long-Definition]: http://example.com/very-long-link-here\n    "Some very long title, very very long"'
   ],
+  ['[definition]: http://example.com\n\n[definition2]: http://example.com'],
+  ['[^footnote]: Footnote'],
+  ['[^1]: Footnote\n\n  second paragraph', '[^1]: Footnote\n  \n  second paragraph', 'footnote with two blocks'],
 ];
 
   for (const [src, expected = src, name = src] of testCases) {

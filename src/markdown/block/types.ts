@@ -102,6 +102,7 @@ export interface IDefinition extends IToken {
 
 export interface IFootnoteDefinition extends IToken {
   type: 'footnoteDefinition';
+  label: string;
   identifier: string;
   children: TBlockToken[];
 }

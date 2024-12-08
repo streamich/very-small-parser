@@ -75,11 +75,12 @@ const blockquote: TTokenizer<type.IBlockquote, MdBlockParser<type.TBlockToken>> 
   return token<type.IBlockquote>(subvalue, 'blockquote', children);
 };
 
-const REG_BULLET = /^(\s*)([*+-]|\d\.)(\s{1,2}|\t)/;
+const REG_BULLET = /^\s{0,3}([*+-]|\d{1,3}\.)\s{1,42}/;
+const bull = /(?:[*+-]|\d{1,3}\.)/;
 const REG_LOOSE = /\n\s*\n(?!\s*$)/;
-const REG_ITEM = reg.replace(/^( *)(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/gm, {bull: reg.bull});
-const REG_LIST = reg.replace(/^( *)(bull) [\s\S]+?(?:hr|def(?! )(?!\1bull )\n*|\s*$)/, {
-  bull: reg.bull,
+const REG_ITEM = reg.replace(/^( {0,333})(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/gm, {bull});
+const REG_LIST = reg.replace(/^ {0,3}(?:bull) (?:(?!\r?\n\r?\n)[\s\S])+/, {
+  bull,
   hr: reg.hr,
   def: reg.def,
 });
@@ -92,9 +93,8 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
   if (!parts) return;
   const length = parts.length;
   const children: any[] = [];
-  let ordered = false;
-  let start = null;
-  let spread = false;
+  let start: null | number = null;
+  let spread: boolean = false;
   for (let i = 0; i < length; i++) {
     let part = parts[i];
     if (part[part.length - 1] === '\n') {
@@ -104,37 +104,29 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
     }
     const bulletMatch = part.match(REG_BULLET);
     if (!bulletMatch) return;
-    const sansBullet = part.slice(bulletMatch[0].length);
-    const bulletMarker = bulletMatch[2];
-    if (i === 0 && bulletMarker.length > 1) {
-      ordered = true;
-      start = Number.parseInt(bulletMarker, 10);
-    }
-    let outdented = rep(/^ {1,4}/gm, '', sansBullet);
+    const [bulletWithWhitespace, bullet] = bulletMatch;
+    let content = part.slice(bulletWithWhitespace.length);
+    if (i === 0 && bullet.length > 1) start = Number(bullet);
     let checked: null | boolean = null;
-    if (outdented[0] === '[' && outdented[2] === ']') {
-      switch (outdented[1]) {
-        case 'x':
-        case 'X':
-          outdented = outdented.substr(3);
-          checked = true;
-          break;
-        case ' ':
-          outdented = outdented.substr(3);
-          checked = false;
-          break;
-      }
+    if (content[0] === '[' && content[2] === ']' && content[3] === ' ') {
+      checked = content[1] !== ' ';
+      content = content.slice(4);
     }
-    const partSpread = REG_LOOSE.test(sansBullet);
-    if (partSpread) spread = true;
+    const newLinePos = content.indexOf('\n');
+    if (newLinePos > 0) {
+      let outdentSize = 0;
+      for (let pos = newLinePos + 1; pos < newLinePos + 4; pos++)
+        if (content[pos] === ' ') outdentSize++; else break;
+      if (outdentSize) content = rep(new RegExp('^ {1,' + outdentSize + '}', 'gm'), '', content);
+    }
     children.push({
       type: 'listItem',
-      spread: partSpread,
+      spread: REG_LOOSE.test(content),
       checked,
-      children: parser.parse(outdented),
+      children: parser.parse(content),
     });
   }
-  return token<type.IList>(subvalue, 'list', children, {ordered, start, spread: spread});
+  return token<type.IList>(subvalue, 'list', children, {ordered: start !== null, start, spread});
 };
 
 const splitCells = (tableRow: string, count?: number) => {
@@ -218,7 +210,7 @@ const definition: TTokenizer<type.IDefinition> = (_, value) => {
 
 const html: TTokenizer<IElement> = (_, src) => htmlParser.el(src);
 
-const REG_PARAGRAPH = reg.replace(/^((?:[^\n]+(\n(?!\s{0,3}bull))?)+)\n*/, {bull: reg.bull});
+const REG_PARAGRAPH = reg.replace(/^((?:[^\n]+(\n(?!\s{0,3}bull))?)+)\n*/, {bull});
 const paragraph: TTokenizer<type.IParagraph, MdBlockParser<type.TBlockToken>> = (parser, value) => {
   const matches = value.match(REG_PARAGRAPH);
   if (matches) return token<type.IParagraph>(matches[0], 'paragraph', parser.parsei(matches[1].trim()));

@@ -43,6 +43,11 @@ describe('toText', () => {
       '- single list item\n  \n  with multiple lines',
       'list item with multiple lines',
     ],
+    [
+      '- single list item\n  - nested list item\n  - nested list item',
+      void 0,
+      'nested list items',
+    ],
   ];
 
   for (const [src, expected = src, name = src] of testCases) {
@@ -51,6 +56,7 @@ describe('toText', () => {
       // console.log(JSON.stringify(ast, null, 2));
       const text = toText(ast);
       // console.log(JSON.stringify(text));
+      // console.log(text);
       expect(text).toBe(expected);
     });
   }

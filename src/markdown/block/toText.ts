@@ -1,7 +1,7 @@
 import {toText as toTextHtml} from '../../html/toText';
 import {toText as toTextInline} from '../inline/toText';
 import type {IToken} from '../../types';
-import type {TBlockToken} from './types';
+import type {IListItem, TBlockToken} from './types';
 
 const toTextInlineChildren = (children?: IToken[]): string => {
   if (!children) return '';
@@ -11,11 +11,11 @@ const toTextInlineChildren = (children?: IToken[]): string => {
   return str;
 };
 
-const toTextBlockChildren = (children?: IToken[]): string => {
+const toTextBlockChildren = (children?: IToken[], separator = '\n\n'): string => {
   if (!children) return '';
   let str = '';
   const length = children.length;
-  for (let i = 0; i < length; i++) str += (str ? '\n\n' : '') + toText(children[i]);
+  for (let i = 0; i < length; i++) str += (str ? separator : '') + toText(children[i]);
   return str;
 };
 
@@ -45,8 +45,9 @@ export const toText = (node: IToken | IToken[]): string => {
       const last = children.length - 1;
       let str = '';
       for (let i = 0; i <= last; i++) {
-        const child = children[i];
-        const content = toTextBlockChildren(child.children).replace(/\n/g, '\n  ');
+        const item = children[i] as IListItem;
+        const itemSeparator = item.spread ? '\n\n' : '\n';
+        const content = toTextBlockChildren(item.children, itemSeparator).replace(/\n/g, '\n  ');
         str += bullet + content;
         if (i !== last) str += separator;
       }

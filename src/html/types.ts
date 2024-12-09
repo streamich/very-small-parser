@@ -20,7 +20,7 @@ export interface IDoctype extends IToken {
 export interface IElement extends IToken {
   type: 'element';
   tagName: string;
-  properties: Record<string, string>;
+  properties?: Record<string, string>;
   children: (IComment | IElement | IText | IRoot)[];
 }
 

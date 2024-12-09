@@ -39,7 +39,7 @@ const deletedText: TTokenizer<types.IDelete> = (parser, value) => {
   if (matches) return token<types.IDelete>(matches[0], 'delete', parser.parse(matches[1]));
 };
 
-const REG_SPOILER = /^~~~([\s\S]*)~~~/;
+const REG_SPOILER = /^\|\|([\s\S]*)\|\|/;
 const spoiler: TTokenizer<types.ISpoiler> = (parser, value) => {
   const matches = value.match(REG_SPOILER);
   if (matches) return token<types.ISpoiler>(matches[0], 'spoiler', parser.parse(matches[1]));

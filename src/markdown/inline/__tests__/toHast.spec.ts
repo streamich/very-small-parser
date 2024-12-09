@@ -7,7 +7,7 @@ describe('toHast', () => {
   for (const [markdown, html, name = markdown] of testCases) {
     it(name, () => {
       const mdast = parse(markdown);
-      console.log(mdast);
+      // console.log(mdast);
       const hast = toHast({type: 'root', children: mdast});
       const text = toText(hast);
       expect(text).toBe(html);

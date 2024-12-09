@@ -39,10 +39,12 @@ const deletedText: TTokenizer<types.IDelete> = (parser, value) => {
   if (matches) return token<types.IDelete>(matches[0], 'delete', parser.parse(matches[1]));
 };
 
-const REG_SPOILER = /^\|\|([\s\S]*)\|\|/;
+const REG_SPOILER = /^(?:(?:\|\|(?=\S)([\s\S]*)\|\|)|(?:\>\!(?=\S)([\s\S]*)\!\<))/;
 const spoiler: TTokenizer<types.ISpoiler> = (parser, value) => {
   const matches = value.match(REG_SPOILER);
-  if (matches) return token<types.ISpoiler>(matches[0], 'spoiler', parser.parse(matches[1]));
+  if (!matches) return;
+  const content = matches[1] || matches[2];
+  return token<types.ISpoiler>(matches[0], 'spoiler', parser.parse(content));
 };
 
 const REG_INLINE_MATH = /^\${1,2}(?=\S)([\s\S]*?\S)\${1,2}/;
@@ -159,7 +161,7 @@ const smarttext = (text: string): string =>
   text))))))))))));
 
 const REG_TEXT = new RegExp(
-  '^[\\s\\S]+?(?=[\\<!\\[_*`:~\\|#@\\$\\^=\\+]| {2,}\\n|(' + urlInline.source + ')|\\\\n|\\\\`|$)',
+  '^[\\s\\S]+?(?=[\\<>!\\[_*`:~\\|#@\\$\\^=\\+]| {2,}\\n|(' + urlInline.source + ')|\\\\n|\\\\`|$)',
 );
 const text: TTokenizer<types.IText> = (eat, src) => {
   const matches = src.match(REG_TEXT);

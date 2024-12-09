@@ -19,7 +19,6 @@ export const toText = (node: THtmlToken | THtmlToken[], tab: string = '', ident:
     const root: IRoot = {type: 'root', len: 0, children: node};
     return toText(root, tab, ident);
   }
-  if (typeof node === 'string') return ident + escapeText(node);
   const {type} = node;
   switch (type) {
     case 'text':

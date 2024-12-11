@@ -76,8 +76,20 @@ Pretty-print MDAST back to text:
 import { markdown } from 'very-small-parser';
 import { toText } from 'very-small-parser/lib/markdown/block/toText';
 
-const ast = markdown.block.parse('Hello __world__!');
-const text = toText(hast); // Hello __world__!
+const mdast = markdown.block.parse('Hello __world__!');
+const text = toText(mdast); // Hello __world__!
+```
+
+Convert MDAST to HAST (Markdown AST to HTML AST):
+
+```js
+import { markdown } from 'very-small-parser';
+import { toHast } from 'very-small-parser/lib/markdown/block/toHast';
+import { toText } from 'very-small-parser/lib/html/toText';
+
+const mdast = markdown.block.parse('Hello __world__!');
+const hast = toHast(mdast);
+const html = toText(hast); // <p>Hello <strong>world</strong>!</p>
 ```
 
 

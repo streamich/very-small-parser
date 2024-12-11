@@ -15,7 +15,7 @@ export const testCases: [markdown: string, html: string, name?: string, inlineOn
   ['==highlight==', '<mark>highlight</mark>'],
   ['++underline++', '<u>underline</u>'],
   ['a\\nb', 'a<br />b', 'explicit line break'],
-  ['<i>html</i>', '<i>html</i>', 'inline html'],
+  ['<i>html</i>', '<i>html</i>', 'inline html', true],
   ['@user', '<cite>@user</cite>'],
   ['#hash-tag', '<cite>#hash-tag</cite>'],
   ['~tilde-mention', '<cite>~tilde-mention</cite>'],

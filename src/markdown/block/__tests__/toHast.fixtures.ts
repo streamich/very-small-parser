@@ -1,5 +1,7 @@
 export const testCases: [markdown: string, html: string, name?: string][] = [
   ['paragraph', '<p>paragraph</p>'],
+  ['paragraph\n\nparagraph', '<p>paragraph</p><p>paragraph</p>', 'two paragraphs'],
+  ['paragraph\n\n> blockquote', '<p>paragraph</p><blockquote><p>blockquote</p></blockquote>', 'paragraph and blockquote'],
   ['> this is blockquote', '<blockquote><p>this is blockquote</p></blockquote>'],
   ['# heading 1', '<h1>heading 1</h1>'],
   ['## heading 2', '<h2>heading 2</h2>'],
@@ -31,4 +33,5 @@ export const testCases: [markdown: string, html: string, name?: string][] = [
 | foo  | bar    | baz   | qux  |`,
   '<table data-align="[&quot;left&quot;,&quot;center&quot;,&quot;right&quot;,null]"><thead><tr><th align="left">Left</th><th align="center">Center</th><th align="right">Right</th><th>None</th></tr></thead><tbody><tr><td align="left">foo</td><td align="center">bar</td><td align="right">baz</td><td>qux</td></tr></tbody></table>',
   'table with alignment'],
+  ['__bold__ inline formatting', '<p><strong>bold</strong> inline formatting</p>', 'bold inline formatting'],
 ];

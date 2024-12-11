@@ -80,63 +80,37 @@ export const toHast = (node: IToken | IToken[]): hast.THtmlToken => {
       const list = element(tag, block, attr, items);
       return list;
     }
-    case 'thematicBreak': return element('hr', block);
+    case 'thematicBreak': return el('hr');
     case 'table': {
-      // const {align, children: rows} = block;
-      // const texts: string[][] = [];
-      // const columnSizes: number[] = Array.from({length: align.length}, () => 1);
-      // const columnLength = align.length;
-      // const rowLength = rows.length;
-      // let totalSize = 1 * columnLength;
-      // // Compute column sizes and pre-format cell texts
-      // for (let i = 0; i < rowLength; i++) {
-      //   const row = rows[i];
-      //   const textRow: string[] = [];
-      //   const cells = row.children;
-      //   texts.push(textRow);
-      //   for (let j = 0; j < columnLength; j++) {
-      //     const cell = cells[j];
-      //     const text = toTextInlineChildren(cell.children);
-      //     textRow.push(text);
-      //     const size = text.length;
-      //     if (size > columnSizes[j]) {
-      //       totalSize += size - columnSizes[j];
-      //       columnSizes[j] = size;
-      //     }
-      //   }
-      // }
-      // const isWide = totalSize > 200;
-      // // Format cells
-      // for (let i = 0; i < rowLength; i++) {
-      //   const row = texts[i];
-      //   for (let j = 0; j < columnLength; j++) {
-      //     const alignment = align[j];
-      //     const size = columnSizes[j];
-      //     let txt = row[j];
-      //     const length = txt.length;
-      //     const leftPadding =
-      //       alignment === 'right' ? size - length : alignment === 'center' ? Math.ceil((size - length) / 2) : 0;
-      //     if (!isWide) txt = row[j].padStart(leftPadding + length, ' ').padEnd(size, ' ');
-      //     texts[i][j] = ' ' + txt + ' ';
-      //   }
-      // }
-      // // Format first row (header)
-      // let str = '|' + texts[0].join('|') + '|\n';
-      // // Format header separator
-      // for (let j = 0; j < columnLength; j++) {
-      //   const alignment = align[j];
-      //   const txt = isWide ? '-' : '-'.repeat(columnSizes[j]);
-      //   str +=
-      //     '|' +
-      //     (alignment === 'center' || alignment === 'left' ? ':' : '-') +
-      //     txt +
-      //     (alignment === 'center' || alignment === 'right' ? ':' : '-');
-      // }
-      // str += '|';
-      // // Format remaining rows
-      // for (let i = 1; i < rowLength; i++) str += '\n|' + texts[i].join('|') + '|';
-      // return str;
-      return element('div', block);
+      const {align, children} = block;
+      const rowLength = children.length;
+      const columnLength = align.length;
+      const headerRow = children[0];
+      const headerRowCells: hast.IElement[] = [];
+      const header = el('thead', void 0,
+        [el('tr', void 0, headerRowCells)]
+      );
+      if (headerRow) {
+        const headerCells = headerRow.children;
+        for (let i = 0; i < columnLength; i++)
+          headerRowCells.push(el('th', void 0, toTextChildrenInline(headerCells[i])));
+      }
+      const bodyRows: hast.IElement[] = [];
+      const body = el('tbody', void 0, bodyRows);
+      for (let i = 1; i < rowLength; i++) {
+        const row = children[i];
+        const rowChildren = row.children;
+        const tds: hast.IElement[] = [];
+        for (let j = 0; j < columnLength; j++) {
+          const cell = rowChildren[j];
+          tds.push(el('td', void 0, toTextChildrenInline(cell)));
+        }
+        bodyRows.push(el('tr', void 0, tds));
+      }
+      const attr: hast.IElement['properties'] = {
+        'data-align': JSON.stringify(align),
+      };
+      return el('table', attr, [header, body]);
     }
     case 'definition': {
       const {label, url, title, identifier: id} = block;

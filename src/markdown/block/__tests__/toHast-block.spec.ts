@@ -12,7 +12,12 @@ describe('toHast', () => {
       // console.log(JSON.stringify(hast, null, 2));
       const html = toText(hast);
       // console.log(html);
-      expect(html).toBe(expected);
+      try {
+        expect(html).toBe(expected);
+      } catch (error) {
+        console.log(html);
+        throw error;
+      }
     });
   }
 });

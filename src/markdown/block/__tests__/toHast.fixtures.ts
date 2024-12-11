@@ -23,4 +23,7 @@ export const testCases: [markdown: string, html: string, name?: string][] = [
   ['[^Footnote]: footnote definition', '<div data-node="footnoteDefinition" data-label="Footnote" data-id="footnote"><a name="footnote" id="footnote">Footnote</a><p>footnote definition</p></div>', 'footnote definition'],
   ['[My-link]: https://example.com', '<div data-node="definition" data-label="My-link" data-id="my-link" data-title="" data-url="https://example.com"><a name="my-link" id="my-link">My-link</a>: <a href="https://example.com" title="https://example.com">https://example.com</a></div>', 'definition'],
   ['[My-link-with-title]: https://example.com "My title"', '<div data-node="definition" data-label="My-link-with-title" data-id="my-link-with-title" data-title="My title" data-url="https://example.com"><a name="my-link-with-title" id="my-link-with-title">My-link-with-title</a>: <a href="https://example.com" title="My title">My title</a></div>', 'definition with title'],
+  [`| Header 1 | Header 2 |
+| -------- | -------- |
+| Cell 1   | Cell 2   |`, '<table data-align="[null,null]"><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr><td>Cell 1</td><td>Cell 2</td></tr></tbody></table>', 'table'],
 ];

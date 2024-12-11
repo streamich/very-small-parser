@@ -12,21 +12,28 @@ const toTextChildrenInline = ({children}: {children?: IToken[]}): (hast.IElement
 };
 
 const toHastChildren = ({children}: {children?: IToken[]}): (hast.IElement | hast.IText | hast.IRoot)[] => {
-  let arr: (hast.IElement | hast.IText | hast.IRoot)[] = [];
+  const arr: (hast.IElement | hast.IText | hast.IRoot)[] = [];
   if (!children) return arr;
   const length = children.length;
-  for (let i = 0; i < length; i++) arr.push(toHast(children[i]) as (hast.IElement | hast.IText | hast.IRoot));
+  for (let i = 0; i < length; i++) arr.push(toHast(children[i]) as hast.IElement | hast.IText | hast.IRoot);
   return arr;
 };
 
-const toHastChildrenSkipSingleParagraph = (node: {children?: IToken[]}): (hast.IElement | hast.IText | hast.IRoot)[] => {
+const toHastChildrenSkipSingleParagraph = (node: {children?: IToken[]}): (
+  | hast.IElement
+  | hast.IText
+  | hast.IRoot
+)[] => {
   const {children} = node;
-  if (children?.length === 1 && children[0].type === 'paragraph')
-    return toTextChildrenInline(children[0]);
+  if (children?.length === 1 && children[0].type === 'paragraph') return toTextChildrenInline(children[0]);
   return toHastChildren(node);
 };
 
-const el = (tagName: string, properties?: hast.IElement['properties'], children?: hast.IElement['children']): hast.IElement => {
+const el = (
+  tagName: string,
+  properties?: hast.IElement['properties'],
+  children?: hast.IElement['children'],
+): hast.IElement => {
   const node = {
     type: 'element',
     tagName,
@@ -36,8 +43,12 @@ const el = (tagName: string, properties?: hast.IElement['properties'], children?
   return node;
 };
 
-const element = (tagName: string, block: TBlockToken, properties?: hast.IElement['properties'], children: hast.IElement['children'] = toHastChildren(block) as hast.IElement['children']): hast.IElement =>
-  el(tagName, properties, children);
+const element = (
+  tagName: string,
+  block: TBlockToken,
+  properties?: hast.IElement['properties'],
+  children: hast.IElement['children'] = toHastChildren(block) as hast.IElement['children'],
+): hast.IElement => el(tagName, properties, children);
 
 const text = (value: string): hast.IText => ({type: 'text', value});
 
@@ -45,7 +56,8 @@ export const toHast = (node: IToken | IToken[]): hast.THtmlToken => {
   if (Array.isArray(node)) return {type: 'root', children: toHastChildren({children: node})};
   const block = node as TBlockToken;
   switch (block.type) {
-    case 'paragraph': return element('p', block, void 0, toTextChildrenInline(block));
+    case 'paragraph':
+      return element('p', block, void 0, toTextChildrenInline(block));
     case 'code': {
       const lang = block.lang || 'text';
       const attr: hast.IElement['properties'] = {
@@ -53,12 +65,12 @@ export const toHast = (node: IToken | IToken[]): hast.THtmlToken => {
         'data-lang': lang,
         'data-meta': block.meta || '',
       };
-      return element('pre', block, attr,
-        [element('code', block, {...attr}, [text(block.value)])]
-      );
+      return element('pre', block, attr, [element('code', block, {...attr}, [text(block.value)])]);
     }
-    case 'heading': return element('h' + block.depth, block, void 0, toTextChildrenInline(block));
-    case 'blockquote': return element('blockquote', block, void 0, toHastChildren(block));
+    case 'heading':
+      return element('h' + block.depth, block, void 0, toTextChildrenInline(block));
+    case 'blockquote':
+      return element('blockquote', block, void 0, toHastChildren(block));
     case 'list': {
       const children = block.children;
       const length = children.length;
@@ -66,9 +78,8 @@ export const toHast = (node: IToken | IToken[]): hast.THtmlToken => {
       for (let i = 0; i < length; i++) {
         const item = children[i];
         const itemAttr: hast.IElement['properties'] = {};
-        const checked = item.checked
-        if (typeof checked === 'boolean')
-          itemAttr['data-checked'] = checked + '';
+        const checked = item.checked;
+        if (typeof checked === 'boolean') itemAttr['data-checked'] = checked + '';
         items.push(element('li', item, itemAttr, toHastChildrenSkipSingleParagraph(item)));
       }
       const attr: hast.IElement['properties'] = {};
@@ -80,16 +91,15 @@ export const toHast = (node: IToken | IToken[]): hast.THtmlToken => {
       const list = element(tag, block, attr, items);
       return list;
     }
-    case 'thematicBreak': return el('hr');
+    case 'thematicBreak':
+      return el('hr');
     case 'table': {
       const {align, children} = block;
       const rowLength = children.length;
       const columnLength = align.length;
       const headerRow = children[0];
       const headerRowCells: hast.IElement[] = [];
-      const header = el('thead', void 0,
-        [el('tr', void 0, headerRowCells)]
-      );
+      const header = el('thead', void 0, [el('tr', void 0, headerRowCells)]);
       if (headerRow) {
         const headerCells = headerRow.children;
         for (let j = 0; j < columnLength; j++) {
@@ -139,22 +149,18 @@ export const toHast = (node: IToken | IToken[]): hast.THtmlToken => {
         'data-label': block.label,
         'data-id': id,
       };
-      return el('div', attr, [
-        el('a', {name: id, id}, [text(block.label)]),
-        ...toHastChildren(block),
-      ]);
+      return el('div', attr, [el('a', {name: id, id}, [text(block.label)]), ...toHastChildren(block)]);
     }
     case 'math': {
       const attr: hast.IElement['properties'] = {
         'data-math': 'true',
       };
-      return element('pre', block, attr,
-        [element('code', block, {...attr}, [text(block.value)])]
-      );
+      return element('pre', block, attr, [element('code', block, {...attr}, [text(block.value)])]);
     }
-    case 'element': return block;
-    case '': return element('br', block);
+    case 'element':
+      return block;
+    case '':
+      return element('br', block);
   }
-  // biome-ignore lint: extra catch-all case
   return {...node, type: 'root', children: toHastChildren(block)} as hast.THtmlToken;
 };

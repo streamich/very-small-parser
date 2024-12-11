@@ -63,9 +63,7 @@ describe('toPlainText', () => {
           '<div><b>bold</b> text</div><p>Hello world</p><blockquote><p>Hello <b><u>world</u></b><i>!!!</i></p></blockquote>',
         );
         const text = toPlainText(ast);
-        expect(text).toBe(
-          'bold textHello worldHello world!!!',
-        );
+        expect(text).toBe('bold textHello worldHello world!!!');
       });
     });
 

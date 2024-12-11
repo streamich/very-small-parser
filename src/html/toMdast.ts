@@ -23,13 +23,14 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
         case 'strong': {
           return {
             type: 'strong',
-            children: toMdastInlineChildren(node)
+            children: toMdastInlineChildren(node),
           };
         }
       }
       break;
     }
-    case 'text': return node as mdi.IText;
+    case 'text':
+      return node as mdi.IText;
   }
 };
 
@@ -49,20 +50,20 @@ export const toMdast = (node: html.THtmlToken): IToken => {
         case 'p': {
           return {
             type: 'paragraph',
-            children: toMdastChildren(node) as mdi.TInlineToken[]
+            children: toMdastChildren(node) as mdi.TInlineToken[],
           };
         }
         case 'blockquote': {
           return {
             type: 'blockquote',
-            children: toMdastChildren(node) as mdi.TInlineToken[]
+            children: toMdastChildren(node) as mdi.TInlineToken[],
           };
         }
         case 'code':
         case 'pre': {
           return {
             type: 'code',
-            children: toMdastChildren(node) as mdi.TInlineToken[]
+            children: toMdastChildren(node) as mdi.TInlineToken[],
           };
         }
       }
@@ -71,9 +72,9 @@ export const toMdast = (node: html.THtmlToken): IToken => {
     case 'root': {
       return {
         type: 'root',
-        children: toMdastChildren(node) as md.TBlockToken[]
+        children: toMdastChildren(node) as md.TBlockToken[],
       };
     }
-  }  
+  }
   return node;
 };

@@ -49,9 +49,11 @@ export const toText = (node: THtmlToken | THtmlToken[], tab: string = '', ident:
             textOnlyChildren = false;
             break;
           }
-        if (textOnlyChildren) for (let i = 0; i < childrenLength; i++) childrenStr += escapeText(children[i].value || '');
-        else for (let i = 0; i < childrenLength; i++)
-        childrenStr += (doIdent ? (!isFragment || i ? '\n' : '') : '') + toText(children[i], tab, childrenIdent);
+        if (textOnlyChildren)
+          for (let i = 0; i < childrenLength; i++) childrenStr += escapeText(children[i].value || '');
+        else
+          for (let i = 0; i < childrenLength; i++)
+            childrenStr += (doIdent ? (!isFragment || i ? '\n' : '') : '') + toText(children[i], tab, childrenIdent);
       }
       if (isFragment) return childrenStr;
       let attrStr = '';

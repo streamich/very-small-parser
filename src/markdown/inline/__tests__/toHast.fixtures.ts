@@ -20,7 +20,10 @@ export const testCases: [markdown: string, html: string, name?: string, inlineOn
   ['#hash-tag', '<cite>#hash-tag</cite>'],
   ['~tilde-mention', '<cite>~tilde-mention</cite>'],
   ['![](https://example.com/image.png)', '<img src="https://example.com/image.png" />'],
-  ['![](https://example.com/image.png "This is a title")', '<img src="https://example.com/image.png" title="This is a title" />'],
+  [
+    '![](https://example.com/image.png "This is a title")',
+    '<img src="https://example.com/image.png" title="This is a title" />',
+  ],
   ['![alt text](https://example.com/image.png)', '<img src="https://example.com/image.png" alt="alt text" />'],
   ['[Click me](https://example.com)', '<a href="https://example.com">Click me</a>'],
   ['[Click me](https://example.com "With title")', '<a href="https://example.com" title="With title">Click me</a>'],

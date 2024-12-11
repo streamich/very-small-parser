@@ -37,7 +37,7 @@ const anchor = (identifier: string, children: (hast.IElement | hast.IText)[]): h
   return node;
 };
 
-export const toHast = (node: IToken): hast.THtmlToken => {
+export const toHast = (node: IToken): (hast.IElement | hast.IText | hast.IRoot) => {
   const inline = node as TInlineToken;
   switch (inline.type) {
     case 'text': return inline;
@@ -79,5 +79,5 @@ export const toHast = (node: IToken): hast.THtmlToken => {
     case 'whitespace': return {type: 'text', value: ' '.repeat(inline.length)};
   }
   // biome-ignore lint: extra catch-all case
-  return {...node, children: toHastChildren(inline)} as hast.THtmlToken;
+  return {...node, type: 'root', children: toHastChildren(inline)} as (hast.IElement | hast.IText | hast.IRoot);
 };

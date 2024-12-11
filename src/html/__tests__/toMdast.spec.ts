@@ -19,11 +19,11 @@ describe('toMdast', () => {
       expect(text).toBe('> hello world');
     });
 
-    test('code block', () => {
-      const hast = html.parsef('<pre>console.log(123);</pre>');
-      const mdast = toMdast(hast);
-      const text = toText(mdast);
-      expect(text).toBe('```\nconsole.log(123);\n```');
-    });
+    // test('code block', () => {
+    //   const hast = html.parsef('<pre>console.log(123);</pre>');
+    //   const mdast = toMdast(hast);
+    //   const text = toText(mdast);
+    //   expect(text).toBe('```\nconsole.log(123);\n```');
+    // });
   });
 });

@@ -92,8 +92,11 @@ export const toHast = (node: IToken | IToken[]): hast.THtmlToken => {
       );
       if (headerRow) {
         const headerCells = headerRow.children;
-        for (let i = 0; i < columnLength; i++)
-          headerRowCells.push(el('th', void 0, toTextChildrenInline(headerCells[i])));
+        for (let j = 0; j < columnLength; j++) {
+          const alignment = align[j];
+          const cellAttr = alignment ? {align: alignment} : void 0;
+          headerRowCells.push(el('th', cellAttr, toTextChildrenInline(headerCells[j])));
+        }
       }
       const bodyRows: hast.IElement[] = [];
       const body = el('tbody', void 0, bodyRows);
@@ -103,7 +106,9 @@ export const toHast = (node: IToken | IToken[]): hast.THtmlToken => {
         const tds: hast.IElement[] = [];
         for (let j = 0; j < columnLength; j++) {
           const cell = rowChildren[j];
-          tds.push(el('td', void 0, toTextChildrenInline(cell)));
+          const alignment = align[j];
+          const cellAttr = alignment ? {align: alignment} : void 0;
+          tds.push(el('td', cellAttr, toTextChildrenInline(cell)));
         }
         bodyRows.push(el('tr', void 0, tds));
       }

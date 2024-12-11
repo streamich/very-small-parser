@@ -26,4 +26,9 @@ export const testCases: [markdown: string, html: string, name?: string][] = [
   [`| Header 1 | Header 2 |
 | -------- | -------- |
 | Cell 1   | Cell 2   |`, '<table data-align="[null,null]"><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr><td>Cell 1</td><td>Cell 2</td></tr></tbody></table>', 'table'],
+  [`| Left | Center | Right | None |
+|:---- |:------:| -----:|------|
+| foo  | bar    | baz   | qux  |`,
+  '<table data-align="[&quot;left&quot;,&quot;center&quot;,&quot;right&quot;,null]"><thead><tr><th align="left">Left</th><th align="center">Center</th><th align="right">Right</th><th>None</th></tr></thead><tbody><tr><td align="left">foo</td><td align="center">bar</td><td align="right">baz</td><td>qux</td></tr></tbody></table>',
+  'table with alignment'],
 ];

@@ -19,4 +19,8 @@ export const testCases: [markdown: string, html: string, name?: string][] = [
   ['1. ordered list item', '<ol start="1"><li>ordered list item</li></ol>', 'ordered list item'],
   ['2. ordered list\n2. start from 2', '<ol start="2"><li>ordered list</li><li>start from 2</li></ol>', 'ordered list items'],
   ['- [x] checked list item\n- [ ] unchecked', '<ul><li data-checked="true">checked list item</li><li data-checked="false">unchecked</li></ul>', 'checked and unchecked list items'],
+  ['$$\nx + 2\n$$', '<pre data-math="true"><code data-math="true">x + 2</code></pre>', 'math block'],
+  ['[^Footnote]: footnote definition', '<div data-node="footnoteDefinition" data-label="Footnote" data-id="footnote"><a name="footnote" id="footnote">Footnote</a><p>footnote definition</p></div>', 'footnote definition'],
+  ['[My-link]: https://example.com', '<div data-node="definition" data-label="My-link" data-id="my-link" data-title="" data-url="https://example.com"><a name="my-link" id="my-link">My-link</a>: <a href="https://example.com" title="https://example.com">https://example.com</a></div>', 'definition'],
+  ['[My-link-with-title]: https://example.com "My title"', '<div data-node="definition" data-label="My-link-with-title" data-id="my-link-with-title" data-title="My title" data-url="https://example.com"><a name="my-link-with-title" id="my-link-with-title">My-link-with-title</a>: <a href="https://example.com" title="My title">My title</a></div>', 'definition with title'],
 ];

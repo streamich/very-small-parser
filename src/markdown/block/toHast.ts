@@ -26,15 +26,18 @@ const toHastChildrenSkipSingleParagraph = (node: {children?: IToken[]}): (hast.I
   return toHastChildren(node);
 };
 
-const element = (tagName: string, block: TBlockToken, properties?: hast.IElement['properties'], children: hast.IElement['children'] = toHastChildren(block) as hast.IElement['children']): hast.IElement => {
+const el = (tagName: string, properties?: hast.IElement['properties'], children?: hast.IElement['children']): hast.IElement => {
   const node = {
     type: 'element',
     tagName,
-    children,
   } as hast.IElement;
   if (properties) node.properties = properties;
+  if (children) node.children = children;
   return node;
 };
+
+const element = (tagName: string, block: TBlockToken, properties?: hast.IElement['properties'], children: hast.IElement['children'] = toHastChildren(block) as hast.IElement['children']): hast.IElement =>
+  el(tagName, properties, children);
 
 const text = (value: string): hast.IText => ({type: 'text', value});
 
@@ -136,26 +139,40 @@ export const toHast = (node: IToken | IToken[]): hast.THtmlToken => {
       return element('div', block);
     }
     case 'definition': {
-      // const {label, url, title} = block;
-      // let str = '[' + label + ']: ';
-      // if (!url || url.includes('"')) str += '<' + url + '>';
-      // else str += url;
-      // if (title) {
-      //   str += title.length + str.length > 80 ? '\n    ' : ' ';
-      //   const hasDoubleQuote = title.includes('"');
-      //   str += hasDoubleQuote ? '(' + title + ')' : '"' + title + '"';
-      // }
-      // return str;
-      return element('div', block);
+      const {label, url, title, identifier: id} = block;
+      const attr: hast.IElement['properties'] = {
+        'data-node': 'definition',
+        'data-label': label,
+        'data-id': id,
+        'data-title': title || '',
+        'data-url': url,
+      };
+      return el('div', attr, [
+        el('a', {name: id, id}, [text(block.label)]),
+        text(': '),
+        el('a', {href: url, title: title || url}, [text(title || url)]),
+      ]);
     }
     case 'footnoteDefinition': {
-      // const {label, children} = block;
-      // return '[^' + label + ']: ' + toTextBlockChildren(children).replace(/\n/g, '\n  ');
-      return element('div', block);
+      const id = block.identifier;
+      const attr: hast.IElement['properties'] = {
+        'data-node': 'footnoteDefinition',
+        'data-label': block.label,
+        'data-id': id,
+      };
+      return el('div', attr, [
+        el('a', {name: id, id}, [text(block.label)]),
+        ...toHastChildren(block),
+      ]);
     }
-    case 'math':
-      // return '$$\n' + block.value + '\n$$';
-      return element('div', block);
+    case 'math': {
+      const attr: hast.IElement['properties'] = {
+        'data-math': 'true',
+      };
+      return element('pre', block, attr,
+        [element('code', block, {...attr}, [text(block.value)])]
+      );
+    }
     case 'element': return block;
     case '': return element('br', block);
   }

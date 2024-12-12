@@ -22,4 +22,7 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<a href="https://example.com">link</a>', '[link](https://example.com)'],
   ['<a href="https://example.com" title="This is title">link</a>', '[link](https://example.com "This is title")'],
   ['<a href="https://example.com">https://example.com</a>', 'https://example.com'],
+  ['<img src="https://example.com" />', '![](https://example.com)'],
+  ['<img src="https://example.com" alt="This is alt" />', '![This is alt](https://example.com)'],
+  ['<img src="https://example.com" alt="This is alt" title="This is title" />', '![This is alt](https://example.com "This is title")'],
 ];

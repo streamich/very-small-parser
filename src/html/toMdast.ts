@@ -83,6 +83,21 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
           }
           break;
         }
+        case 'img': {
+          const attr = node.properties || {};
+          const src = attr.src;
+          if (src) {
+            const title = attr.title || '';
+            const alt = attr.alt || '';
+            return {
+              type: 'image',
+              url: src,
+              title,
+              alt,
+            } as mdi.IImage;
+          }
+          break;
+        }
         
 
         // | IInlineCode
@@ -96,13 +111,13 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
         // | IMark
         // | IUnderline
         // | IIcon
+        // | ILink
+        // | IInlineLink
 
         // | IFootnoteReference
         // | ILinkReference
         // | IImageReference
-        // | ILink
         // | IImage
-        // | IInlineLink
         // | IHandle
         // | IBreak
         // | IElement

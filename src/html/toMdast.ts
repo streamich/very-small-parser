@@ -27,6 +27,14 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
       switch (tagName) {
         case 'code':
         case 'pre': {
+          const attr = node.properties;
+          const isMath = attr?.class?.includes('math') || attr?.['data-lang'] === 'math';
+          if (isMath) {
+            return {
+              type: 'inlineMath',
+              value: toPlainText(node),
+            };
+          }
           return {
             type: 'inlineCode',
             value: toPlainText(node),
@@ -39,6 +47,7 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
         case 'em': return createSimpleInlineNode('emphasis', node);
         case 'del': return createSimpleInlineNode('delete', node);
         case 'spoiler': return createSimpleInlineNode('spoiler', node);
+        
 
         // | IInlineCode
         // | IStrong

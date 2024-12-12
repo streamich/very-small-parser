@@ -11,4 +11,6 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<del>hello world</del>', '~~hello world~~'],
   ['<del>hello <strong>world</strong></del>', '~~hello __world__~~'],
   ['<spoiler>hello world</spoiler>', '||hello world||'],
+  ['<p><code class="language-math">x + x</code></p>', '$x + x$'],
+  ['<p><code data-lang="math">x + x</code></p>', '$x + x$'],
 ];

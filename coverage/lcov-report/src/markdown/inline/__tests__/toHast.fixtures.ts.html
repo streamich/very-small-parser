@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/markdown/inline/__tests__/toText.fixtures.ts</title>
+    <title>Code coverage report for src/markdown/inline/__tests__/toHast.fixtures.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../../prettify.css" />
     <link rel="stylesheet" href="../../../../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">src/markdown/inline/__tests__</a> toText.fixtures.ts</h1>
+        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">src/markdown/inline/__tests__</a> toHast.fixtures.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -99,22 +99,7 @@
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
 <a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a>
-<a name='L39'></a><a href='#L39'>39</a>
-<a name='L40'></a><a href='#L40'>40</a>
-<a name='L41'></a><a href='#L41'>41</a>
-<a name='L42'></a><a href='#L42'>42</a>
-<a name='L43'></a><a href='#L43'>43</a>
-<a name='L44'></a><a href='#L44'>44</a>
-<a name='L45'></a><a href='#L45'>45</a>
-<a name='L46'></a><a href='#L46'>46</a>
-<a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -150,71 +135,41 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export const testCases: [src: string, expected?: string, name?: string, inlineOnly?: boolean][] = [
-  ['plain text'],
-  ['', '', 'empty string'],
-  ['__bold__'],
-  ['**bold**', '__bold__'],
-  ['*italic*', '_italic_'],
-  ['_italic_'],
-  ['`code`'],
-  ['~~strike~~'],
-  ['||spoiler||'],
-  ['$x + x$'],
-  ['$$x + x$$', '$x + x$'],
-  ['[^1]'],
-  ['[^footnote-reference]'],
-  ['[shortcut-link-reference]'],
-  ['[collapsed-link-reference][]'],
-  ['[Full link reference][my-reference]'],
-  ['![shortcut-image-reference]'],
-  ['![collapsed-image-reference][]'],
-  ['![Full image reference][my-reference]'],
-  ['https://example.com'],
-  ['[link](https://example.com)'],
-  ['[link with title](https://example.com "title")'],
-  ['![image](https://example.com)'],
-  ['![image with title](https://example.com "title")'],
-  ['![image with alt text](https://example.com)'],
-  ['![](https://example.com "this is the title, yeah")'],
-  ['![](https://example.com)'],
-  ['[link reference][ref]'],
-  ['![image reference][ref]'],
-  ['^superscript^'],
-  ['~subscript~'],
-  ['==mark=='],
-  ['@at-handle'],
-  ['~tilde-handle'],
-  ['#hash-handle'],
-  ['++underline++'],
-  ['\n', '\n', 'newline', true],
-  ['foo\nbar', 'foo\nbar', 'newline in text'],
-  [':smile:', ':smile:'],
-  ['::smile::', ':smile:'],
-  ['&lt;b&gt;bold&lt;/b&gt;'],
-  ['&lt;font color="red"&gt;text&lt;/font&gt;'],
-  ['a &lt;font color="red"&gt;b&lt;/font&gt; c'],
-&nbsp;
-  // complex cases, with nested elements
-  ['**bold _italic_**', '__bold *italic*__'],
-  ['__bold **strong**__', '__bold **strong**__'],
-  ['[**bold** link](https://example.com)', '[__bold__ link](https://example.com)'],
-  ['[`code(**args**)`](https://example.com)', '[`code(**args**)`](https://example.com)'],
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export const testCases: [markdown: string, html: string, name?: string, inlineOnly?: boolean][] = [
+  ['plain text', 'plain text'],
+  ['*italic*', '&lt;em&gt;italic&lt;/em&gt;'],
+  ['*italic* and _also italic_', '&lt;em&gt;italic&lt;/em&gt; and &lt;em&gt;also italic&lt;/em&gt;'],
+  ['**bold**', '&lt;strong&gt;bold&lt;/strong&gt;'],
+  ['**bold** and __also bold__', '&lt;strong&gt;bold&lt;/strong&gt; and &lt;strong&gt;also bold&lt;/strong&gt;'],
+  ['`code`', '&lt;code&gt;code&lt;/code&gt;'],
+  ['~~strikethrough~~', '&lt;del&gt;strikethrough&lt;/del&gt;'],
+  ['||spoiler||', '&lt;spoiler style="background:black;color:black"&gt;spoiler&lt;/spoiler&gt;'],
+  ['Reddit: &gt;!spoiler!&lt;', 'Reddit: &lt;spoiler style="background:black;color:black"&gt;spoiler&lt;/spoiler&gt;'],
+  ['$$x + x$$', '&lt;code class="language-math" data-lang="math"&gt;x + x&lt;/code&gt;'],
+  ['https://example.com', '&lt;a href="https://example.com"&gt;https://example.com&lt;/a&gt;'],
+  ['x^2^', 'x&lt;sup&gt;2&lt;/sup&gt;'],
+  ['H~2~O', 'H&lt;sub&gt;2&lt;/sub&gt;O'],
+  ['==highlight==', '&lt;mark&gt;highlight&lt;/mark&gt;'],
+  ['++underline++', '&lt;u&gt;underline&lt;/u&gt;'],
+  ['a\\nb', 'a&lt;br /&gt;b', 'explicit line break'],
+  ['&lt;i&gt;html&lt;/i&gt;', '&lt;i&gt;html&lt;/i&gt;', 'inline html', true],
+  ['@user', '&lt;cite&gt;@user&lt;/cite&gt;'],
+  ['#hash-tag', '&lt;cite&gt;#hash-tag&lt;/cite&gt;'],
+  ['~tilde-mention', '&lt;cite&gt;~tilde-mention&lt;/cite&gt;'],
+  ['![](https://example.com/image.png)', '&lt;img src="https://example.com/image.png" /&gt;'],
+  [
+    '![](https://example.com/image.png "This is a title")',
+    '&lt;img src="https://example.com/image.png" title="This is a title" /&gt;',
+  ],
+  ['![alt text](https://example.com/image.png)', '&lt;img src="https://example.com/image.png" alt="alt text" /&gt;'],
+  ['[Click me](https://example.com)', '&lt;a href="https://example.com"&gt;Click me&lt;/a&gt;'],
+  ['[Click me](https://example.com "With title")', '&lt;a href="https://example.com" title="With title"&gt;Click me&lt;/a&gt;'],
+  [':smile:', '&lt;acronym title="smile emoji icon" data-emoji="smile"&gt;:smile:&lt;/acronym&gt;'],
+  ['::smile::', '&lt;acronym title="smile emoji icon" data-emoji="smile"&gt;:smile:&lt;/acronym&gt;'],
+  ['[^footnote]', '&lt;sup&gt;&lt;a href="#footnote"&gt;footnote&lt;/a&gt;&lt;/sup&gt;'],
+  ['[Click me][ref]', '&lt;a href="#ref"&gt;Click me&lt;/a&gt;'],
+  ['![alt text][ref]', '&lt;a href="#ref"&gt;alt text&lt;/a&gt;'],
+  ['![][ref]', '&lt;a href="#ref"&gt;ref&lt;/a&gt;'],
 ];
 &nbsp;</pre></td></tr></table></pre>
 

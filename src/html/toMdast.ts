@@ -1,3 +1,4 @@
+import {toPlainText} from '../toPlainText';
 import type {IToken} from '../types';
 import type * as mdi from '../markdown/inline/types';
 import type * as md from '../markdown/block/types';
@@ -19,6 +20,14 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
     case 'element': {
       const {tagName} = node;
       switch (tagName) {
+        case 'code':
+        case 'pre': {
+          return {
+            type: 'inlineCode',
+            value: toPlainText(node),
+            wrap: '`',
+          };
+        }
         case 'b':
         case 'strong': {
           return {
@@ -26,6 +35,36 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
             children: toMdastInlineChildren(node),
           };
         }
+        case 'i':
+        case 'em': {
+          return {
+            type: 'emphasis',
+            children: toMdastInlineChildren(node),
+          };
+        }
+
+        // | IInlineCode
+        // | IStrong
+        // | IEmphasis
+        // | IDelete
+        // | ISpoiler
+        // | IInlineMath
+        // | IFootnoteReference
+        // | ILinkReference
+        // | IImageReference
+        // | ILink
+        // | IImage
+        // | IInlineLink
+        // | ISup
+        // | ISub
+        // | IMark
+        // | IHandle
+        // | IUnderline
+        // | IBreak
+        // | IIcon
+        // | IElement
+        // | IText
+        // | IWhitespace;
       }
       break;
     }
@@ -50,7 +89,7 @@ export const toMdast = (node: html.THtmlToken): IToken => {
         case 'p': {
           return {
             type: 'paragraph',
-            children: toMdastChildren(node) as mdi.TInlineToken[],
+            children: toMdastInlineChildren(node) as mdi.TInlineToken[],
           };
         }
         case 'blockquote': {

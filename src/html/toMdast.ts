@@ -98,6 +98,20 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
           }
           break;
         }
+        case 'cite': {
+          const children = node.children;
+          if (children?.length === 1 && children[0].type === 'text') {
+            const text = children[0].value || '';
+            const prefix = text[0];
+            if (prefix === '#' || prefix === '~' || prefix === '@') {
+              return {
+                type: 'handle',
+                prefix,
+                value: text.slice(1),
+              } as mdi.IHandle;
+            }
+          }
+        }
         
 
         // | IInlineCode
@@ -113,15 +127,15 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
         // | IIcon
         // | ILink
         // | IInlineLink
+        // | IImage
+        // | IText
+        // | IHandle
 
         // | IFootnoteReference
         // | ILinkReference
         // | IImageReference
-        // | IImage
-        // | IHandle
         // | IBreak
         // | IElement
-        // | IText
         // | IWhitespace;
       }
       break;

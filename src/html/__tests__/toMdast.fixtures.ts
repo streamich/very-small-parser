@@ -25,4 +25,7 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<img src="https://example.com" />', '![](https://example.com)'],
   ['<img src="https://example.com" alt="This is alt" />', '![This is alt](https://example.com)'],
   ['<img src="https://example.com" alt="This is alt" title="This is title" />', '![This is alt](https://example.com "This is title")'],
+  ['<cite>#tag</cite>', '#tag'],
+  ['<cite>@user</cite>', '@user'],
+  ['<cite>~stream</cite>', '~stream'],
 ];

@@ -66,6 +66,9 @@ export const toMdast = (node: html.THtmlToken): IToken => {
             children: toMdastChildren(node) as mdi.TInlineToken[],
           };
         }
+        default: {
+          return toMdastInline(node) as mdi.TInlineToken;
+        }
       }
       break;
     }
@@ -76,5 +79,64 @@ export const toMdast = (node: html.THtmlToken): IToken => {
       };
     }
   }
+  return node;
+};
+
+const isBlock = (node: IToken): node is md.TBlockToken => {
+  switch (node.type) {
+    case 'paragraph':
+    case 'blockquote':
+    case 'code':
+    case 'root':
+      return true;
+  }
+  return false;
+};
+
+// /** Whether this block element can have child nodes. */
+// const isContainerBlock = (node: md.TBlockToken): boolean => {
+//   switch (node.type) {
+//     case 'paragraph':
+//     case 'blockquote':
+//       return true;
+//   }
+//   return false;
+// }
+
+export const fixupMdast = (node: IToken): IToken => {
+  // Ensure the root node is always a root node.
+  if (node.type !== 'root') {
+    node = {
+      type: 'root',
+      children: [node],
+    };
+  }
+
+  // Ensure that immediate children of the root node are always block nodes.
+  let lastBlockNode: md.TBlockToken | undefined;
+  const children = node.children ?? [];
+  const length = children.length;
+  const newChildren: md.TBlockToken[] = [];
+
+  for (let i = 0; i < length; i++) {
+    const child = children[i];
+    if (isBlock(child)) {
+      lastBlockNode = child;
+      newChildren.push(child);
+    } else {
+      if (!lastBlockNode || lastBlockNode.type !== 'paragraph') {
+        lastBlockNode = {
+          type: 'paragraph',
+          children: [],
+        };
+        newChildren.push(lastBlockNode);
+      }
+      if (!lastBlockNode.children) lastBlockNode.children = [];
+      lastBlockNode.children.push(child as mdi.TInlineToken);
+    }
+  }
+
+  node.children = newChildren;
+
   return node;
 };

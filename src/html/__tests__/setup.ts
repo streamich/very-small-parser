@@ -1,5 +1,5 @@
 import {html} from '..';
-import type {THtmlToken} from '../types';
+import type {THtmlToken, IRoot} from '../types';
 
 export const parse = (text: string): THtmlToken[] => {
   const ast = html.parse(text);
@@ -7,7 +7,7 @@ export const parse = (text: string): THtmlToken[] => {
   return ast;
 };
 
-export const parsef = (text: string): THtmlToken => {
+export const parsef = (text: string): IRoot => {
   const ast = html.parsef(text);
   // console.log(JSON.stringify(ast, null, 2));
   return ast;

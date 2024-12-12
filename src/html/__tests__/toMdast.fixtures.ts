@@ -13,4 +13,10 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<spoiler>hello world</spoiler>', '||hello world||'],
   ['<p><code class="language-math">x + x</code></p>', '$x + x$'],
   ['<p><code data-lang="math">x + x</code></p>', '$x + x$'],
+  ['<sup>test</sup>', '^test^'],
+  ['<sup><b>test</b></sup>', '^__test__^'],
+  ['<sub>test</sub>', '~test~'],
+  ['<mark>test</mark>', '==test=='],
+  ['<u>test</u>', '++test++'],
+  ['<acronym data-icon="smile" />', ':smile:'],
 ];

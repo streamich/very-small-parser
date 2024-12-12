@@ -100,8 +100,8 @@ export const toHast = (node: IToken): hast.IElement | hast.IText | hast.IRoot =>
       return element('br', inline);
     case 'icon':
       return elementWithText('acronym', inline, ':' + inline.emoji + ':', {
-        title: inline.emoji + ' emoji icon',
-        'data-emoji': inline.emoji,
+        title: inline.emoji + ' icon',
+        'data-icon': inline.emoji,
       });
     case 'element':
       return inline;

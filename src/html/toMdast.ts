@@ -14,7 +14,7 @@ const toMdastInlineChildren = ({children}: {children: html.THtmlToken[]}): mdi.T
   return res;
 };
 
-const createSimpleInlineNode = <N extends mdi.IStrong | mdi.IEmphasis | mdi.IDelete | mdi.ISpoiler>(type: N['type'], element: html.IElement): N => ({
+const createSimpleInlineNode = <N extends mdi.IStrong | mdi.IEmphasis | mdi.IDelete | mdi.ISpoiler | mdi.ISup | mdi.ISub | mdi.IMark | mdi.IUnderline>(type: N['type'], element: html.IElement): N => ({
   type,
   children: toMdastInlineChildren(element),
 }) as N;
@@ -47,6 +47,21 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
         case 'em': return createSimpleInlineNode('emphasis', node);
         case 'del': return createSimpleInlineNode('delete', node);
         case 'spoiler': return createSimpleInlineNode('spoiler', node);
+        case 'sup': return createSimpleInlineNode('sup', node);
+        case 'sub': return createSimpleInlineNode('sub', node); 
+        case 'mark': return createSimpleInlineNode('mark', node); 
+        case 'u': return createSimpleInlineNode('underline', node); 
+        case 'acronym': {
+          const attr = node.properties;
+          const emoji = attr?.['data-icon'];
+          if (emoji) {
+            return {
+              type: 'icon',
+              emoji: emoji,
+            } as mdi.IIcon;
+          }
+          break;
+        }
         
 
         // | IInlineCode
@@ -55,19 +70,20 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
         // | IDelete
         // | ISpoiler
         // | IInlineMath
+        // | ISup
+        // | ISub
+        // | IMark
+        // | IUnderline
+        // | IIcon
+
         // | IFootnoteReference
         // | ILinkReference
         // | IImageReference
         // | ILink
         // | IImage
         // | IInlineLink
-        // | ISup
-        // | ISub
-        // | IMark
         // | IHandle
-        // | IUnderline
         // | IBreak
-        // | IIcon
         // | IElement
         // | IText
         // | IWhitespace;

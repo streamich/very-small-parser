@@ -62,6 +62,27 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
           }
           break;
         }
+        case 'a': {
+          const attr = node.properties || {};
+          const href = attr.href;
+          if (href) {
+            const title = attr.title;
+            if (!title && node.children?.length === 1 && node.children[0].type === 'text' && node.children[0].value === href && href.startsWith('http')) {
+              return {
+                type: 'inlineLink',
+                value: href,
+              } as mdi.IInlineLink;
+            } else {
+              return {
+                type: 'link',
+                url: href,
+                children: toMdastInlineChildren(node),
+                title,
+              } as mdi.ILink;
+            }
+          }
+          break;
+        }
         
 
         // | IInlineCode

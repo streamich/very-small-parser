@@ -19,4 +19,7 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<mark>test</mark>', '==test=='],
   ['<u>test</u>', '++test++'],
   ['<acronym data-icon="smile" />', ':smile:'],
+  ['<a href="https://example.com">link</a>', '[link](https://example.com)'],
+  ['<a href="https://example.com" title="This is title">link</a>', '[link](https://example.com "This is title")'],
+  ['<a href="https://example.com">https://example.com</a>', 'https://example.com'],
 ];

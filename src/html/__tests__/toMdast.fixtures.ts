@@ -8,4 +8,7 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<strong>hello world</strong>', '__hello world__'],
   ['<i>hello world</i>', '_hello world_'],
   ['<em>hello world</em>', '_hello world_'],
+  ['<del>hello world</del>', '~~hello world~~'],
+  ['<del>hello <strong>world</strong></del>', '~~hello __world__~~'],
+  ['<spoiler>hello world</spoiler>', '||hello world||'],
 ];

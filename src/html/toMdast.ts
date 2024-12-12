@@ -14,6 +14,11 @@ const toMdastInlineChildren = ({children}: {children: html.THtmlToken[]}): mdi.T
   return res;
 };
 
+const createSimpleInlineNode = <N extends mdi.IStrong | mdi.IEmphasis | mdi.IDelete | mdi.ISpoiler>(type: N['type'], element: html.IElement): N => ({
+  type,
+  children: toMdastInlineChildren(element),
+}) as N;
+
 const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
   const {type} = node;
   switch (type) {
@@ -29,19 +34,11 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
           };
         }
         case 'b':
-        case 'strong': {
-          return {
-            type: 'strong',
-            children: toMdastInlineChildren(node),
-          };
-        }
+        case 'strong': return createSimpleInlineNode('strong', node);
         case 'i':
-        case 'em': {
-          return {
-            type: 'emphasis',
-            children: toMdastInlineChildren(node),
-          };
-        }
+        case 'em': return createSimpleInlineNode('emphasis', node);
+        case 'del': return createSimpleInlineNode('delete', node);
+        case 'spoiler': return createSimpleInlineNode('spoiler', node);
 
         // | IInlineCode
         // | IStrong

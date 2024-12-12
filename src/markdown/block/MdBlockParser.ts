@@ -17,7 +17,7 @@ export class MdBlockParser<T extends TBlockToken> extends Parser<T> implements I
     this.inline = opts.inline;
   }
 
-  public parser(src: string): IRoot {
+  public parsef(src: string): IRoot {
     const tokens = this.parse(src) as TBlockToken[];
     const token: IRoot = {
       type: 'root',

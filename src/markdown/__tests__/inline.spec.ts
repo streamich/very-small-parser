@@ -336,7 +336,7 @@ describe('Inline Markdown', () => {
 
   describe('spoiler text', () => {
     test('works when spoiler text is the only token', () => {
-      const ast = parseInline('~~~foobar~~~');
+      const ast = parseInline('||foobar||');
       expect(ast).toMatchObject([
         {
           type: 'spoiler',
@@ -350,8 +350,8 @@ describe('Inline Markdown', () => {
       ]);
     });
 
-    test('works when inside other inline text', () => {
-      const ast = parseInline('hello ~~~ foobar ~~~ world');
+    test('works when surrounded by text', () => {
+      const ast = parseInline('hello ||foobar|| world');
       expect(ast).toMatchObject([
         {type: 'text', value: 'hello '},
         {
@@ -359,7 +359,7 @@ describe('Inline Markdown', () => {
           children: [
             {
               type: 'text',
-              value: ' foobar ',
+              value: 'foobar',
             },
           ],
         },
@@ -368,7 +368,7 @@ describe('Inline Markdown', () => {
     });
 
     test('works when surrounded by deleted text', () => {
-      const ast = parseInline('~~hello~~ ~~~ foobar ~~~ ~~world~~');
+      const ast = parseInline('~~hello~~ ||foobar|| ~~world~~');
       expect(ast).toMatchObject([
         {
           type: 'delete',
@@ -385,7 +385,7 @@ describe('Inline Markdown', () => {
           children: [
             {
               type: 'text',
-              value: ' foobar ',
+              value: 'foobar',
             },
           ],
         },

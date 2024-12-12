@@ -52,6 +52,7 @@ export interface IInlineMath extends IToken {
 
 export interface IFootnoteReference extends IToken {
   type: 'footnoteReference';
+  value: string;
 }
 
 export interface ILinkReference extends IToken {

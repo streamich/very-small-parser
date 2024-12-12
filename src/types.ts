@@ -1,6 +1,6 @@
 export interface IToken {
   type: string;
-  len: number;
+  len?: number;
   raw?: string;
   children?: IToken[];
   value?: string;

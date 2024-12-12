@@ -34,7 +34,8 @@
 				"noExplicitAny": "off",
 				"useIsArray": "off",
 				"noAssignInExpressions": "off",
-				"noConfusingLabels": "off"
+				"noConfusingLabels": "off",
+				"noExtraNonNullAssertion": "off"
 			},
 			"complexity": {
 				"noStaticOnlyClass": "off",

@@ -19,7 +19,6 @@ export const toText = (node: THtmlToken | THtmlToken[], tab: string = '', ident:
     const root: IRoot = {type: 'root', len: 0, children: node};
     return toText(root, tab, ident);
   }
-  if (typeof node === 'string') return ident + escapeText(node);
   const {type} = node;
   switch (type) {
     case 'text':
@@ -38,21 +37,24 @@ export const toText = (node: THtmlToken | THtmlToken[], tab: string = '', ident:
         tagName = node.tagName;
         properties = node.properties;
       }
-      const childrenLength = children.length;
       const isFragment = !tagName;
       const childrenIdent = ident + (isFragment ? '' : tab);
       const doIdent = !!tab;
       let childrenStr = '';
       let textOnlyChildren = true;
-      for (let i = 0; i < childrenLength; i++)
-        if (children[i].type !== 'text') {
-          textOnlyChildren = false;
-          break;
-        }
-      if (textOnlyChildren) for (let i = 0; i < childrenLength; i++) childrenStr += escapeText(children[i].value || '');
-      else
+      if (children) {
+        const childrenLength = children.length;
         for (let i = 0; i < childrenLength; i++)
-          childrenStr += (doIdent ? (!isFragment || i ? '\n' : '') : '') + toText(children[i], tab, childrenIdent);
+          if (children[i].type !== 'text') {
+            textOnlyChildren = false;
+            break;
+          }
+        if (textOnlyChildren)
+          for (let i = 0; i < childrenLength; i++) childrenStr += escapeText(children[i].value || '');
+        else
+          for (let i = 0; i < childrenLength; i++)
+            childrenStr += (doIdent ? (!isFragment || i ? '\n' : '') : '') + toText(children[i], tab, childrenIdent);
+      }
       if (isFragment) return childrenStr;
       let attrStr = '';
       if (properties)

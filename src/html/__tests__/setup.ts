@@ -6,3 +6,9 @@ export const parse = (text: string): THtmlToken[] => {
   // console.log(JSON.stringify(ast, null, 2));
   return ast;
 };
+
+export const parsef = (text: string): THtmlToken => {
+  const ast = html.parsef(text);
+  // console.log(JSON.stringify(ast, null, 2));
+  return ast;
+};

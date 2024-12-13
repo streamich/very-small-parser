@@ -29,8 +29,8 @@ export const testCases: [markdown: string, html: string, name?: string, inlineOn
   ['[Click me](https://example.com "With title")', '<a href="https://example.com" title="With title">Click me</a>'],
   [':smile:', '<acronym title="smile icon" data-icon="smile">:smile:</acronym>'],
   ['::smile::', '<acronym title="smile icon" data-icon="smile">:smile:</acronym>'],
-  ['[^footnote]', '<sup><a href="#footnote">footnote</a></sup>'],
+  ['[^footnote]', '<sup data-node="footnote"><a href="#footnote">footnote</a></sup>'],
   ['[Click me][ref]', '<a href="#ref">Click me</a>'],
-  ['![alt text][ref]', '<a href="#ref">alt text</a>'],
-  ['![][ref]', '<a href="#ref">ref</a>'],
+  ['![alt text][ref]', '<a data-ref="img" href="#ref">alt text</a>'],
+  ['![][ref]', '<a data-ref="img" href="#ref">ref</a>'],
 ];

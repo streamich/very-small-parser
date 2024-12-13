@@ -66,19 +66,42 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
           const attr = node.properties || {};
           const href = attr.href;
           if (href) {
-            const title = attr.title;
-            if (!title && node.children?.length === 1 && node.children[0].type === 'text' && node.children[0].value === href && href.startsWith('http')) {
-              return {
-                type: 'inlineLink',
-                value: href,
-              } as mdi.IInlineLink;
+            const isAnchor = href[0] === '#';
+            if (isAnchor) {
+              const isImageAnchor = attr['data-ref'] === 'img';
+              const identifier = href.slice(1);
+              if (isImageAnchor) {
+                const alt = toPlainText(node) || null;
+                return {
+                  type: 'imageReference',
+                  identifier,
+                  alt,
+                  referenceType: alt ? 'full' : 'collapsed',
+                } as mdi.IImageReference
+              } else {
+                const text = toPlainText(node).trim();
+                return {
+                  type: 'linkReference',
+                  identifier,
+                  referenceType: text ? 'full' : 'collapsed',
+                  children: toMdastInlineChildren(node),
+                } as mdi.ILinkReference
+              }
             } else {
-              return {
-                type: 'link',
-                url: href,
-                children: toMdastInlineChildren(node),
-                title,
-              } as mdi.ILink;
+              const title = attr.title;
+              if (!title && node.children?.length === 1 && node.children[0].type === 'text' && node.children[0].value === href && href.startsWith('http')) {
+                return {
+                  type: 'inlineLink',
+                  value: href,
+                } as mdi.IInlineLink;
+              } else {
+                return {
+                  type: 'link',
+                  url: href,
+                  children: toMdastInlineChildren(node),
+                  title,
+                } as mdi.ILink;
+              }
             }
           }
           break;
@@ -117,7 +140,7 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
           return {
             type: 'break',
           } as mdi.IBreak;
-        }
+        } 
 
         
 

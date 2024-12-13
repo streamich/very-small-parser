@@ -30,4 +30,8 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<cite>~stream</cite>', '~stream'],
   ['<br />', '\n'],
   ['<p><center>center</center></p>', '<center>center</center>'],
+  ['<a href="#tag">Tag</a>', '[Tag][tag]'],
+  ['<a href="#tag" />', '[tag][]'],
+  ['<a href="#tag" data-ref="img">Tag</a>', '![Tag][tag]'],
+  ['<a href="#tag" data-ref="img" />', '![tag][]'],
 ];

@@ -22,7 +22,8 @@ export type TTokenTypeInline =
   | 'link'
   | 'image'
   | 'whitespace'
-  | 'text';
+  | 'text'
+  | 'element';
 
 export interface IInlineCode extends IToken {
   type: 'inlineCode';

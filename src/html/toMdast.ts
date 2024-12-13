@@ -111,7 +111,14 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
               } as mdi.IHandle;
             }
           }
+          break;
         }
+        case 'br': {
+          return {
+            type: 'break',
+          } as mdi.IBreak;
+        }
+
         
 
         // | IInlineCode
@@ -130,19 +137,20 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
         // | IImage
         // | IText
         // | IHandle
+        // | IBreak
+        // | IElement
+        // | IWhitespace
 
         // | IFootnoteReference
         // | ILinkReference
         // | IImageReference
-        // | IBreak
-        // | IElement
-        // | IWhitespace;
       }
       break;
     }
     case 'text':
       return node as mdi.IText;
   }
+  return node as html.IElement;
 };
 
 const toMdastChildren = ({children}: {children: html.THtmlToken[]}): IToken[] => {

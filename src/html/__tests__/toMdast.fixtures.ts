@@ -28,4 +28,6 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<cite>#tag</cite>', '#tag'],
   ['<cite>@user</cite>', '@user'],
   ['<cite>~stream</cite>', '~stream'],
+  ['<br />', '\n'],
+  ['<p><center>center</center></p>', '<center>center</center>'],
 ];

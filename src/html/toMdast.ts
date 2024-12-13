@@ -47,7 +47,25 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
         case 'em': return createSimpleInlineNode('emphasis', node);
         case 'del': return createSimpleInlineNode('delete', node);
         case 'spoiler': return createSimpleInlineNode('spoiler', node);
-        case 'sup': return createSimpleInlineNode('sup', node);
+        case 'sup': {
+          const attr = node.properties;
+          let isFootnoteReference = attr?.['data-node'] === 'footnote';
+          if (isFootnoteReference) {
+            const anchor = node.children?.[0];
+            if (anchor && anchor.type === 'element' && anchor.tagName === 'a') {
+              const anchorAttr = anchor.properties;
+              const href = anchorAttr?.href || '';
+              if (href[0] === '#' && href.length > 1) {
+                const identifier = href.slice(1);
+                return {
+                  type: 'footnoteReference',
+                  value: identifier,
+                } as mdi.IFootnoteReference;
+              }
+            }
+          }
+          return createSimpleInlineNode('sup', node);
+        }
         case 'sub': return createSimpleInlineNode('sub', node); 
         case 'mark': return createSimpleInlineNode('mark', node); 
         case 'u': return createSimpleInlineNode('underline', node); 
@@ -140,33 +158,7 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
           return {
             type: 'break',
           } as mdi.IBreak;
-        } 
-
-        
-
-        // | IInlineCode
-        // | IStrong
-        // | IEmphasis
-        // | IDelete
-        // | ISpoiler
-        // | IInlineMath
-        // | ISup
-        // | ISub
-        // | IMark
-        // | IUnderline
-        // | IIcon
-        // | ILink
-        // | IInlineLink
-        // | IImage
-        // | IText
-        // | IHandle
-        // | IBreak
-        // | IElement
-        // | IWhitespace
-
-        // | IFootnoteReference
-        // | ILinkReference
-        // | IImageReference
+        }
       }
       break;
     }
@@ -234,16 +226,6 @@ const isBlock = (node: IToken): node is md.TBlockToken => {
   }
   return false;
 };
-
-// /** Whether this block element can have child nodes. */
-// const isContainerBlock = (node: md.TBlockToken): boolean => {
-//   switch (node.type) {
-//     case 'paragraph':
-//     case 'blockquote':
-//       return true;
-//   }
-//   return false;
-// }
 
 export const fixupMdast = (node: IToken): IToken => {
   // Ensure the root node is always a root node.

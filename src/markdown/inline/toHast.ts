@@ -69,7 +69,7 @@ export const toHast = (node: IToken): hast.IElement | hast.IText | hast.IRoot =>
     case 'inlineMath':
       return elementWithText('code', inline, inline.value || '', {class: 'language-math', 'data-lang': 'math'});
     case 'footnoteReference':
-      return el('sup', {'data-node': 'footnote'}, [anchor(inline.value, [text(inline.value)])]);
+      return el('sup', {'data-node': 'footnote'}, [anchor(inline.identifier, [text(inline.label)])]);
     case 'linkReference':
       return anchor(inline.identifier, toHastChildren(inline) as (hast.IElement | hast.IText)[]);
     case 'imageReference': {

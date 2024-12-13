@@ -460,7 +460,8 @@ describe('Inline Markdown', () => {
       expect(ast).toMatchObject([
         {
           type: 'footnoteReference',
-          value: '1',
+          label: '1',
+          identifier: '1',
         },
       ]);
     });
@@ -469,7 +470,7 @@ describe('Inline Markdown', () => {
       const ast = parseInline('To be, or not to be.[^my-ref]');
       expect(ast).toMatchObject([
         {type: 'text', len: 20, value: 'To be, or not to be.'},
-        {type: 'footnoteReference', len: 9, value: 'my-ref'},
+        {type: 'footnoteReference', len: 9, identifier: 'my-ref'},
       ]);
     });
   });

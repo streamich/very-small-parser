@@ -38,7 +38,7 @@ export const toText = (node: IToken | IToken[], ctx: ToTextContext = {b: '_'}): 
     case 'inlineMath':
       return '$' + inline.value + '$';
     case 'footnoteReference':
-      return '[^' + inline.value + ']';
+      return '[^' + inline.label + ']';
     case 'linkReference':
     case 'imageReference': {
       const {identifier, referenceType} = inline;

@@ -57,9 +57,11 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
               const href = anchorAttr?.href || '';
               if (href[0] === '#' && href.length > 1) {
                 const identifier = href.slice(1);
+                const label = toPlainText(anchor);
                 return {
                   type: 'footnoteReference',
-                  value: identifier,
+                  identifier,
+                  label,
                 } as mdi.IFootnoteReference;
               }
             }

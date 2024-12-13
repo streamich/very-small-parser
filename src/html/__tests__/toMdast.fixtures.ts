@@ -34,4 +34,5 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<a href="#tag" />', '[tag][]'],
   ['<a href="#tag" data-ref="img">Tag</a>', '![Tag][tag]'],
   ['<a href="#tag" data-ref="img" />', '![tag][]'],
+  ['<sup data-node="footnote"><a href="#tag">Tag</a></sup>', '[^Tag]'],
 ];

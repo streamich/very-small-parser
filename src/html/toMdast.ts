@@ -229,15 +229,7 @@ const isBlock = (node: IToken): node is md.TBlockToken => {
   return false;
 };
 
-export const fixupMdast = (node: IToken): IToken => {
-  // Ensure the root node is always a root node.
-  if (node.type !== 'root') {
-    node = {
-      type: 'root',
-      children: [node],
-    };
-  }
-
+const ensureChildrenAreBlockNodes = (node: IToken): void => {
   // Ensure that immediate children of the root node are always block nodes.
   let lastBlockNode: md.TBlockToken | undefined;
   const children = node.children ?? [];
@@ -260,9 +252,27 @@ export const fixupMdast = (node: IToken): IToken => {
       if (!lastBlockNode.children) lastBlockNode.children = [];
       lastBlockNode.children.push(child as mdi.TInlineToken);
     }
+
+    switch (child.type) {
+      case 'blockquote':
+        ensureChildrenAreBlockNodes(child);
+        break;
+    }
   }
 
   node.children = newChildren;
+};
+
+export const fixupMdast = (node: IToken): IToken => {
+  // Ensure the root node is always a root node.
+  if (node.type !== 'root') {
+    node = {
+      type: 'root',
+      children: [node],
+    };
+  }
+
+  ensureChildrenAreBlockNodes(node);
 
   return node;
 };

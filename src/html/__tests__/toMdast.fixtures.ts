@@ -1,4 +1,5 @@
 export const testCases: [html: string, markdown: string, name?: string][] = [
+  // Inline elements
   ['<p><code>hello world</code></p>', '`hello world`'],
   ['<p><pre><code>hello world</code></pre></p>', '`hello world`'],
   ['<p><pre>hello world</pre></p>', '`hello world`'],
@@ -35,4 +36,8 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<a href="#tag" data-ref="img">Tag</a>', '![Tag][tag]'],
   ['<a href="#tag" data-ref="img" />', '![tag][]'],
   ['<sup data-node="footnote"><a href="#tag">Tag</a></sup>', '[^Tag]'],
+
+  // Block elements
+  ['<p>paragraph</p>', 'paragraph'],
+  ['<blockquote>quote</blockquote>', '> quote'],
 ];

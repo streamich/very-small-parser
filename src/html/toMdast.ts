@@ -254,6 +254,7 @@ export const toMdast = (node: html.THtmlToken): IToken => {
           }
           return list;
         }
+        case 'hr': return {type: 'thematicBreak'} as md.IThematicBreak;
         default: {
           return toMdastInline(node) as mdi.TInlineToken;
         }
@@ -276,8 +277,9 @@ const isBlock = (node: IToken): node is md.TBlockToken => {
     case 'heading':
     case 'blockquote':
     case 'list':
-    case 'table':
     case 'code':
+    case 'thematicBreak':
+    case 'table':
     case 'root':
       return true;
   }

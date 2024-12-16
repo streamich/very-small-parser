@@ -177,6 +177,8 @@ const toMdastChildren = ({children}: {children: html.THtmlToken[]}): IToken[] =>
   return res;
 };
 
+const validAlignAttr: Set<md.ITable['align'][number]> = new Set(['left', 'center', 'right']);
+
 export const toMdast = (node: html.THtmlToken): IToken => {
   if (Array.isArray(node)) return toMdast({type: 'root', children: node});
   switch (node.type) {
@@ -263,8 +265,8 @@ export const toMdast = (node: html.THtmlToken): IToken => {
           };
           let maxColumns = 0;
           let minColumns = 1e9;
-          const processRow = (hastRow: html.IElement, rowType: 'head' | 'body') => {
-            table.align.push(null);
+          let firstRow = true;
+          const processRow = (hastRow: html.IElement) => {
             const row: md.ITableRow = {
               type: 'tableRow',
               children: [],
@@ -275,6 +277,13 @@ export const toMdast = (node: html.THtmlToken): IToken => {
             if (length < minColumns) minColumns = length;
             for (let i = 0; i < length; i++) {
               const child = children[i];
+              if (child.type !== 'element') continue;
+              if (firstRow) {
+                let align: md.ITable['align'][number] = null;
+                const alignAttr = child.properties?.align;
+                if (validAlignAttr.has(alignAttr as any)) align = alignAttr as md.ITable['align'][number];
+                table.align.push(align);
+              }
               const cell: md.ITableCell = {
                 type: 'tableCell',
                 children: toMdastInlineChildren(child as {children: html.THtmlToken[]}),
@@ -282,24 +291,25 @@ export const toMdast = (node: html.THtmlToken): IToken => {
               row.children.push(cell);
             }
             table.children.push(row);
+            firstRow = false;
           };
-          const processRows = (hastRow: html.IElement, rowType: 'head' | 'body') => {
+          const processRows = (hastRow: html.IElement) => {
             for (const child of hastRow.children || [])
-              if (child.type === 'element' && child.tagName === 'tr') processRow(child, rowType);
+              if (child.type === 'element' && child.tagName === 'tr') processRow(child);
           };
           for (const tableChild of node.children || []) {
             if (tableChild.type !== 'element') continue;
             switch (tableChild.tagName) {
               case 'thead': {
-                processRows(tableChild, 'head');
+                processRows(tableChild);
                 break;
               }
               case 'tbody': {
-                processRows(tableChild, 'body');
+                processRows(tableChild);
                 break;
               }
               case 'tr': {
-                processRow(tableChild, 'body');
+                processRow(tableChild);
                 break;
               }
             }

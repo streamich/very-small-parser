@@ -229,6 +229,26 @@ export const toMdast = (node: html.THtmlToken): IToken => {
           };
           return headingNode;
         }
+        case 'ul': {
+          const children = node.children || [];
+          const length = children.length;
+          const list: md.IList = {
+            type: 'list',
+            ordered: false,
+            children: [],
+          };
+          for (let i = 0; i < length; i++) {
+            const child = children[i];
+            if (child.type !== 'element' || child.tagName !== 'li') continue;
+            const item: md.IListItem = {
+              type: 'listItem',
+              checked: null,
+              children: toMdastChildren(child) as md.TBlockToken[],
+            };
+            list.children.push(item);
+          }
+          return list;
+        }
         default: {
           return toMdastInline(node) as mdi.TInlineToken;
         }
@@ -250,6 +270,8 @@ const isBlock = (node: IToken): node is md.TBlockToken => {
     case 'paragraph':
     case 'heading':
     case 'blockquote':
+    case 'list':
+    case 'table':
     case 'code':
     case 'root':
       return true;
@@ -285,6 +307,13 @@ const ensureChildrenAreBlockNodes = (node: IToken): void => {
       case 'blockquote':
         ensureChildrenAreBlockNodes(child);
         break;
+      case 'list': {
+        const {children} = child;
+        if (children) {
+          const length = children.length;
+          for (let i = 0; i < length; i++) ensureChildrenAreBlockNodes(children[i]);
+        }
+      }
     }
   }
 

@@ -52,5 +52,7 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<h4>heading</h4>', '#### heading'],
   ['<h5>heading</h5>', '##### heading'],
   ['<h6>heading __bold__</h6>', '###### heading __bold__'],
-  
+  ['<ul><li>item 1</li></ul>', '- item 1'],
+  ['<ul><li>item 1</li><li>item 2</li></ul>', '- item 1\n- item 2'],
+  ['<ul><li><p>Item 1</p><ul><li>Item 1.1</li><li>Item 1.2</li></ul></li><li>Item 2</li></ul>', '- Item 1\n  - Item 1.1\n  - Item 1.2\n- Item 2'],
 ];

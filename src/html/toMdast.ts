@@ -243,9 +243,11 @@ export const toMdast = (node: html.THtmlToken): IToken => {
           for (let i = 0; i < length; i++) {
             const child = children[i];
             if (child.type !== 'element' || child.tagName !== 'li') continue;
+            const dataChecked = child.properties?.['data-checked'];
+            const checked = dataChecked ? (dataChecked === 'true') : null;
             const item: md.IListItem = {
               type: 'listItem',
-              checked: null,
+              checked,
               children: toMdastChildren(child) as md.TBlockToken[],
             };
             list.children.push(item);

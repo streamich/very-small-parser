@@ -197,10 +197,23 @@ export const toMdast = (node: html.THtmlToken): IToken => {
         }
         case 'code':
         case 'pre': {
-          return {
+          const attr = node.properties || {};
+          const children = node.children || [];
+          if (children.length) {
+            const firstChild = node.children?.[0];
+            if (firstChild.type === 'element' && firstChild.tagName === 'code') {
+              Object.assign(attr, firstChild.properties);
+            }
+          }
+          const lang = attr['data-lang'] || '';
+          const meta = attr['data-meta'] || '';
+          const mdastNode: md.ICode = {
             type: 'code',
-            children: toMdastChildren(node) as mdi.TInlineToken[],
+            value: toPlainText(node),
+            lang,
           };
+          if (meta) mdastNode.meta = meta;
+          return mdastNode;
         }
         default: {
           return toMdastInline(node) as mdi.TInlineToken;

@@ -40,4 +40,10 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   // Block elements
   ['<p>paragraph</p>', 'paragraph'],
   ['<blockquote>quote</blockquote>', '> quote'],
+  ['<blockquote><p>quote</p></blockquote>', '> quote'],
+  ['<blockquote><p>paragraph 1</p><p>paragraph 2</p></blockquote>', '> paragraph 1\n> \n> paragraph 2'],
+  ['<pre>code</pre>', '```\ncode\n```'],
+  ['<pre><code>printf("asdf");</code></pre>', '```\nprintf("asdf");\n```'],
+  ['<pre data-lang="clang" data-meta="this-is-meta"><code>printf("asdf");</code></pre>', '```clang this-is-meta\nprintf("asdf");\n```'],
+  ['<pre><code data-lang="clang" data-meta="this-is-meta">printf("asdf");</code></pre>', '```clang this-is-meta\nprintf("asdf");\n```'],
 ];

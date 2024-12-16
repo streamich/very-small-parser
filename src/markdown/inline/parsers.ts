@@ -56,7 +56,10 @@ const inlineMath: TTokenizer<types.IInlineMath> = (parser, value) => {
 const REG_FOOTNOTE_REFERENCE = /^\[\^([a-zA-Z0-9\-_]{1,64})\]/;
 const footnoteReference: TTokenizer<types.IFootnoteReference> = (parser, value) => {
   const matches = value.match(REG_FOOTNOTE_REFERENCE);
-  if (matches) return token<types.IFootnoteReference>(matches[0], 'footnoteReference', void 0, {value: matches[1]});
+  if (!matches) return;
+  const label = matches[1];
+  const identifier = label.toLowerCase();
+  return token<types.IFootnoteReference>(matches[0], 'footnoteReference', void 0, {label, identifier});
 };
 
 const REG_REFERENCE = replace(/^!?\[(label)\]\s*(\[([^\]]*)\])?/, {label});

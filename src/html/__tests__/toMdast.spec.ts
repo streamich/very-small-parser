@@ -1,29 +1,23 @@
-import {html} from '..';
-import {toMdast} from '../toMdast';
 import {toText} from '../../markdown/block/toText';
-import {parse} from './setup';
+import {fixupMdast, toMdast} from '../toMdast';
+import {parsef} from './setup';
+import {testCases} from './toMdast.fixtures';
 
-describe('toMdast', () => {
-  describe('block', () => {
-    test('a single paragraph', () => {
-      const hast = html.parsef('<p>hello world</p>');
-      const mdast = toMdast(hast);
-      const text = toText(mdast);
-      expect(text).toBe('hello world');
+describe('toHast', () => {
+  for (const [html, markdown, name = html] of testCases) {
+    it(name, () => {
+      const hast = parsef(html);
+      // console.log(JSON.stringify(hast, null, 2));
+      const mdast = fixupMdast(toMdast(hast));
+      // console.log(JSON.stringify(mdast, null, 2));
+      const md = toText(mdast);
+      // console.log('MD', md);
+      try {
+        expect(md).toBe(markdown);
+      } catch (error) {
+        console.log(md);
+        throw error;
+      }
     });
-
-    test('a blockquote', () => {
-      const hast = html.parsef('<blockquote><p>hello world</p></blockquote>');
-      const mdast = toMdast(hast);
-      const text = toText(mdast);
-      expect(text).toBe('> hello world');
-    });
-
-    // test('code block', () => {
-    //   const hast = html.parsef('<pre>console.log(123);</pre>');
-    //   const mdast = toMdast(hast);
-    //   const text = toText(mdast);
-    //   expect(text).toBe('```\nconsole.log(123);\n```');
-    // });
-  });
+  }
 });

@@ -16,7 +16,8 @@
           "type": "footnoteReference",
           "len": 21,
           "raw": "[^somesamplefootnote]",
-          "value": "somesamplefootnote"
+          "identifier": "somesamplefootnote",
+          "label": "somesamplefootnote"
         },
         {
           "type": "text",
@@ -83,7 +84,8 @@
           "type": "footnoteReference",
           "len": 18,
           "raw": "[^documentdetails]",
-          "value": "documentdetails"
+          "identifier": "documentdetails",
+          "label": "documentdetails"
         },
         {
           "type": "text",

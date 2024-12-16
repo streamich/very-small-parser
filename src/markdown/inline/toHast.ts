@@ -12,20 +12,26 @@ const toHastChildren = ({children}: {children?: IToken[]}): hast.THtmlToken[] =>
 
 const text = (value: string): hast.IText => ({type: 'text', value});
 
+const el = (
+  tagName: string,
+  properties?: hast.IElement['properties'],
+  children?: hast.IElement['children'],
+): hast.IElement => {
+  const node = {
+    type: 'element',
+    tagName,
+  } as hast.IElement;
+  if (properties) node.properties = properties;
+  if (children) node.children = children;
+  return node;
+};
+
 const element = (
   tagName: string,
   inline: TInlineToken,
   properties?: hast.IElement['properties'],
   children: hast.IElement['children'] = toHastChildren(inline) as hast.IElement['children'],
-): hast.IElement => {
-  const node = {
-    type: 'element',
-    tagName,
-    children,
-  } as hast.IElement;
-  if (properties) node.properties = properties;
-  return node;
-};
+): hast.IElement => el(tagName, properties, children);
 
 const elementWithText = (
   tagName: string,
@@ -34,13 +40,16 @@ const elementWithText = (
   properties?: hast.IElement['properties'],
 ): hast.IElement => element(tagName, inline, properties, [{type: 'text', value: text}]);
 
-const anchor = (identifier: string, children: (hast.IElement | hast.IText)[]): hast.IElement => {
+const anchor = (
+  identifier: string,
+  children: (hast.IElement | hast.IText)[],
+  properties: hast.IElement['properties'] = {},
+): hast.IElement => {
+  properties.href = '#' + identifier;
   const node = {
     type: 'element',
     tagName: 'a',
-    properties: {
-      href: '#' + identifier,
-    },
+    properties,
     children,
   } as hast.IElement;
   return node;
@@ -64,12 +73,12 @@ export const toHast = (node: IToken): hast.IElement | hast.IText | hast.IRoot =>
     case 'inlineMath':
       return elementWithText('code', inline, inline.value || '', {class: 'language-math', 'data-lang': 'math'});
     case 'footnoteReference':
-      return {type: 'element', tagName: 'sup', children: [anchor(inline.value, [text(inline.value)])]};
+      return el('sup', {'data-node': 'footnote'}, [anchor(inline.identifier, [text(inline.label)])]);
     case 'linkReference':
       return anchor(inline.identifier, toHastChildren(inline) as (hast.IElement | hast.IText)[]);
     case 'imageReference': {
       const {identifier, alt} = inline;
-      return anchor(identifier, [text(alt || identifier)]);
+      return anchor(identifier, [text(alt || identifier)], {'data-ref': 'img'});
     }
     case 'link': {
       const {title, url} = inline;
@@ -100,8 +109,8 @@ export const toHast = (node: IToken): hast.IElement | hast.IText | hast.IRoot =>
       return element('br', inline);
     case 'icon':
       return elementWithText('acronym', inline, ':' + inline.emoji + ':', {
-        title: inline.emoji + ' emoji icon',
-        'data-emoji': inline.emoji,
+        title: inline.emoji + ' icon',
+        'data-icon': inline.emoji,
       });
     case 'element':
       return inline;

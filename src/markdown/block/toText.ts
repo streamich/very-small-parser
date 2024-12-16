@@ -136,5 +136,5 @@ export const toText = (node: IToken | IToken[]): string => {
     case '': // newline
       return '\n\n';
   }
-  return toTextBlockChildren((block as any).children);
+  return toTextBlockChildren((block as any).children ?? []);
 };

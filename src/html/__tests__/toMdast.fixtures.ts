@@ -46,4 +46,11 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<pre><code>printf("asdf");</code></pre>', '```\nprintf("asdf");\n```'],
   ['<pre data-lang="clang" data-meta="this-is-meta"><code>printf("asdf");</code></pre>', '```clang this-is-meta\nprintf("asdf");\n```'],
   ['<pre><code data-lang="clang" data-meta="this-is-meta">printf("asdf");</code></pre>', '```clang this-is-meta\nprintf("asdf");\n```'],
+  ['<h1>heading</h1>', '# heading'],
+  ['<h2>heading</h2>', '## heading'],
+  ['<h3>heading</h3>', '### heading'],
+  ['<h4>heading</h4>', '#### heading'],
+  ['<h5>heading</h5>', '##### heading'],
+  ['<h6>heading __bold__</h6>', '###### heading __bold__'],
+  
 ];

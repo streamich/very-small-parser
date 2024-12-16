@@ -215,6 +215,20 @@ export const toMdast = (node: html.THtmlToken): IToken => {
           if (meta) mdastNode.meta = meta;
           return mdastNode;
         }
+        case 'h1':
+        case 'h2':
+        case 'h3':
+        case 'h4':
+        case 'h5':
+        case 'h6': {
+          const depth = parseInt(tagName[1]);
+          const headingNode: md.IHeading = {
+            type: 'heading',
+            depth,
+            children: toMdastInlineChildren(node) as mdi.TInlineToken[],
+          };
+          return headingNode;
+        }
         default: {
           return toMdastInline(node) as mdi.TInlineToken;
         }
@@ -234,6 +248,7 @@ export const toMdast = (node: html.THtmlToken): IToken => {
 const isBlock = (node: IToken): node is md.TBlockToken => {
   switch (node.type) {
     case 'paragraph':
+    case 'heading':
     case 'blockquote':
     case 'code':
     case 'root':

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">98.3% </span>
+                <span class="strong">98.43% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>58/59</span>
+                <span class='fraction'>63/64</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.75% </span>
+                <span class="strong">94.11% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>30/32</span>
+                <span class='fraction'>32/34</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">98% </span>
+                <span class="strong">98.14% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>49/50</span>
+                <span class='fraction'>53/54</span>
             </div>
         
             
@@ -175,7 +175,16 @@
 <a name='L110'></a><a href='#L110'>110</a>
 <a name='L111'></a><a href='#L111'>111</a>
 <a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -194,15 +203,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">57x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">57x</span>
+<span class="cline-any cline-yes">57x</span>
+<span class="cline-any cline-yes">57x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">55x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">55x</span>
-<span class="cline-any cline-yes">55x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -212,9 +227,12 @@
 <span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -301,20 +319,26 @@ const toHastChildren = ({children}: {children?: IToken[]}): hast.THtmlToken[] =&
 &nbsp;
 const text = (value: string): hast.IText =&gt; ({type: 'text', value});
 &nbsp;
+const el = (
+  tagName: string,
+  properties?: hast.IElement['properties'],
+  children?: hast.IElement['children'],
+): hast.IElement =&gt; {
+  const node = {
+    type: 'element',
+    tagName,
+  } as hast.IElement;
+  if (properties) node.properties = properties;
+  if (children) node.children = children;
+  return node;
+};
+&nbsp;
 const element = (
   tagName: string,
   inline: TInlineToken,
   properties?: hast.IElement['properties'],
   children: hast.IElement['children'] = toHastChildren(inline) as hast.IElement['children'],
-): hast.IElement =&gt; {
-  const node = {
-    type: 'element',
-    tagName,
-    children,
-  } as hast.IElement;
-  if (properties) node.properties = properties;
-  return node;
-};
+): hast.IElement =&gt; el(tagName, properties, children);
 &nbsp;
 const elementWithText = (
   tagName: string,
@@ -323,13 +347,16 @@ const elementWithText = (
   properties?: hast.IElement['properties'],
 ): hast.IElement =&gt; element(tagName, inline, properties, [{type: 'text', value: text}]);
 &nbsp;
-const anchor = (identifier: string, children: (hast.IElement | hast.IText)[]): hast.IElement =&gt; {
+const anchor = (
+  identifier: string,
+  children: (hast.IElement | hast.IText)[],
+  properties: hast.IElement['properties'] = {},
+): hast.IElement =&gt; {
+  properties.href = '#' + identifier;
   const node = {
     type: 'element',
     tagName: 'a',
-    properties: {
-      href: '#' + identifier,
-    },
+    properties,
     children,
   } as hast.IElement;
   return node;
@@ -353,12 +380,12 @@ export const toHast = (node: IToken): hast.IElement | hast.IText | hast.IRoot =&
     case 'inlineMath':
       return elementWithText('code', inline, inline.value || <span class="branch-1 cbranch-no" title="branch not covered" >'',</span> {class: 'language-math', 'data-lang': 'math'});
     case 'footnoteReference':
-      return {type: 'element', tagName: 'sup', children: [anchor(inline.value, [text(inline.value)])]};
+      return el('sup', {'data-node': 'footnote'}, [anchor(inline.identifier, [text(inline.label)])]);
     case 'linkReference':
       return anchor(inline.identifier, toHastChildren(inline) as (hast.IElement | hast.IText)[]);
     case 'imageReference': {
       const {identifier, alt} = inline;
-      return anchor(identifier, [text(alt || identifier)]);
+      return anchor(identifier, [text(alt || identifier)], {'data-ref': 'img'});
     }
     case 'link': {
       const {title, url} = inline;
@@ -389,8 +416,8 @@ export const toHast = (node: IToken): hast.IElement | hast.IText | hast.IRoot =&
       return element('br', inline);
     case 'icon':
       return elementWithText('acronym', inline, ':' + inline.emoji + ':', {
-        title: inline.emoji + ' emoji icon',
-        'data-emoji': inline.emoji,
+        title: inline.emoji + ' icon',
+        'data-icon': inline.emoji,
       });
     case 'element':
       return inline;
@@ -406,7 +433,7 @@ export const toHast = (node: IToken): hast.IElement | hast.IText | hast.IRoot =&
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-12-16T03:50:25.629Z
+                at 2024-12-16T16:47:09.621Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

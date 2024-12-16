@@ -138,20 +138,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">29x</span>
 <span class="cline-any cline-yes">29x</span>
-<span class="cline-any cline-yes">4706x</span>
-<span class="cline-any cline-yes">4706x</span>
-<span class="cline-any cline-yes">380x</span>
-<span class="cline-any cline-yes">380x</span>
-<span class="cline-any cline-yes">380x</span>
+<span class="cline-any cline-yes">5000x</span>
+<span class="cline-any cline-yes">5000x</span>
+<span class="cline-any cline-yes">413x</span>
+<span class="cline-any cline-yes">413x</span>
+<span class="cline-any cline-yes">413x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">29x</span>
 <span class="cline-any cline-yes">29x</span>
-<span class="cline-any cline-yes">7983x</span>
-<span class="cline-any cline-yes">7983x</span>
-<span class="cline-any cline-yes">3277x</span>
-<span class="cline-any cline-yes">3277x</span>
+<span class="cline-any cline-yes">8395x</span>
+<span class="cline-any cline-yes">8395x</span>
+<span class="cline-any cline-yes">3395x</span>
+<span class="cline-any cline-yes">3395x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">29x</span>
@@ -159,37 +159,37 @@
 <span class="cline-any cline-yes">29x</span>
 <span class="cline-any cline-yes">29x</span>
 <span class="cline-any cline-yes">29x</span>
-<span class="cline-any cline-yes">5317x</span>
-<span class="cline-any cline-yes">5317x</span>
-<span class="cline-any cline-yes">1577x</span>
-<span class="cline-any cline-yes">1577x</span>
-<span class="cline-any cline-yes">1577x</span>
-<span class="cline-any cline-yes">1577x</span>
-<span class="cline-any cline-yes">1577x</span>
-<span class="cline-any cline-yes">425x</span>
-<span class="cline-any cline-yes">425x</span>
+<span class="cline-any cline-yes">5578x</span>
+<span class="cline-any cline-yes">5578x</span>
+<span class="cline-any cline-yes">1716x</span>
+<span class="cline-any cline-yes">1716x</span>
+<span class="cline-any cline-yes">1716x</span>
+<span class="cline-any cline-yes">1716x</span>
+<span class="cline-any cline-yes">1716x</span>
+<span class="cline-any cline-yes">461x</span>
+<span class="cline-any cline-yes">461x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1577x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1716x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1577x</span>
-<span class="cline-any cline-yes">868x</span>
-<span class="cline-any cline-yes">868x</span>
-<span class="cline-any cline-yes">868x</span>
-<span class="cline-any cline-yes">868x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1716x</span>
+<span class="cline-any cline-yes">1001x</span>
+<span class="cline-any cline-yes">1001x</span>
+<span class="cline-any cline-yes">1001x</span>
+<span class="cline-any cline-yes">1001x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">868x</span>
-<span class="cline-any cline-yes">868x</span>
-<span class="cline-any cline-yes">237x</span>
+<span class="cline-any cline-yes">1001x</span>
+<span class="cline-any cline-yes">1001x</span>
+<span class="cline-any cline-yes">415x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">237x</span>
+<span class="cline-any cline-yes">415x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">946x</span>
+<span class="cline-any cline-yes">1130x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">29x</span>
@@ -223,7 +223,7 @@ const text: TTokenizer&lt;type.IText, HtmlParser&gt; = (_, src) =&gt; {
 &nbsp;
 const REG_ATTR = / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=&lt;&gt;`]+)?/;
 const REG_OPEN_TAG = reg.replace(/^&lt;([a-z][\w-]*)(?:attr)*? *(\/?)&gt;/, {attr: REG_ATTR});
-const REG_ATTRS = /([\w|data-]+)=["']?((?:.(?!["']?\s+(?:\S+)=|\s*\/?[&gt;"']))+.)["']?/gm;
+const REG_ATTRS = /([\w|data-]+)=["']?((?:.(?!["']?\s+(?:\S+)=|\s*\/?[&gt;"']))*.)["']?/gm;
 const REG_CLOSE_TAG = /^&lt;\/([a-z][\w-]*)&gt;/;
 export const el: TTokenizer&lt;type.IElement, HtmlParser&gt; = (parser, src) =&gt; {
   const matchOpen = src.match(REG_OPEN_TAG);
@@ -233,7 +233,7 @@ export const el: TTokenizer&lt;type.IElement, HtmlParser&gt; = (parser, src) =&g
   const attrSrc = match.slice(tagName.length + 1, -1 - selfClosing.length);
   const properties: Record&lt;string, string&gt; = {};
   if (attrSrc) {
-    const attrs = src.matchAll(REG_ATTRS);
+    const attrs = attrSrc.matchAll(REG_ATTRS);
     for (const [, key, value] of attrs) properties[key] = value;
   }
   const token: type.IElement = {
@@ -271,7 +271,7 @@ export const parsers: TTokenizer&lt;type.THtmlToken, HtmlParser&gt;[] = [
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-12-16T03:50:25.629Z
+                at 2024-12-16T16:47:09.621Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

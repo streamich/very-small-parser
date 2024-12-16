@@ -124,7 +124,7 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
               }
             }
           }
-          break;
+          return;
         }
         case 'img': {
           const attr = node.properties || {};
@@ -173,7 +173,10 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
 const toMdastChildren = ({children}: {children: html.THtmlToken[]}): IToken[] => {
   const res: IToken[] = [];
   const length = children.length;
-  for (let i = 0; i < length; i++) res.push(toMdast(children[i]));
+  for (let i = 0; i < length; i++) {
+    const node = toMdast(children[i]);
+    if (node) res.push(node);
+  }
   return res;
 };
 
@@ -340,6 +343,18 @@ export const toMdast = (node: html.THtmlToken): IToken => {
               if (title) definitionNode.title = title;
               return definitionNode;
             }
+            case 'footnoteDefinition': {
+              const label = attr['data-label'];
+              const identifier = attr['data-id'];
+              const children = toMdastChildren(node) as md.TBlockToken[];
+              const footnoteDefinitionNode: md.IFootnoteDefinition = {
+                type: 'footnoteDefinition',
+                label,
+                identifier,
+                children,
+              };
+              return footnoteDefinitionNode;
+            }
           }
           break;
         }
@@ -411,7 +426,11 @@ const ensureChildrenAreBlockNodes = (node: IToken): void => {
           const length = children.length;
           for (let i = 0; i < length; i++) ensureChildrenAreBlockNodes(children[i]);
         }
+        break;
       }
+      case 'footnoteDefinition':
+        ensureChildrenAreBlockNodes(child);
+        break;
     }
   }
 

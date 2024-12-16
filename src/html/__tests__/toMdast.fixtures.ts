@@ -144,4 +144,7 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<p><center>hello</center></p>', '<center>hello</center>'],
   ['<div data-node="definition" data-label="Def" data-id="def" data-url="http://example.com"><a href="">title</a></div>', '[Def]: http://example.com'],
   ['<div data-node="definition" data-label="Def" data-id="def" data-url="http://example.com" data-title="My title"><a href="">title</a></div>', '[Def]: http://example.com "My title"'],
+  [`<div data-node="footnoteDefinition" data-label="Def" data-id="def"><a name="anchor">def</a><p>paragraph 1</p><p>paragraph 2</p></div>`, '[^Def]: paragraph 1\n  \n  paragraph 2'],
+  [`<div data-node="footnoteDefinition" data-label="Def" data-id="def"><a name="anchor">def</a><p>paragraph 1</p></div>`, '[^Def]: paragraph 1'],
+  [`<div data-node="footnoteDefinition" data-label="Def" data-id="def"><a name="anchor">def</a>paragraph 1</div>`, '[^Def]: paragraph 1'],
 ];

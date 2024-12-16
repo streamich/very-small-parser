@@ -40,7 +40,11 @@ const elementWithText = (
   properties?: hast.IElement['properties'],
 ): hast.IElement => element(tagName, inline, properties, [{type: 'text', value: text}]);
 
-const anchor = (identifier: string, children: (hast.IElement | hast.IText)[], properties: hast.IElement['properties'] = {}): hast.IElement => {
+const anchor = (
+  identifier: string,
+  children: (hast.IElement | hast.IText)[],
+  properties: hast.IElement['properties'] = {},
+): hast.IElement => {
   properties.href = '#' + identifier;
   const node = {
     type: 'element',

@@ -25,7 +25,10 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<a href="https://example.com">https://example.com</a>', 'https://example.com'],
   ['<img src="https://example.com" />', '![](https://example.com)'],
   ['<img src="https://example.com" alt="This is alt" />', '![This is alt](https://example.com)'],
-  ['<img src="https://example.com" alt="This is alt" title="This is title" />', '![This is alt](https://example.com "This is title")'],
+  [
+    '<img src="https://example.com" alt="This is alt" title="This is title" />',
+    '![This is alt](https://example.com "This is title")',
+  ],
   ['<cite>#tag</cite>', '#tag'],
   ['<cite>@user</cite>', '@user'],
   ['<cite>~stream</cite>', '~stream'],
@@ -44,8 +47,14 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<blockquote><p>paragraph 1</p><p>paragraph 2</p></blockquote>', '> paragraph 1\n> \n> paragraph 2'],
   ['<pre>code</pre>', '```\ncode\n```'],
   ['<pre><code>printf("asdf");</code></pre>', '```\nprintf("asdf");\n```'],
-  ['<pre data-lang="clang" data-meta="this-is-meta"><code>printf("asdf");</code></pre>', '```clang this-is-meta\nprintf("asdf");\n```'],
-  ['<pre><code data-lang="clang" data-meta="this-is-meta">printf("asdf");</code></pre>', '```clang this-is-meta\nprintf("asdf");\n```'],
+  [
+    '<pre data-lang="clang" data-meta="this-is-meta"><code>printf("asdf");</code></pre>',
+    '```clang this-is-meta\nprintf("asdf");\n```',
+  ],
+  [
+    '<pre><code data-lang="clang" data-meta="this-is-meta">printf("asdf");</code></pre>',
+    '```clang this-is-meta\nprintf("asdf");\n```',
+  ],
   ['<h1>heading</h1>', '# heading'],
   ['<h2>heading</h2>', '## heading'],
   ['<h3>heading</h3>', '### heading'],
@@ -54,12 +63,19 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<h6>heading __bold__</h6>', '###### heading __bold__'],
   ['<ul><li>item 1</li></ul>', '- item 1'],
   ['<ul><li>item 1</li><li>item 2</li></ul>', '- item 1\n- item 2'],
-  ['<ul><li><p>Item 1</p><ul><li>Item 1.1</li><li>Item 1.2</li></ul></li><li>Item 2</li></ul>', '- Item 1\n  - Item 1.1\n  - Item 1.2\n- Item 2'],
+  [
+    '<ul><li><p>Item 1</p><ul><li>Item 1.1</li><li>Item 1.2</li></ul></li><li>Item 2</li></ul>',
+    '- Item 1\n  - Item 1.1\n  - Item 1.2\n- Item 2',
+  ],
   ['<ol><li>item 1</li></ol>', '1. item 1'],
   ['<ol start="3"><li>item 1</li></ol>', '3. item 1'],
   ['<ul><li data-checked="true">item 1</li><li data-checked="false">item 2</li></ul>', '- [x] item 1\n- [ ] item 2'],
   ['<hr />', '---'],
-  ['<table><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr><td>Cell 1</td><td>Cell 2</td></tr></tbody></table>', '| Header 1 | Header 2 |\n|----------|----------|\n| Cell 1   | Cell 2   |', '2x2 basic table'],
+  [
+    '<table><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr><td>Cell 1</td><td>Cell 2</td></tr></tbody></table>',
+    '| Header 1 | Header 2 |\n|----------|----------|\n| Cell 1   | Cell 2   |',
+    '2x2 basic table',
+  ],
   [
     `<table>
     <thead>
@@ -142,9 +158,24 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<pre><code data-math="true">y(x) = 2</code></pre>', '$$\ny(x) = 2\n$$'],
   ['<center>hello</center>', '<center>hello</center>'],
   ['<p><center>hello</center></p>', '<center>hello</center>'],
-  ['<div data-node="definition" data-label="Def" data-id="def" data-url="http://example.com"><a href="">title</a></div>', '[Def]: http://example.com'],
-  ['<div data-node="definition" data-label="Def" data-id="def" data-url="http://example.com" data-title="My title"><a href="">title</a></div>', '[Def]: http://example.com "My title"'],
-  [`<div data-node="footnoteDefinition" data-label="Def" data-id="def"><a name="anchor">def</a><p>paragraph 1</p><p>paragraph 2</p></div>`, '[^Def]: paragraph 1\n  \n  paragraph 2'],
-  [`<div data-node="footnoteDefinition" data-label="Def" data-id="def"><a name="anchor">def</a><p>paragraph 1</p></div>`, '[^Def]: paragraph 1'],
-  [`<div data-node="footnoteDefinition" data-label="Def" data-id="def"><a name="anchor">def</a>paragraph 1</div>`, '[^Def]: paragraph 1'],
+  [
+    '<div data-node="definition" data-label="Def" data-id="def" data-url="http://example.com"><a href="">title</a></div>',
+    '[Def]: http://example.com',
+  ],
+  [
+    '<div data-node="definition" data-label="Def" data-id="def" data-url="http://example.com" data-title="My title"><a href="">title</a></div>',
+    '[Def]: http://example.com "My title"',
+  ],
+  [
+    `<div data-node="footnoteDefinition" data-label="Def" data-id="def"><a name="anchor">def</a><p>paragraph 1</p><p>paragraph 2</p></div>`,
+    '[^Def]: paragraph 1\n  \n  paragraph 2',
+  ],
+  [
+    `<div data-node="footnoteDefinition" data-label="Def" data-id="def"><a name="anchor">def</a><p>paragraph 1</p></div>`,
+    '[^Def]: paragraph 1',
+  ],
+  [
+    `<div data-node="footnoteDefinition" data-label="Def" data-id="def"><a name="anchor">def</a>paragraph 1</div>`,
+    '[^Def]: paragraph 1',
+  ],
 ];

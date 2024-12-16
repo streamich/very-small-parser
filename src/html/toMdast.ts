@@ -14,10 +14,16 @@ const toMdastInlineChildren = ({children}: {children: html.THtmlToken[]}): mdi.T
   return res;
 };
 
-const createSimpleInlineNode = <N extends mdi.IStrong | mdi.IEmphasis | mdi.IDelete | mdi.ISpoiler | mdi.ISup | mdi.ISub | mdi.IMark | mdi.IUnderline>(type: N['type'], element: html.IElement): N => ({
-  type,
-  children: toMdastInlineChildren(element),
-}) as N;
+const createSimpleInlineNode = <
+  N extends mdi.IStrong | mdi.IEmphasis | mdi.IDelete | mdi.ISpoiler | mdi.ISup | mdi.ISub | mdi.IMark | mdi.IUnderline,
+>(
+  type: N['type'],
+  element: html.IElement,
+): N =>
+  ({
+    type,
+    children: toMdastInlineChildren(element),
+  }) as N;
 
 const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
   const {type} = node;
@@ -42,11 +48,15 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
           };
         }
         case 'b':
-        case 'strong': return createSimpleInlineNode('strong', node);
+        case 'strong':
+          return createSimpleInlineNode('strong', node);
         case 'i':
-        case 'em': return createSimpleInlineNode('emphasis', node);
-        case 'del': return createSimpleInlineNode('delete', node);
-        case 'spoiler': return createSimpleInlineNode('spoiler', node);
+        case 'em':
+          return createSimpleInlineNode('emphasis', node);
+        case 'del':
+          return createSimpleInlineNode('delete', node);
+        case 'spoiler':
+          return createSimpleInlineNode('spoiler', node);
         case 'sup': {
           const attr = node.properties;
           let isFootnoteReference = attr?.['data-node'] === 'footnote';
@@ -68,9 +78,12 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
           }
           return createSimpleInlineNode('sup', node);
         }
-        case 'sub': return createSimpleInlineNode('sub', node); 
-        case 'mark': return createSimpleInlineNode('mark', node); 
-        case 'u': return createSimpleInlineNode('underline', node); 
+        case 'sub':
+          return createSimpleInlineNode('sub', node);
+        case 'mark':
+          return createSimpleInlineNode('mark', node);
+        case 'u':
+          return createSimpleInlineNode('underline', node);
         case 'acronym': {
           const attr = node.properties;
           const emoji = attr?.['data-icon'];
@@ -97,7 +110,7 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
                   identifier,
                   alt,
                   referenceType: alt ? 'full' : 'collapsed',
-                } as mdi.IImageReference
+                } as mdi.IImageReference;
               } else {
                 const text = toPlainText(node).trim();
                 return {
@@ -105,11 +118,17 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
                   identifier,
                   referenceType: text ? 'full' : 'collapsed',
                   children: toMdastInlineChildren(node),
-                } as mdi.ILinkReference
+                } as mdi.ILinkReference;
               }
             } else {
               const title = attr.title;
-              if (!title && node.children?.length === 1 && node.children[0].type === 'text' && node.children[0].value === href && href.startsWith('http')) {
+              if (
+                !title &&
+                node.children?.length === 1 &&
+                node.children[0].type === 'text' &&
+                node.children[0].value === href &&
+                href.startsWith('http')
+              ) {
                 return {
                   type: 'inlineLink',
                   value: href,
@@ -258,7 +277,7 @@ export const toMdast = (node: html.THtmlToken): IToken => {
             const child = children[i];
             if (child.type !== 'element' || child.tagName !== 'li') continue;
             const dataChecked = child.properties?.['data-checked'];
-            const checked = dataChecked ? (dataChecked === 'true') : null;
+            const checked = dataChecked ? dataChecked === 'true' : null;
             const item: md.IListItem = {
               type: 'listItem',
               checked,
@@ -268,7 +287,8 @@ export const toMdast = (node: html.THtmlToken): IToken => {
           }
           return list;
         }
-        case 'hr': return {type: 'thematicBreak'} as md.IThematicBreak;
+        case 'hr':
+          return {type: 'thematicBreak'} as md.IThematicBreak;
         case 'table': {
           const table: md.ITable = {
             type: 'table',

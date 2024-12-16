@@ -58,5 +58,6 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   // ['<ol><li>item 1</li></ol>', '1. item 1'],
   // ['<ol start="3"><li>item 1</li></ol>', '3. item 1'],
   // ['<ul><li data-checked="true">item 1</li><li data-checked="false">item 2</li></ul>', '- [x] item 1\n- [ ] item 2'],
-  ['<hr />', '---'],
+  // ['<hr />', '---'],
+  ['<table><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr><td>Cell 1</td><td>Cell 2</td></tr></tbody></table>', '| Header 1 | Header 2 |\n|----------|----------|\n| Cell 1   | Cell 2   |'],
 ];

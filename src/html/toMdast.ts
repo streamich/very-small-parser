@@ -255,6 +255,57 @@ export const toMdast = (node: html.THtmlToken): IToken => {
           return list;
         }
         case 'hr': return {type: 'thematicBreak'} as md.IThematicBreak;
+        case 'table': {
+          const table: md.ITable = {
+            type: 'table',
+            align: [],
+            children: [],
+          };
+          let maxColumns = 0;
+          let minColumns = 1e9;
+          const processRow = (hastRow: html.IElement, rowType: 'head' | 'body') => {
+            table.align.push(null);
+            const row: md.ITableRow = {
+              type: 'tableRow',
+              children: [],
+            };
+            const children = hastRow.children || [];
+            const length = children.length;
+            if (length > maxColumns) maxColumns = length;
+            if (length < minColumns) minColumns = length;
+            for (let i = 0; i < length; i++) {
+              const child = children[i];
+              const cell: md.ITableCell = {
+                type: 'tableCell',
+                children: toMdastInlineChildren(child as {children: html.THtmlToken[]}),
+              };
+              row.children.push(cell);
+            }
+            table.children.push(row);
+          };
+          const processRows = (hastRow: html.IElement, rowType: 'head' | 'body') => {
+            for (const child of hastRow.children || [])
+              if (child.type === 'element' && child.tagName === 'tr') processRow(child, rowType);
+          };
+          for (const tableChild of node.children || []) {
+            if (tableChild.type !== 'element') continue;
+            switch (tableChild.tagName) {
+              case 'thead': {
+                processRows(tableChild, 'head');
+                break;
+              }
+              case 'tbody': {
+                processRows(tableChild, 'body');
+                break;
+              }
+              case 'tr': {
+                processRow(tableChild, 'body');
+                break;
+              }
+            }
+          }
+          return table;
+        }
         default: {
           return toMdastInline(node) as mdi.TInlineToken;
         }

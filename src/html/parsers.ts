@@ -24,7 +24,7 @@ const text: TTokenizer<type.IText, HtmlParser> = (_, src) => {
 
 const REG_ATTR = / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/;
 const REG_OPEN_TAG = reg.replace(/^<([a-z][\w-]*)(?:attr)*? *(\/?)>/, {attr: REG_ATTR});
-const REG_ATTRS = /([\w|data-]+)=["']?((?:.(?!["']?\s+(?:\S+)=|\s*\/?[>"']))+.)["']?/gm;
+const REG_ATTRS = /([\w|data-]+)=["']?((?:.(?!["']?\s+(?:\S+)=|\s*\/?[>"']))*.)["']?/gm;
 const REG_CLOSE_TAG = /^<\/([a-z][\w-]*)>/;
 export const el: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
   const matchOpen = src.match(REG_OPEN_TAG);

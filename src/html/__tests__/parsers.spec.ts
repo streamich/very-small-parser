@@ -200,6 +200,17 @@ describe('parsers', () => {
           children: [{type: 'text', value: ' ! '}],
         });
       });
+
+      test('can parse "start" attribute, which is single char', () => {
+        const ast = parse('<ol start="3"><li>item 1</li></ol>');
+        expect(ast[0]).toMatchObject({
+          type: 'element',
+          tagName: 'ol',
+          properties: {
+            start: '3',
+          },
+        });
+      });
     });
 
     describe('self closing', () => {

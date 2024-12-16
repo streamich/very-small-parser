@@ -321,6 +321,28 @@ export const toMdast = (node: html.THtmlToken): IToken => {
           }
           return table;
         }
+        case 'div': {
+          const attr = node.properties || {};
+          const nodeType = attr['data-node'];
+          switch (nodeType) {
+            case 'definition': {
+              const label = attr['data-label'];
+              const identifier = attr['data-id'];
+              const url = attr['data-url'];
+              if (!label || !identifier || !url) break;
+              const definitionNode: md.IDefinition = {
+                type: 'definition',
+                label,
+                identifier,
+                url,
+              };
+              const title = attr['data-title'];
+              if (title) definitionNode.title = title;
+              return definitionNode;
+            }
+          }
+          break;
+        }
         default: {
           return toMdastInline(node) as mdi.TInlineToken;
         }
@@ -344,9 +366,11 @@ const isBlock = (node: IToken): node is md.TBlockToken => {
     case 'blockquote':
     case 'list':
     case 'code':
+    case 'definition':
     case 'thematicBreak':
     case 'table':
     case 'math':
+    case 'footnoteDefinition':
     case 'root':
       return true;
   }

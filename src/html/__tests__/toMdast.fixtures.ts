@@ -138,7 +138,10 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
 | foo  |   bar  |   baz | qux  |`,
     'table with column alignment (raw rows, 2 rows)',
   ],
-
   ['<pre data-math="true"><code>y(x) = 2</code></pre>', '$$\ny(x) = 2\n$$'],
   ['<pre><code data-math="true">y(x) = 2</code></pre>', '$$\ny(x) = 2\n$$'],
+  ['<center>hello</center>', '<center>hello</center>'],
+  ['<p><center>hello</center></p>', '<center>hello</center>'],
+  ['<div data-node="definition" data-label="Def" data-id="def" data-url="http://example.com"><a href="">title</a></div>', '[Def]: http://example.com'],
+  ['<div data-node="definition" data-label="Def" data-id="def" data-url="http://example.com" data-title="My title"><a href="">title</a></div>', '[Def]: http://example.com "My title"'],
 ];

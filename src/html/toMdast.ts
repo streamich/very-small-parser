@@ -229,14 +229,17 @@ export const toMdast = (node: html.THtmlToken): IToken => {
           };
           return headingNode;
         }
-        case 'ul': {
+        case 'ul':
+        case 'ol': {
           const children = node.children || [];
           const length = children.length;
+          const ordered = tagName === 'ol';
           const list: md.IList = {
             type: 'list',
-            ordered: false,
+            ordered,
             children: [],
           };
+          if (ordered) list.start = parseInt(node.properties?.start || '1');
           for (let i = 0; i < length; i++) {
             const child = children[i];
             if (child.type !== 'element' || child.tagName !== 'li') continue;

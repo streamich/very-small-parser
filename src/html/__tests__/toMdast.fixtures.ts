@@ -55,4 +55,6 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   ['<ul><li>item 1</li></ul>', '- item 1'],
   ['<ul><li>item 1</li><li>item 2</li></ul>', '- item 1\n- item 2'],
   ['<ul><li><p>Item 1</p><ul><li>Item 1.1</li><li>Item 1.2</li></ul></li><li>Item 2</li></ul>', '- Item 1\n  - Item 1.1\n  - Item 1.2\n- Item 2'],
+  ['<ol><li>item 1</li></ol>', '1. item 1'],
+  ['<ol start="3"><li>item 1</li></ol>', '3. item 1'],
 ];

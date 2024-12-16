@@ -207,6 +207,15 @@ export const toMdast = (node: html.THtmlToken): IToken => {
               Object.assign(attr, firstChild.properties);
             }
           }
+
+          const isMath = attr['data-math'] === 'true';
+          if (isMath) {
+            const mdastNode: md.IMath = {
+              type: 'math',
+              value: toPlainText(node),
+            };
+            return mdastNode;
+          }
           const lang = attr['data-lang'] || '';
           const meta = attr['data-meta'] || '';
           const mdastNode: md.ICode = {
@@ -263,8 +272,6 @@ export const toMdast = (node: html.THtmlToken): IToken => {
             align: [],
             children: [],
           };
-          let maxColumns = 0;
-          let minColumns = 1e9;
           let firstRow = true;
           const processRow = (hastRow: html.IElement) => {
             const row: md.ITableRow = {
@@ -273,8 +280,6 @@ export const toMdast = (node: html.THtmlToken): IToken => {
             };
             const children = hastRow.children || [];
             const length = children.length;
-            if (length > maxColumns) maxColumns = length;
-            if (length < minColumns) minColumns = length;
             for (let i = 0; i < length; i++) {
               const child = children[i];
               if (child.type !== 'element') continue;
@@ -341,6 +346,7 @@ const isBlock = (node: IToken): node is md.TBlockToken => {
     case 'code':
     case 'thematicBreak':
     case 'table':
+    case 'math':
     case 'root':
       return true;
   }

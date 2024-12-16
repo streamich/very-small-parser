@@ -138,4 +138,7 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
 | foo  |   bar  |   baz | qux  |`,
     'table with column alignment (raw rows, 2 rows)',
   ],
+
+  ['<pre data-math="true"><code>y(x) = 2</code></pre>', '$$\ny(x) = 2\n$$'],
+  ['<pre><code data-math="true">y(x) = 2</code></pre>', '$$\ny(x) = 2\n$$'],
 ];

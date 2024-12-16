@@ -34,7 +34,7 @@ export const el: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
   const attrSrc = match.slice(tagName.length + 1, -1 - selfClosing.length);
   const properties: Record<string, string> = {};
   if (attrSrc) {
-    const attrs = src.matchAll(REG_ATTRS);
+    const attrs = attrSrc.matchAll(REG_ATTRS);
     for (const [, key, value] of attrs) properties[key] = value;
   }
   const token: type.IElement = {

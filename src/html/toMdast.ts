@@ -59,7 +59,7 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
           return createSimpleInlineNode('spoiler', node);
         case 'sup': {
           const attr = node.properties;
-          let isFootnoteReference = attr?.['data-node'] === 'footnote';
+          const isFootnoteReference = attr?.['data-node'] === 'footnote';
           if (isFootnoteReference) {
             const anchor = node.children?.[0];
             if (anchor && anchor.type === 'element' && anchor.tagName === 'a') {
@@ -254,7 +254,7 @@ export const toMdast = (node: html.THtmlToken): IToken => {
         case 'h4':
         case 'h5':
         case 'h6': {
-          const depth = parseInt(tagName[1]);
+          const depth = Number.parseInt(tagName[1]);
           const headingNode: md.IHeading = {
             type: 'heading',
             depth,
@@ -272,7 +272,7 @@ export const toMdast = (node: html.THtmlToken): IToken => {
             ordered,
             children: [],
           };
-          if (ordered) list.start = parseInt(node.properties?.start || '1');
+          if (ordered) list.start = Number.parseInt(node.properties?.start || '1');
           for (let i = 0; i < length; i++) {
             const child = children[i];
             if (child.type !== 'element' || child.tagName !== 'li') continue;

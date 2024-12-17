@@ -128,3 +128,15 @@ const html = toText(hast);
 //   !
 // </div>
 ```
+
+Convert HAST to MDAST (HTML AST to Markdown AST):
+
+```js
+import { html } from 'very-small-parser';
+import { toMdast } from 'very-small-parser/lib/html/toMdast';
+import { toText } from 'very-small-parser/lib/markdown/block/toText';
+
+const hast = html.parse('<p><b>Hello</b> <i>world</i>!</p>');
+const mdast = toMdast(hast);
+const text = toText(mdast); // __Hello__ _world_!
+```

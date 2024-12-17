@@ -25,6 +25,8 @@ const createSimpleInlineNode = <
     children: toMdastInlineChildren(element),
   }) as N;
 
+const BLOCK_TAGS_REGEX = /^(blockquote|div|h1|h2|h3|h4|h5|h6|hr|ol|p|pre|table|ul)$/;
+
 const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
   const {type} = node;
   switch (type) {
@@ -181,12 +183,15 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
           } as mdi.IBreak;
         }
       }
+      if (BLOCK_TAGS_REGEX.test(tagName)) {
+        return toMdast0(node) as mdi.TInlineToken;
+      }
+      return node as html.IElement;
       break;
     }
     case 'text':
       return node as mdi.IText;
   }
-  return node as html.IElement;
 };
 
 const toMdastChildren = ({children}: {children: html.THtmlToken[]}): IToken[] => {
@@ -376,7 +381,10 @@ export const toMdast0 = (node: html.THtmlToken): IToken => {
               return footnoteDefinitionNode;
             }
           }
-          break;
+          return {
+            type: 'root',
+            children: toMdastChildren(node) as md.TBlockToken[],
+          };
         }
         default: {
           return toMdastInline(node) as mdi.TInlineToken;
@@ -406,21 +414,43 @@ const isBlock = (node: IToken): node is md.TBlockToken => {
     case 'table':
     case 'math':
     case 'footnoteDefinition':
-    case 'root':
       return true;
   }
   return false;
 };
 
+const flattenInlineChildren = (node: IToken): mdi.TInlineToken[] => {
+  let result: mdi.TInlineToken[] = [];
+  const children = node.children ?? [];
+  const length = children.length;
+  for (let i = 0; i < length; i++) {
+    const child = children[i];
+    if (isBlock(child)) {
+      const flattened = flattenInlineChildren(child);
+      result = result.concat(flattened);
+    } else {
+      result.push(child as mdi.TInlineToken);
+    }
+  }
+  return result;
+};
+
 const ensureChildrenAreBlockNodes = (node: IToken): void => {
   // Ensure that immediate children of the root node are always block nodes.
   let lastBlockNode: md.TBlockToken | undefined;
-  const children = node.children ?? [];
-  const length = children.length;
+  let children = node.children ?? [];
   const newChildren: md.TBlockToken[] = [];
 
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; i < children.length; i++) {
     const child = children[i];
+    if (child.type === 'root') {
+      const head = children.slice(0, i);
+      const tail = children.slice(i + 1);
+      const mid = child.children || [];
+      children = head.concat(mid).concat(tail);
+      i--;
+      continue;
+    }
     if (isBlock(child)) {
       lastBlockNode = child;
       newChildren.push(child);
@@ -450,6 +480,12 @@ const ensureChildrenAreBlockNodes = (node: IToken): void => {
       }
       case 'footnoteDefinition':
         ensureChildrenAreBlockNodes(child);
+        break;
+      case 'paragraph':
+        child.children = flattenInlineChildren(child);
+        break;
+      case 'heading':
+        child.children = flattenInlineChildren(child);
         break;
     }
   }

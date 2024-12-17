@@ -1,8 +1,8 @@
-import {UndefIterator} from '../../../util/iterator';
+import type {UndefIterator} from '../../../util/iterator';
 import {walk as walk0} from '../walk';
 import type {JsonMlNode} from '../types';
 
-export class UndefEndIter<T> implements IterableIterator<T> {
+class UndefEndIter<T> implements IterableIterator<T> {
   constructor(private readonly i: UndefIterator<T>) {}
 
   public next(): IteratorResult<T, T> {
@@ -15,16 +15,15 @@ export class UndefEndIter<T> implements IterableIterator<T> {
   }
 }
 
-export class IterRes<T> {
+class IterRes<T> {
   constructor(
     public readonly value: T,
     public readonly done: boolean,
   ) {}
 }
 
-export const iter = <T>(i: UndefIterator<T>) => new UndefEndIter(i);
-export const walk = (node: JsonMlNode) => iter(walk0(node));
-
+const iter = <T>(i: UndefIterator<T>) => new UndefEndIter(i);
+const walk = (node: JsonMlNode) => iter(walk0(node));
 
 test('simple text', () => {
   const node: JsonMlNode = 'hello';

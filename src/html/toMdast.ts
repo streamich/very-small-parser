@@ -187,7 +187,6 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
         return toMdast0(node) as mdi.TInlineToken;
       }
       return node as html.IElement;
-      break;
     }
     case 'text':
       return node as mdi.IText;
@@ -390,7 +389,6 @@ export const toMdast0 = (node: html.THtmlToken): IToken => {
           return toMdastInline(node) as mdi.TInlineToken;
         }
       }
-      break;
     }
     case 'root': {
       return {

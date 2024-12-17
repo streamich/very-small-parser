@@ -1,5 +1,5 @@
-import type {IText, IElement} from "../types";
-import type {JsonMlNode} from "./types";
+import type {IText, IElement} from '../types';
+import type {JsonMlNode} from './types';
 
 export const toHast = (node: JsonMlNode): IText | IElement => {
   if (typeof node === 'string') return {type: 'text', value: node} as IText;

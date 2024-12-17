@@ -1,5 +1,5 @@
-import type {THtmlToken} from "../types";
-import type {JsonMlNode} from "./types";
+import type {THtmlToken} from '../types';
+import type {JsonMlNode} from './types';
 
 export const fromHast = (node: THtmlToken): JsonMlNode => {
   switch (node.type) {

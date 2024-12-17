@@ -193,7 +193,7 @@ const toMdastChildren = ({children}: {children: html.THtmlToken[]}): IToken[] =>
   const res: IToken[] = [];
   const length = children.length;
   for (let i = 0; i < length; i++) {
-    const node = toMdast(children[i]);
+    const node = toMdast0(children[i]);
     if (node) res.push(node);
   }
   return res;
@@ -201,8 +201,8 @@ const toMdastChildren = ({children}: {children: html.THtmlToken[]}): IToken[] =>
 
 const validAlignAttr: Set<md.ITable['align'][number]> = new Set(['left', 'center', 'right']);
 
-export const toMdast = (node: html.THtmlToken): IToken => {
-  if (Array.isArray(node)) return toMdast({type: 'root', children: node});
+export const toMdast0 = (node: html.THtmlToken): IToken => {
+  if (Array.isArray(node)) return toMdast0({type: 'root', children: node});
   switch (node.type) {
     case 'element': {
       const {tagName} = node;
@@ -470,3 +470,5 @@ export const fixupMdast = (node: IToken): IToken => {
 
   return node;
 };
+
+export const toMdast = (node: html.THtmlToken): IToken => fixupMdast(toMdast0(node));

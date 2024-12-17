@@ -140,3 +140,12 @@ const hast = html.parse('<p><b>Hello</b> <i>world</i>!</p>');
 const mdast = toMdast(hast);
 const text = toText(mdast); // __Hello__ _world_!
 ```
+
+
+### JSON-ML
+
+JSON-ML is a simple way to represent HTML as JSON. For example, the HTML
+`<b>Hello</b>` is represented as `['b', null, 'Hello']`. The first element is
+the tag name, the second is the attributes, and the rest are children.
+
+This package contains converters for JSON-ML to HAST and back. See the [`/src/html/json-ml`](./src/html/json-ml/) directory.

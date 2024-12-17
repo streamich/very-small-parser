@@ -1,4 +1,4 @@
-import type {UndefIterator} from '../util/iterator';
+import type {UndefIterator} from '../../util/iterator';
 import type {JsonMlNode} from './types';
 
 export const walk = (node: JsonMlNode): UndefIterator<JsonMlNode> => {

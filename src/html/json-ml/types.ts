@@ -20,7 +20,7 @@ export type JsonMlElement = [
    * Attributes of the element. `null` if there are no attributes. Attribute
    * object values are converted to strings when formatting to HTML.
    */
-  attrs: null | Record<string, unknown>,
+  attrs: null | Record<string, string>,
   /**
    * Child nodes of the element. Can be a mix of strings and elements.
    */

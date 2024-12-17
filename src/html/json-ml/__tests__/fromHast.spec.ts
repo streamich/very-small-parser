@@ -1,10 +1,10 @@
-import {toHast} from '../toHast';
+import {fromHast} from '../fromHast';
 import {testCases} from './toHast.fixtures';
 
-describe('toHast', () => {
+describe('fromHast', () => {
   for (const [jsonml, hast, name] of testCases) {
     test(name, () => {
-      expect(toHast(jsonml)).toEqual(hast);
+      expect(fromHast(hast)).toEqual(jsonml);
     });
   }
 });

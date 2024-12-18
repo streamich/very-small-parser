@@ -26,9 +26,9 @@ describe('toMdast', () => {
       type: 'element',
       tagName: '', // <fragment>
       children: [
-        { type: 'element', tagName: 'p', children: [{type: 'text', value: 'a'}] },
-        { type: 'element', tagName: 'p', children: [{type: 'text', value: 'b'}] },
-      ]
+        {type: 'element', tagName: 'p', children: [{type: 'text', value: 'a'}]},
+        {type: 'element', tagName: 'p', children: [{type: 'text', value: 'b'}]},
+      ],
     };
     const mdast = toMdast(hast as any);
     expect(mdast.type).toBe('root');
@@ -40,9 +40,9 @@ describe('toMdast', () => {
     const hast = {
       type: 'root',
       children: [
-        { type: 'element', tagName: 'p', children: [{type: 'text', value: 'a'}] },
-        { type: 'element', tagName: 'p', children: [{type: 'text', value: 'b'}] },
-      ]
+        {type: 'element', tagName: 'p', children: [{type: 'text', value: 'a'}]},
+        {type: 'element', tagName: 'p', children: [{type: 'text', value: 'b'}]},
+      ],
     };
     const mdast = toMdast(hast as any);
     expect(mdast.type).toBe('root');

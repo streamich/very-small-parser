@@ -385,6 +385,12 @@ export const toMdast0 = (node: html.THtmlToken): IToken => {
             children: toMdastChildren(node) as md.TBlockToken[],
           };
         }
+        case '': {
+          return {
+            type: 'root',
+            children: toMdastChildren(node) as md.TBlockToken[],
+          };
+        }
         default: {
           return toMdastInline(node) as mdi.TInlineToken;
         }

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/markdown/block/__tests__/toHast.fixtures.ts</title>
+    <title>Code coverage report for src/html/json-ml/__tests__/toHast.fixtures.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../../prettify.css" />
     <link rel="stylesheet" href="../../../../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">src/markdown/block/__tests__</a> toHast.fixtures.ts</h1>
+        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">src/html/json-ml/__tests__</a> toHast.fixtures.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -150,9 +150,17 @@
 <a name='L85'></a><a href='#L85'>85</a>
 <a name='L86'></a><a href='#L86'>86</a>
 <a name='L87'></a><a href='#L87'>87</a>
-<a name='L88'></a><a href='#L88'>88</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -237,92 +245,105 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export const testCases: [markdown: string, html: string, name?: string][] = [
-  ['paragraph', '&lt;p&gt;paragraph&lt;/p&gt;'],
-  ['paragraph\n\nparagraph', '&lt;p&gt;paragraph&lt;/p&gt;&lt;p&gt;paragraph&lt;/p&gt;', 'two paragraphs'],
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type {THtmlToken} from '../../types';
+import type {JsonMlNode} from '../types';
+&nbsp;
+export const testCases: [jsonml: JsonMlNode, hast: THtmlToken, name: string][] = [
+  ['foo', {type: 'text', value: 'foo'}, 'text'],
+  [['div', null, 'foo'], {type: 'element', tagName: 'div', children: [{type: 'text', value: 'foo'}]}, 'element'],
   [
-    'paragraph\n\n&gt; blockquote',
-    '&lt;p&gt;paragraph&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;blockquote&lt;/p&gt;&lt;/blockquote&gt;',
-    'paragraph and blockquote',
-  ],
-  ['&gt; this is blockquote', '&lt;blockquote&gt;&lt;p&gt;this is blockquote&lt;/p&gt;&lt;/blockquote&gt;'],
-  ['# heading 1', '&lt;h1&gt;heading 1&lt;/h1&gt;'],
-  ['## heading 2', '&lt;h2&gt;heading 2&lt;/h2&gt;'],
-  ['### heading 3', '&lt;h3&gt;heading 3&lt;/h3&gt;'],
-  ['#### heading 4', '&lt;h4&gt;heading 4&lt;/h4&gt;'],
-  ['##### heading 5', '&lt;h5&gt;heading 5&lt;/h5&gt;'],
-  ['###### heading 6', '&lt;h6&gt;heading 6&lt;/h6&gt;'],
-  ['---', '&lt;hr /&gt;'],
-  ['&lt;div&gt;bold: &lt;b&gt;bold&lt;/b&gt;&lt;/div&gt;', '&lt;div&gt;bold: &lt;b&gt;bold&lt;/b&gt;&lt;/div&gt;'],
-  [
-    '```\ncode\n```',
-    '&lt;pre class="language-text" data-lang="text" data-meta=""&gt;&lt;code class="language-text" data-lang="text" data-meta=""&gt;code&lt;/code&gt;&lt;/pre&gt;',
-    'plain text code block',
-  ],
-  [
-    '```js\nconsole.log(123);\n```',
-    '&lt;pre class="language-js" data-lang="js" data-meta=""&gt;&lt;code class="language-js" data-lang="js" data-meta=""&gt;console.log(123);&lt;/code&gt;&lt;/pre&gt;',
-    'code block with language',
+    ['div', {class: 'bar'}, 'foo'],
+    {type: 'element', tagName: 'div', properties: {class: 'bar'}, children: [{type: 'text', value: 'foo'}]},
+    'element with properties',
   ],
   [
-    '```js meta\nconsole.log(123);\n```',
-    '&lt;pre class="language-js" data-lang="js" data-meta="meta"&gt;&lt;code class="language-js" data-lang="js" data-meta="meta"&gt;console.log(123);&lt;/code&gt;&lt;/pre&gt;',
-    'code block with language and meta',
-  ],
-  ['- list item', '&lt;ul&gt;&lt;li&gt;list item&lt;/li&gt;&lt;/ul&gt;', 'unordered list item'],
-  [
-    '- list item\n  \nparagraph',
-    '&lt;ul&gt;&lt;li&gt;&lt;p&gt;list item&lt;/p&gt;&lt;p&gt;paragraph&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;',
-    'unordered list item (multiline)',
-  ],
-  ['- list item\n- second list item', '&lt;ul&gt;&lt;li&gt;list item&lt;/li&gt;&lt;li&gt;second list item&lt;/li&gt;&lt;/ul&gt;', 'unordered list items'],
-  [
-    '- list item\n  - nested list item',
-    '&lt;ul&gt;&lt;li&gt;&lt;p&gt;list item&lt;/p&gt;&lt;ul&gt;&lt;li&gt;nested list item&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;',
-    'unordered list item with nested list item',
-  ],
-  ['1. ordered list item', '&lt;ol start="1"&gt;&lt;li&gt;ordered list item&lt;/li&gt;&lt;/ol&gt;', 'ordered list item'],
-  [
-    '2. ordered list\n2. start from 2',
-    '&lt;ol start="2"&gt;&lt;li&gt;ordered list&lt;/li&gt;&lt;li&gt;start from 2&lt;/li&gt;&lt;/ol&gt;',
-    'ordered list items',
+    ['', null, 'foo', ['div', null, 'bar']],
+    {
+      type: 'element',
+      tagName: '',
+      children: [
+        {type: 'text', value: 'foo'},
+        {type: 'element', tagName: 'div', children: [{type: 'text', value: 'bar'}]},
+      ],
+    },
+    'fragment',
   ],
   [
-    '- [x] checked list item\n- [ ] unchecked',
-    '&lt;ul&gt;&lt;li data-checked="true"&gt;checked list item&lt;/li&gt;&lt;li data-checked="false"&gt;unchecked&lt;/li&gt;&lt;/ul&gt;',
-    'checked and unchecked list items',
-  ],
-  ['$$\nx + 2\n$$', '&lt;pre data-math="true"&gt;&lt;code data-math="true"&gt;x + 2&lt;/code&gt;&lt;/pre&gt;', 'math block'],
-  [
-    '[^Footnote]: footnote definition',
-    '&lt;div data-node="footnoteDefinition" data-label="Footnote" data-id="footnote"&gt;&lt;a name="footnote" id="footnote"&gt;Footnote&lt;/a&gt;&lt;p&gt;footnote definition&lt;/p&gt;&lt;/div&gt;',
-    'footnote definition',
-  ],
-  [
-    '[My-link]: https://example.com',
-    '&lt;div data-node="definition" data-label="My-link" data-id="my-link" data-title="" data-url="https://example.com"&gt;&lt;a name="my-link" id="my-link"&gt;My-link&lt;/a&gt;: &lt;a href="https://example.com" title="https://example.com"&gt;https://example.com&lt;/a&gt;&lt;/div&gt;',
-    'definition',
-  ],
-  [
-    '[My-link-with-title]: https://example.com "My title"',
-    '&lt;div data-node="definition" data-label="My-link-with-title" data-id="my-link-with-title" data-title="My title" data-url="https://example.com"&gt;&lt;a name="my-link-with-title" id="my-link-with-title"&gt;My-link-with-title&lt;/a&gt;: &lt;a href="https://example.com" title="My title"&gt;My title&lt;/a&gt;&lt;/div&gt;',
-    'definition with title',
+    ['', null, 'foo', ['div', null, 'bar', ['span', null, 'baz']]],
+    {
+      type: 'element',
+      tagName: '',
+      children: [
+        {type: 'text', value: 'foo'},
+        {
+          type: 'element',
+          tagName: 'div',
+          children: [
+            {type: 'text', value: 'bar'},
+            {type: 'element', tagName: 'span', children: [{type: 'text', value: 'baz'}]},
+          ],
+        },
+      ],
+    },
+    'nested fragment',
   ],
   [
-    `| Header 1 | Header 2 |
-| -------- | -------- |
-| Cell 1   | Cell 2   |`,
-    '&lt;table data-align="[null,null]"&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Header 1&lt;/th&gt;&lt;th&gt;Header 2&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Cell 1&lt;/td&gt;&lt;td&gt;Cell 2&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;',
-    'table',
+    ['', null, 'foo', ['div', null, 'bar'], 'baz'],
+    {
+      type: 'element',
+      tagName: '',
+      children: [
+        {type: 'text', value: 'foo'},
+        {type: 'element', tagName: 'div', children: [{type: 'text', value: 'bar'}]},
+        {type: 'text', value: 'baz'},
+      ],
+    },
+    'fragment with text',
   ],
   [
-    `| Left | Center | Right | None |
-|:---- |:------:| -----:|------|
-| foo  | bar    | baz   | qux  |`,
-    '&lt;table data-align="[&amp;quot;left&amp;quot;,&amp;quot;center&amp;quot;,&amp;quot;right&amp;quot;,null]"&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align="left"&gt;Left&lt;/th&gt;&lt;th align="center"&gt;Center&lt;/th&gt;&lt;th align="right"&gt;Right&lt;/th&gt;&lt;th&gt;None&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align="left"&gt;foo&lt;/td&gt;&lt;td align="center"&gt;bar&lt;/td&gt;&lt;td align="right"&gt;baz&lt;/td&gt;&lt;td&gt;qux&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;',
-    'table with alignment',
+    ['', null, ['div', null, 'foo'], ['div', null, 'bar']],
+    {
+      type: 'element',
+      tagName: '',
+      children: [
+        {type: 'element', tagName: 'div', children: [{type: 'text', value: 'foo'}]},
+        {type: 'element', tagName: 'div', children: [{type: 'text', value: 'bar'}]},
+      ],
+    },
+    'fragment with elements',
   ],
-  ['__bold__ inline formatting', '&lt;p&gt;&lt;strong&gt;bold&lt;/strong&gt; inline formatting&lt;/p&gt;', 'bold inline formatting'],
+  [
+    ['', null, 'foo', ['div', null, 'bar'], 'baz', ['div', null, 'qux']],
+    {
+      type: 'element',
+      tagName: '',
+      children: [
+        {type: 'text', value: 'foo'},
+        {type: 'element', tagName: 'div', children: [{type: 'text', value: 'bar'}]},
+        {type: 'text', value: 'baz'},
+        {type: 'element', tagName: 'div', children: [{type: 'text', value: 'qux'}]},
+      ],
+    },
+    'fragment with text and elements',
+  ],
+  [
+    ['', null, 'foo', 'bar'],
+    {
+      type: 'element',
+      tagName: '',
+      children: [
+        {type: 'text', value: 'foo'},
+        {type: 'text', value: 'bar'},
+      ],
+    },
+    'fragment with text nodes',
+  ],
 ];
 &nbsp;</pre></td></tr></table></pre>
 

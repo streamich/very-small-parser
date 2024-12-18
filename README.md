@@ -20,7 +20,7 @@ Using ESM.sh:
 <script type="module">
   import { markdown } from '//esm.sh/very-small-parser';
 
-  const ast = markdown.block.parse('Hello __world__!');
+  const ast = markdown.block.parsef('Hello __world__!');
   console.log(ast);
 </script>
 ```
@@ -31,7 +31,7 @@ Using jsDelivr:
 <script type="module">
   import { markdown } from '//esm.run/very-small-parser';
 
-  const ast = markdown.block.parse('Hello __world__!');
+  const ast = markdown.block.parsef('Hello __world__!');
   console.log(ast);
 </script>
 ```
@@ -52,7 +52,7 @@ Parse Markdown document (block elements):
 ```js
 import { markdown } from 'very-small-parser';
 
-const ast = markdown.block.parse('Hello __world__!');
+const ast = markdown.block.parsef('Hello __world__!');
 ```
 
 Parse Markdown inline markup only:

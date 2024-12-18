@@ -35,4 +35,18 @@ describe('toMdast', () => {
     const md = toText(mdast);
     expect(md).toBe('a\n\nb');
   });
+
+  it('converts "root" nodes to "root" nodes', () => {
+    const hast = {
+      type: 'root',
+      children: [
+        { type: 'element', tagName: 'p', children: [{type: 'text', value: 'a'}] },
+        { type: 'element', tagName: 'p', children: [{type: 'text', value: 'b'}] },
+      ]
+    };
+    const mdast = toMdast(hast as any);
+    expect(mdast.type).toBe('root');
+    const md = toText(mdast);
+    expect(md).toBe('a\n\nb');
+  });
 });

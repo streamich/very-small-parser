@@ -62,3 +62,8 @@ export const regexParser =
 
 export const rep = (search: RegExp | string, replace: string, str: string): string => str.replace(search, replace);
 export const repAll = (search: string, replace: string, str: string): string => str.replaceAll(search, replace);
+
+const textarea = typeof document === 'object' ? document.createElement('textarea') : void 0;
+
+/** Decode HTML entities. */
+export const dhe = (html: string): string => (textarea ? ((textarea.innerHTML = html), textarea.value) : html);

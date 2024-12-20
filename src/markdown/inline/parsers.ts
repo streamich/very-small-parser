@@ -166,13 +166,16 @@ const smarttext = (text: string): string =>
 const REG_TEXT = new RegExp(
   '^[\\s\\S]+?(?=[\\<>!\\[_*`:~\\|#@\\$\\^=\\+]| {2,}\\n|(' + urlInline.source + ')|\\\\n|\\\\`|$)',
 );
-const text: TTokenizer<types.IText> = (eat, src) => {
-  const matches = src.match(REG_TEXT);
-  if (!matches) return;
-  const match = matches[0];
-  const value = smarttext(match);
-  return token<types.IText>(match, 'text', void 0, {value}, match.length);
-};
+const text =
+  (dhe: (html: string) => string): TTokenizer<types.IText> =>
+  (eat, src) => {
+    const matches = src.match(REG_TEXT);
+    if (!matches) return;
+    const match = matches[0];
+    let value = smarttext(match);
+    if (dhe) value = dhe(value);
+    return token<types.IText>(match, 'text', void 0, {value}, match.length);
+  };
 
 const REG_ESCAPE = /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/;
 const inlineEscape: TTokenizer<types.IText> = (_, value) => {
@@ -182,7 +185,7 @@ const inlineEscape: TTokenizer<types.IText> = (_, value) => {
 
 const html: TTokenizer<IElement> = (_, src) => htmlParser.el(src);
 
-export const parsers: TTokenizer<types.TInlineToken>[] = [
+export const parsers = (dhe: (html: string) => string): TTokenizer<types.TInlineToken>[] => [
   <TTokenizer<types.TInlineToken>>inlineEscape,
   <TTokenizer<types.TInlineToken>>inlineCode,
   <TTokenizer<types.TInlineToken>>strong,
@@ -202,5 +205,5 @@ export const parsers: TTokenizer<types.TInlineToken>[] = [
   <TTokenizer<types.TInlineToken>>inlineBreak,
   <TTokenizer<types.TInlineToken>>icon(),
   <TTokenizer<IElement>>html,
-  <TTokenizer<types.TInlineToken>>text,
+  <TTokenizer<types.TInlineToken>>text(dhe),
 ];

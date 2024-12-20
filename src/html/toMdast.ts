@@ -209,7 +209,7 @@ export const toMdast0 = (node: html.THtmlToken): IToken => {
   if (Array.isArray(node)) return toMdast0({type: 'root', children: node});
   switch (node.type) {
     case 'element': {
-      const {tagName} = node;
+      const {tagName, properties} = node;
       switch (tagName) {
         case 'p': {
           return {
@@ -218,14 +218,16 @@ export const toMdast0 = (node: html.THtmlToken): IToken => {
           };
         }
         case 'blockquote': {
-          return {
+          const blockquote: md.IBlockquote = {
             type: 'blockquote',
-            children: toMdastChildren(node) as mdi.TInlineToken[],
+            children: toMdastChildren(node) as md.TBlockToken[],
           };
+          if (properties?.['data-spoiler'] === 'true') blockquote.spoiler = true;
+          return blockquote;
         }
         case 'code':
         case 'pre': {
-          const attr = node.properties || {};
+          const attr = properties || {};
           const children = node.children || [];
           if (children.length) {
             const firstChild = node.children?.[0];
@@ -276,7 +278,7 @@ export const toMdast0 = (node: html.THtmlToken): IToken => {
             ordered,
             children: [],
           };
-          if (ordered) list.start = Number.parseInt(node.properties?.start || '1');
+          if (ordered) list.start = Number.parseInt(properties?.start || '1');
           for (let i = 0; i < length; i++) {
             const child = children[i];
             if (child.type !== 'element' || child.tagName !== 'li') continue;

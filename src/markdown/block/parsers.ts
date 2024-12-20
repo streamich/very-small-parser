@@ -77,11 +77,7 @@ const blockquote: TTokenizer<type.IBlockquote, MdBlockParser<type.TBlockToken>> 
   let spoiler = false;
   const isPotentiallySpoiler = content.match(REG_BLOCK_SPOILER_CHECK);
   if (isPotentiallySpoiler) {
-    let lineNumber = 1;
-    let nlIndex = -1;
-    while ((nlIndex = content.indexOf('\n', nlIndex + 1)) > -1) lineNumber++;
-    const spoilerLineCount = (content.match(REG_BLOCK_SPOILER_OUTDENT) || []).length;
-    spoiler = spoilerLineCount === lineNumber;
+    spoiler = content.split('\n').every((line) => line.match(REG_BLOCK_SPOILER_CHECK));
     if (spoiler) content = content.replace(REG_BLOCK_SPOILER_OUTDENT, '');
   }
   const children = parser.parse(content);

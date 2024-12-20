@@ -46,9 +46,7 @@ describe('blockquote', () => {
       const ast = parse('> item 1\n>! \n>! item 2');
       expect(ast[0]).toMatchObject({
         type: 'blockquote',
-        children: [
-          {type: 'paragraph', children: [{type: 'text', value: 'item 1\n! \n! item 2'}]},
-        ],
+        children: [{type: 'paragraph', children: [{type: 'text', value: 'item 1\n! \n! item 2'}]}],
       });
     });
 
@@ -67,9 +65,7 @@ describe('blockquote', () => {
       const ast = parse('>! item 1\n>! \n> item 2');
       expect(ast[0]).toMatchObject({
         type: 'blockquote',
-        children: [
-          {type: 'paragraph', children: [{type: 'text', value: '! item 1\n! \nitem 2'}]},
-        ],
+        children: [{type: 'paragraph', children: [{type: 'text', value: '! item 1\n! \nitem 2'}]}],
       });
     });
   });

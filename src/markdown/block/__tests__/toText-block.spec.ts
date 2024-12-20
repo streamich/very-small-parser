@@ -32,6 +32,8 @@ describe('toText', () => {
     ['> blockquote\n> with multiple lines', void 0, 'blockquote with multiple lines'],
     ['> blockquote\n> \n> with multiple blocks', void 0, 'blockquote with multiple blocks'],
     ['> blockquote\n> \n> ```\n> with multiple blocks\n> ```', void 0, 'blockquote with multiple blocks and code'],
+    ['>! spoiler', void 0, 'simple blockquote'],
+    ['>! spoiler\n>! with multiple lines', void 0, 'blockquote with multiple lines'],
     ['- single list item'],
     ['- first\n- second', void 0, 'multiple list items'],
     ['- first\n\n- second', '- first\n\n- second', 'multiple *loose* list items'],

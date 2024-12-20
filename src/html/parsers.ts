@@ -15,12 +15,15 @@ const comment: TTokenizer<type.IComment, HtmlParser> = (_, src) => {
 };
 
 const REG_TEXT = /^[^<]+/;
-const text: TTokenizer<type.IText, HtmlParser> = (_, src) => {
-  const matches = src.match(REG_TEXT);
-  if (!matches) return;
-  const value = matches[0];
-  return token<type.IText>(value, 'text', void 0, {value}, value.length);
-};
+const text =
+  (dhe: (html: string) => string): TTokenizer<type.IText, HtmlParser> =>
+  (_, src) => {
+    const matches = src.match(REG_TEXT);
+    if (!matches) return;
+    let value = matches[0];
+    if (dhe) value = dhe(value);
+    return token<type.IText>(value, 'text', void 0, {value}, value.length);
+  };
 
 const REG_ATTR = / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/;
 const REG_OPEN_TAG = reg.replace(/^<([a-z][\w-]*)(?:attr)*? *(\/?)>/, {attr: REG_ATTR});
@@ -60,8 +63,8 @@ export const el: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
   return token;
 };
 
-export const parsers: TTokenizer<type.THtmlToken, HtmlParser>[] = [
-  <TTokenizer<type.THtmlToken, HtmlParser>>text,
+export const parsers = (dhe: (html: string) => string): TTokenizer<type.THtmlToken, HtmlParser>[] => [
+  <TTokenizer<type.THtmlToken, HtmlParser>>text(dhe),
   <TTokenizer<type.THtmlToken, HtmlParser>>comment,
   <TTokenizer<type.THtmlToken, HtmlParser>>el,
 ];

@@ -69,10 +69,11 @@ export const toHast = (node: IToken | IToken[]): hast.THtmlToken => {
     }
     case 'heading':
       return element('h' + block.depth, block, void 0, toTextChildrenInline(block));
-    case 'blockquote':
+    case 'blockquote': {
       let attr: hast.IElement['properties'] = void 0;
       if (block.spoiler) attr = {'data-spoiler': 'true'};
       return element('blockquote', block, attr, toHastChildren(block));
+    }
     case 'list': {
       const children = block.children;
       const length = children.length;

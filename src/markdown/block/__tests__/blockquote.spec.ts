@@ -5,9 +5,7 @@ describe('blockquote', () => {
     const ast = parse('> paragraph');
     expect(ast[0]).toMatchObject({
       type: 'blockquote',
-      children: [
-        {type: 'paragraph', children: [{type: 'text', value: 'paragraph'}]},
-      ],
+      children: [{type: 'paragraph', children: [{type: 'text', value: 'paragraph'}]}],
     });
   });
 
@@ -28,9 +26,7 @@ describe('blockquote', () => {
       expect(ast[0]).toMatchObject({
         type: 'blockquote',
         spoiler: true,
-        children: [
-          {type: 'paragraph', children: [{type: 'text', value: 'paragraph'}]},
-        ],
+        children: [{type: 'paragraph', children: [{type: 'text', value: 'paragraph'}]}],
       });
     });
 

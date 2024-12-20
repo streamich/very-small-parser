@@ -35,7 +35,8 @@ export const toText = (node: IToken | IToken[]): string => {
       return prefix + ' ' + toTextInlineChildren(block.children);
     }
     case 'blockquote': {
-      return '> ' + toTextBlockChildren(block.children).replace(/\n/g, '\n> ');
+      const indent = block.spoiler ? '>! ' : '> ';
+      return indent + toTextBlockChildren(block.children).replace(/\n/g, '\n' + indent);
     }
     case 'list': {
       const {ordered, start, spread} = block;

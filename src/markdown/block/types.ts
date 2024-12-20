@@ -54,6 +54,7 @@ export interface IHeading extends IToken {
 
 export interface IBlockquote extends IToken {
   type: 'blockquote';
+  spoiler?: boolean;
   children: TBlockToken[];
 }
 

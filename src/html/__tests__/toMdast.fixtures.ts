@@ -43,6 +43,7 @@ export const testCases: [html: string, markdown: string, name?: string][] = [
   // Block elements
   ['<p>paragraph</p>', 'paragraph'],
   ['<blockquote>quote</blockquote>', '> quote'],
+  ['<blockquote data-spoiler="true">quote</blockquote>', '>! quote'],
   ['<blockquote><p>quote</p></blockquote>', '> quote'],
   ['<blockquote><p>paragraph 1</p><p>paragraph 2</p></blockquote>', '> paragraph 1\n> \n> paragraph 2'],
   ['<pre>code</pre>', '```\ncode\n```'],

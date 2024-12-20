@@ -66,13 +66,28 @@ const heading: TTokenizer<type.IHeading, MdBlockParser<type.TBlockToken>> = (par
 };
 
 const REG_BLOCKQUOTE = /^( *>[^\n]+(\n(?!^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$))[^\n]+)*)+/;
+const REG_BLOCKQUOTE_OUTDENT = /^ *> ?/gm;
+const REG_BLOCK_SPOILER_CHECK = /^ *!/;
+const REG_BLOCK_SPOILER_OUTDENT = /^ *! ?/gm;
 const blockquote: TTokenizer<type.IBlockquote, MdBlockParser<type.TBlockToken>> = (parser, src) => {
   const matches = src.match(REG_BLOCKQUOTE);
   if (!matches) return;
   const subvalue = matches[0];
-  const innerValue = rep(/^ *> ?/gm, '', subvalue);
-  const children = parser.parse(innerValue);
-  return token<type.IBlockquote>(subvalue, 'blockquote', children);
+  let content = rep(REG_BLOCKQUOTE_OUTDENT, '', subvalue);
+  let spoiler = false;
+  const isPotentiallySpoiler = content.match(REG_BLOCK_SPOILER_CHECK);
+  if (isPotentiallySpoiler) {
+    let lineNumber = 1;
+    let nlIndex = -1;
+    while ((nlIndex = content.indexOf('\n', nlIndex + 1)) > -1) lineNumber++;
+    const spoilerLineCount = (content.match(REG_BLOCK_SPOILER_OUTDENT) || []).length;
+    spoiler = spoilerLineCount === lineNumber;
+    if (spoiler) content = content.replace(REG_BLOCK_SPOILER_OUTDENT, '');
+  }
+  const children = parser.parse(content);
+  const node = token<type.IBlockquote>(subvalue, 'blockquote', children);
+  if (spoiler) node.spoiler = spoiler;
+  return node;
 };
 
 const REG_BULLET = /^\s{0,3}([*+-]|\d{1,3}\.)\s{1,42}/;

@@ -110,8 +110,8 @@ const handle: TTokenizer<types.IHandle> = (_, value) => {
 const REG_UNDERLINE = /^\+\+(?=\S)([\s\S]*?\S)\+\+/;
 const underline: TTokenizer<types.IUnderline> = regexParser('underline', REG_UNDERLINE, 1);
 
-const REG1_BREAK1 = /^\s{2,}\n(?!\s*$)/;
-const REG_BREAK2 = /^ *\\n/;
+const REG1_BREAK1 = /^\s{2,}\r?\n(?!\s*$)/;
+const REG_BREAK2 = /^\s*\\n/;
 const inlineBreak: TTokenizer<types.IBreak> = (_, value) => {
   const matches = value.match(REG1_BREAK1) || value.match(REG_BREAK2);
   if (matches) return token<types.IBreak>(matches[0], 'break');
@@ -163,6 +163,9 @@ const smarttext = (text: string): string =>
   rep(/^"(?=\S)/, '\u201c', // opening doubles
   text))))))))))));
 
+const REG_NEWLINE = /\s{0,2}\r?\n/g;
+const newlineReplacer = (newline: string) => (newline[0] === ' ' && newline[1] === ' ' ? '\n' : ' ');
+
 const REG_TEXT = new RegExp(
   '^[\\s\\S]+?(?=[\\<>!\\[_*`:~\\|#@\\$\\^=\\+]| {2,}\\n|(' + urlInline.source + ')|\\\\n|\\\\`|$)',
 );
@@ -172,7 +175,8 @@ const text =
     const matches = src.match(REG_TEXT);
     if (!matches) return;
     const match = matches[0];
-    let value = smarttext(match);
+    let value = match.replace(REG_NEWLINE, newlineReplacer);
+    value = smarttext(value);
     if (dhe) value = dhe(value);
     return token<types.IText>(match, 'text', void 0, {value}, match.length);
   };

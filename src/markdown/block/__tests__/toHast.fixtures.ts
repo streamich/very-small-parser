@@ -6,6 +6,7 @@ export const testCases: [markdown: string, html: string, name?: string][] = [
     '<p>paragraph</p><blockquote><p>blockquote</p></blockquote>',
     'paragraph and blockquote',
   ],
+  ['line 1  \nline2', '<p>line 1<br />line2</p>', 'inline line break'],
   ['> this is blockquote', '<blockquote><p>this is blockquote</p></blockquote>'],
   ['>! this is spoiler', '<blockquote data-spoiler="true"><p>this is spoiler</p></blockquote>'],
   ['# heading 1', '<h1>heading 1</h1>'],

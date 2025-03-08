@@ -1,5 +1,6 @@
 export const testCases: [markdown: string, html: string, name?: string, inlineOnly?: boolean][] = [
   ['plain text', 'plain text'],
+  ['line 1  \nline2', 'line 1<br />line2', 'inline line break'],
   ['*italic*', '<em>italic</em>'],
   ['*italic* and _also italic_', '<em>italic</em> and <em>also italic</em>'],
   ['**bold**', '<strong>bold</strong>'],

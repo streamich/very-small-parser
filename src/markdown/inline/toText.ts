@@ -74,7 +74,7 @@ export const toText = (node: IToken | IToken[], ctx: ToTextContext = {b: '_'}): 
     case 'underline':
       return '++' + toTextChildren(inline.children) + '++';
     case 'break':
-      return '\n';
+      return '  \n';
     case 'icon':
       return ':' + inline.emoji + ':';
     case 'element':

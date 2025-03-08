@@ -8,9 +8,7 @@ describe('new lines', () => {
       children: [
         {
           type: 'paragraph',
-          children: [
-            {type: 'text', value: 'a b'},
-          ],
+          children: [{type: 'text', value: 'a b'}],
         },
       ],
     });
@@ -23,9 +21,7 @@ describe('new lines', () => {
       children: [
         {
           type: 'paragraph',
-          children: [
-            {type: 'text', value: 'a b'},
-          ],
+          children: [{type: 'text', value: 'a b'}],
         },
       ],
     });
@@ -38,9 +34,7 @@ describe('new lines', () => {
       children: [
         {
           type: 'paragraph',
-          children: [
-            {type: 'text', value: 'a b'},
-          ],
+          children: [{type: 'text', value: 'a b'}],
         },
       ],
     });
@@ -53,9 +47,7 @@ describe('new lines', () => {
       children: [
         {
           type: 'paragraph',
-          children: [
-            {type: 'text', value: 'a b'},
-          ],
+          children: [{type: 'text', value: 'a b'}],
         },
       ],
     });
@@ -68,11 +60,7 @@ describe('new lines', () => {
       children: [
         {
           type: 'paragraph',
-          children: [
-            {type: 'text', value: 'a'},
-            {type: 'break'},
-            {type: 'text', value: 'b'},
-          ],
+          children: [{type: 'text', value: 'a'}, {type: 'break'}, {type: 'text', value: 'b'}],
         },
       ],
     });
@@ -86,11 +74,7 @@ describe('new lines', () => {
       children: [
         {
           type: 'paragraph',
-          children: [
-            {type: 'text', value: 'a'},
-            {type: 'break'},
-            {type: 'text', value: 'b'},
-          ],
+          children: [{type: 'text', value: 'a'}, {type: 'break'}, {type: 'text', value: 'b'}],
         },
       ],
     });

@@ -164,8 +164,7 @@ const smarttext = (text: string): string =>
   text))))))))))));
 
 const REG_NEWLINE = /\s{0,2}\r?\n/g;
-const newlineReplacer = (newline: string) =>
-  newline[0] === ' ' && newline[1] === ' ' ? '\n' : ' ';
+const newlineReplacer = (newline: string) => (newline[0] === ' ' && newline[1] === ' ' ? '\n' : ' ');
 
 const REG_TEXT = new RegExp(
   '^[\\s\\S]+?(?=[\\<>!\\[_*`:~\\|#@\\$\\^=\\+]| {2,}\\n|(' + urlInline.source + ')|\\\\n|\\\\`|$)',

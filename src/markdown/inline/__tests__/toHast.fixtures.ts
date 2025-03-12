@@ -5,6 +5,8 @@ export const testCases: [markdown: string, html: string, name?: string, inlineOn
   ['**bold**', '<strong>bold</strong>'],
   ['**bold** and __also bold__', '<strong>bold</strong> and <strong>also bold</strong>'],
   ['`code`', '<code>code</code>'],
+  ['``js console.log(123)``', '<code class="language-js" data-lang="js">console.log(123)</code>', 'language-annotated code'],
+  ['``css color: red;``', '<code class="language-css" data-lang="css">color: red;</code>', 'language-annotated CSS code'],
   ['~~strikethrough~~', '<del>strikethrough</del>'],
   ['||spoiler||', '<spoiler style="background:black;color:black">spoiler</spoiler>'],
   ['Reddit: >!spoiler!<', 'Reddit: <spoiler style="background:black;color:black">spoiler</spoiler>'],

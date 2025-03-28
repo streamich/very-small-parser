@@ -6,7 +6,19 @@ import type {TTokenizer} from '../../types';
 import type * as types from './types';
 
 const REG_INLINE_CODE = /^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/;
+const REG_LANGUAGE_CODE = /^``([a-zA-Z0-9_-]+) ([\s\S]*?)``(?!`)/;
 const inlineCode: TTokenizer<types.IInlineCode> = (_, value) => {
+  // First try to match language-annotated code with double backticks
+  const langMatches = value.match(REG_LANGUAGE_CODE);
+  if (langMatches) {
+    return token<types.IInlineCode>(langMatches[0], 'inlineCode', void 0, {
+      value: langMatches[2],
+      wrap: '``',
+      lang: langMatches[1],
+    });
+  }
+  
+  // Fall back to regular inline code
   const matches = value.match(REG_INLINE_CODE);
   if (!matches) return;
   return token<types.IInlineCode>(matches[0], 'inlineCode', void 0, {

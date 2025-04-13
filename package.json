@@ -8,6 +8,7 @@
   },
   "homepage": "https://github.com/streamich/very-small-parser",
   "repository": "streamich/very-small-parser",
+  "license": "Apache-2.0",
   "funding": {
     "type": "github",
     "url": "https://github.com/sponsors/very-small-parser"

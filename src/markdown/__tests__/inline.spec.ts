@@ -159,6 +159,30 @@ describe('Inline Markdown', () => {
         {type: 'inlineCode', len: 20, value: 'console.log(123)', wrap: '``'},
       ]);
     });
+
+    test('language-annotated inline code', () => {
+      const ast = parseInline('See this: ``js console.log(123)``');
+      expect(ast).toMatchObject([
+        {type: 'text', len: 10, value: 'See this: '},
+        {type: 'inlineCode', len: 23, value: 'console.log(123)', wrap: '``', lang: 'js'},
+      ]);
+    });
+
+    test('language-annotated code with dashes and underscores', () => {
+      const ast = parseInline('``html-template <div>Hello</div>``');
+      expect(ast).toMatchObject([
+        {type: 'inlineCode', value: '<div>Hello</div>', wrap: '``', lang: 'html-template'},
+      ]);
+    });
+
+    test('multiple language-annotated inline codes', () => {
+      const ast = parseInline('``js var x = 1`` and ``css color: red;``');
+      expect(ast).toMatchObject([
+        {type: 'inlineCode', value: 'var x = 1', wrap: '``', lang: 'js'},
+        {type: 'text', value: ' and '},
+        {type: 'inlineCode', value: 'color: red;', wrap: '``', lang: 'css'},
+      ]);
+    });
   });
 
   describe('emphasis', () => {

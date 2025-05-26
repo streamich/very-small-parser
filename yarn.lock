@@ -988,11 +988,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 22.15.18
-  resolution: "@types/node@npm:22.15.18"
+  version: 22.15.21
+  resolution: "@types/node@npm:22.15.21"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10c0/e23178c568e2dc6b93b6aa3b8dfb45f9556e527918c947fe7406a4c92d2184c7396558912400c3b1b8d0fa952ec63819aca2b8e4d3545455fc6f1e9623e09ca6
+  checksum: 10c0/f092bbccda2131c2b2c8f720338080aa0ef1d928f5f1062c03954a4f7dafa7ee3ed29bc3e51bd4e2584473b3d943c637a2b39ad7174898970818270187cf10c1
   languageName: node
   linkType: hard
 
@@ -1891,9 +1891,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.149":
-  version: 1.5.155
-  resolution: "electron-to-chromium@npm:1.5.155"
-  checksum: 10c0/aee32a0b03282e488352370f6a910de37788b814031020a0e244943450e844e8a41f741d6e5ec70d553dfa4382ef80088034ddc400b48f45de95de331b9ec178
+  version: 1.5.157
+  resolution: "electron-to-chromium@npm:1.5.157"
+  checksum: 10c0/d22dc2603bdfb0d89c8e199bcc29a34995cc6e37261b5029b4e635ea536b843ed00dfc3b1dd2f69e1852031daee0c7cf3fb63cc70abf5312908328075b35e9af
   languageName: node
   linkType: hard
 
@@ -4187,9 +4187,9 @@ __metadata:
   linkType: hard
 
 "tapable@npm:^2.0.0, tapable@npm:^2.1.1, tapable@npm:^2.2.0":
-  version: 2.2.1
-  resolution: "tapable@npm:2.2.1"
-  checksum: 10c0/bc40e6efe1e554d075469cedaba69a30eeb373552aaf41caeaaa45bf56ffacc2674261b106245bd566b35d8f3329b52d838e851ee0a852120acae26e622925c9
+  version: 2.2.2
+  resolution: "tapable@npm:2.2.2"
+  checksum: 10c0/8ad130aa705cab6486ad89e42233569a1fb1ff21af115f59cebe9f2b45e9e7995efceaa9cc5062510cdb4ec673b527924b2ab812e3579c55ad659ae92117011e
   languageName: node
   linkType: hard
 
@@ -4255,12 +4255,12 @@ __metadata:
   linkType: hard
 
 "tinyglobby@npm:^0.2.12":
-  version: 0.2.13
-  resolution: "tinyglobby@npm:0.2.13"
+  version: 0.2.14
+  resolution: "tinyglobby@npm:0.2.14"
   dependencies:
     fdir: "npm:^6.4.4"
     picomatch: "npm:^4.0.2"
-  checksum: 10c0/ef07dfaa7b26936601d3f6d999f7928a4d1c6234c5eb36896bb88681947c0d459b7ebe797022400e555fe4b894db06e922b95d0ce60cb05fd827a0a66326b18c
+  checksum: 10c0/f789ed6c924287a9b7d3612056ed0cda67306cd2c80c249fd280cf1504742b12583a2089b61f4abbd24605f390809017240e250241f09938054c9b363e51c0a6
   languageName: node
   linkType: hard
 
@@ -4467,12 +4467,12 @@ __metadata:
   linkType: hard
 
 "watchpack@npm:^2.4.1":
-  version: 2.4.2
-  resolution: "watchpack@npm:2.4.2"
+  version: 2.4.4
+  resolution: "watchpack@npm:2.4.4"
   dependencies:
     glob-to-regexp: "npm:^0.4.1"
     graceful-fs: "npm:^4.1.2"
-  checksum: 10c0/ec60a5f0e9efaeca0102fd9126346b3b2d523e01c34030d3fddf5813a7125765121ebdc2552981136dcd2c852deb1af0b39340f2fcc235f292db5399d0283577
+  checksum: 10c0/6c0901f75ce245d33991225af915eea1c5ae4ba087f3aee2b70dd377d4cacb34bef02a48daf109da9d59b2d31ec6463d924a0d72f8618ae1643dd07b95de5275
   languageName: node
   linkType: hard
 
@@ -4520,15 +4520,15 @@ __metadata:
   linkType: hard
 
 "webpack-sources@npm:^3.2.3":
-  version: 3.2.3
-  resolution: "webpack-sources@npm:3.2.3"
-  checksum: 10c0/2ef63d77c4fad39de4a6db17323d75eb92897b32674e97d76f0a1e87c003882fc038571266ad0ef581ac734cbe20952912aaa26155f1905e96ce251adbb1eb4e
+  version: 3.3.0
+  resolution: "webpack-sources@npm:3.3.0"
+  checksum: 10c0/d9366eef6db95dffe154b6ffb50424c34f42d51ba3441efe9134642d13b0ccdf43897bdc7742f9f58eb4e834378f7ff67596137d3fca21ce34fe7cee8796e97a
   languageName: node
   linkType: hard
 
 "webpack@npm:^5.96.1":
-  version: 5.99.8
-  resolution: "webpack@npm:5.99.8"
+  version: 5.99.9
+  resolution: "webpack@npm:5.99.9"
   dependencies:
     "@types/eslint-scope": "npm:^3.7.7"
     "@types/estree": "npm:^1.0.6"
@@ -4559,7 +4559,7 @@ __metadata:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: 10c0/c4852c3b795ed3fba799d2925802a4e259b2de7c2c597f0aaf0e228acfdc6755389ed8c29f1dad86610a9c6ad968c0b57c702b93891d60f09d302af63b2debe0
+  checksum: 10c0/34ec3f19b50bccaf27929e5e5b901b25047f2d414acba7d0967dc98eb4f404d107fb1a4b63095edbca2b006ff5815f1720b131e10b20664b074dfc86b7ffa717
   languageName: node
   linkType: hard
 

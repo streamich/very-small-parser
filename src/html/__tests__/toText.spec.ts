@@ -49,13 +49,13 @@ describe('toText', () => {
     test('a single self-closing tag with attributes', () => {
       const ast = parse('<meta lang="js" />');
       const text = toText(ast);
-      expect(text).toBe('<meta lang="js" />');
+      expect(text).toBe("<meta lang='js' />");
     });
 
     test('a single self-closing without closing slash', () => {
       const ast = parse('<meta lang="js">');
       const text = toText(ast);
-      expect(text).toBe('<meta lang="js" />');
+      expect(text).toBe("<meta lang='js' />");
     });
 
     test('nested nodes', () => {
@@ -105,13 +105,19 @@ describe('toText', () => {
     test('can render attributes', () => {
       const ast = parse('<div data-type="very-bold"><b>bold</b> text >></div>');
       const text = toText(ast);
-      expect(text).toBe('<div data-type="very-bold"><b>bold</b> text &#62;&#62;</div>');
+      expect(text).toBe("<div data-type='very-bold'><b>bold</b> text &#62;&#62;</div>");
     });
 
     test('can escape attribute values', () => {
       const ast = parse('<span class="test<a:not(asdf)&test">text</span>');
       const text = toText(ast);
-      expect(text).toBe('<span class="test&lt;a:not(asdf)&amp;test">text</span>');
+      expect(text).toBe("<span class='test&lt;a:not(asdf)&amp;test'>text</span>");
+    });
+
+    test('encode JSON in attribute', () => {
+      const ast = parse('<span data-json="{&#34;foo&#34;:&#34;bar&#34;}">text</span>');
+      const text = toText(ast);
+      expect(text).toBe("<span data-json='{\"foo\":\"bar\"}'>text</span>");
     });
   });
 
@@ -119,7 +125,7 @@ describe('toText', () => {
     test('can format HTML with tabbing', () => {
       const ast = parse('<div><hr foo="bar" /><span>text</span></div>');
       const text = toText(ast, '  ');
-      expect(text).toBe('<div>\n  <hr foo="bar" />\n  <span>text</span>\n</div>');
+      expect(text).toBe('<div>\n  <hr foo=\'bar\' />\n  <span>text</span>\n</div>');
     });
 
     test('can format HTML fragment with tabbing', () => {
@@ -164,7 +170,7 @@ describe('toText', () => {
         ],
       };
       const text = toText(ast, '  ');
-      expect(text).toBe('<div>\n  <hr foo="bar" />\n  <span>text</span>\n</div>');
+      expect(text).toBe('<div>\n  <hr foo=\'bar\' />\n  <span>text</span>\n</div>');
     });
   });
 });

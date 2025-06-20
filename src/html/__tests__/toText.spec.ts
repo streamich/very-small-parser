@@ -131,7 +131,7 @@ describe('toText', () => {
     test('can format HTML fragment with tabbing', () => {
       const ast = parse('<hr foo="bar" /><span>text</span>');
       const text = toText(ast, '  ');
-      expect(text).toBe('<hr foo="bar" />\n<span>text</span>');
+      expect(text).toBe('<hr foo=\'bar\' />\n<span>text</span>');
     });
 
     test('can format HTML element with tabbing', () => {

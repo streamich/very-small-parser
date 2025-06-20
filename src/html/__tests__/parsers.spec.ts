@@ -165,6 +165,18 @@ describe('parsers', () => {
         });
       });
 
+      test('escaped JSON in data attribute', () => {
+        const ast = parse('<span data-json="{&#34;foo&#34;:&#34;bar&amp;baz&#34;}">text</span>');
+        expect(ast[0]).toMatchObject({
+          type: 'element',
+          tagName: 'span',
+          properties: {
+            'data-json': '{"foo":"bar&baz"}',
+          },
+          children: [{type: 'text', value: 'text'}],
+        });
+      });
+
       test('single quotes', () => {
         const ast = parse("<p data-testid='123'> ! </p>");
         expect(ast[0]).toMatchObject({

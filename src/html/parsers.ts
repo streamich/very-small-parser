@@ -25,6 +25,16 @@ const text =
     return token<type.IText>(value, 'text', void 0, {value}, value.length);
   };
 
+const unescapeAttr = (str: string): string => {
+  return str
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&amp;/g, '&')
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(code));
+};
+
 const REG_ATTR = / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/;
 const REG_OPEN_TAG = reg.replace(/^<([a-z][\w-]*)(?:attr)*? *(\/?)>/, {attr: REG_ATTR});
 const REG_ATTRS = /([\w|data-]+)=["']?((?:.(?!["']?\s+(?:\S+)=|\s*\/?[>"']))*.)["']?/gm;
@@ -38,7 +48,7 @@ export const el: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
   const properties: Record<string, string> = {};
   if (attrSrc) {
     const attrs = attrSrc.matchAll(REG_ATTRS);
-    for (const [, key, value] of attrs) properties[key] = value;
+    for (const [, key, value] of attrs) properties[key] = unescapeAttr(value);
   }
   const token: type.IElement = {
     type: 'element',

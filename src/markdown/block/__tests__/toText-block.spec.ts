@@ -53,7 +53,7 @@ describe('toText', () => {
     ['- [x] checked'],
     ['- [ ] unchecked\n- [x] checked', '- [ ] unchecked\n- [x] checked', 'list items with checkboxes'],
     ['<b>html</b>'],
-    ['<center><a href="https://google.com">Click <em>me</em>!</a></center>'],
+    ["<center><a href='https://google.com'>Click <em>me</em>!</a></center>"],
     ['foo\n|---|\nbar', '| foo |\n|-----|\n| bar |', 'table'],
     ['foo\n|---|\nbar', '| foo |\n|-----|\n| bar |', 'table with alignment'],
 

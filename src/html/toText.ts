@@ -2,7 +2,7 @@ import type {THtmlToken, IElement, IRoot} from './types';
 
 const escapeText = (str: string): string => str.replace(/[\u00A0-\u9999<>\&]/gim, (i) => '&#' + i.charCodeAt(0) + ';');
 
-const escapeAttr = (str: string): string => str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+const escapeAttr = (str: string): string => str.replace(/&/g, '&amp;').replace(/'/g, '&#39;').replace(/</g, '&lt;');
 
 const PROPS = {};
 
@@ -58,7 +58,7 @@ export const toText = (node: THtmlToken | THtmlToken[], tab: string = '', ident:
       if (isFragment) return childrenStr;
       let attrStr = '';
       if (properties)
-        for (const key in properties) attrStr += ' ' + key + '="' + escapeAttr(properties[key] + '') + '"';
+        for (const key in properties) attrStr += ' ' + key + "='" + escapeAttr(properties[key] + '') + "'";
       const htmlHead = '<' + tagName + attrStr;
       return (
         ident +

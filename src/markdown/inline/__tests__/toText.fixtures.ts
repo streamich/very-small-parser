@@ -42,8 +42,8 @@ export const testCases: [src: string, expected?: string, name?: string, inlineOn
   [':smile:', ':smile:'],
   ['::smile::', ':smile:'],
   ['<b>bold</b>'],
-  ['<font color="red">text</font>'],
-  ['a <font color="red">b</font> c'],
+  ["<font color='red'>text</font>"],
+  ["a <font color='red'>b</font> c"],
 
   // complex cases, with nested elements
   ['**bold _italic_**', '__bold *italic*__'],

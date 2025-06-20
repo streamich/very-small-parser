@@ -117,7 +117,7 @@ describe('toText', () => {
     test('encode JSON in attribute', () => {
       const ast = parse('<span data-json="{&#34;foo&#34;:&#34;bar&#34;}">text</span>');
       const text = toText(ast);
-      expect(text).toBe("<span data-json='{\"foo\":\"bar\"}'>text</span>");
+      expect(text).toBe('<span data-json=\'{"foo":"bar"}\'>text</span>');
     });
   });
 
@@ -125,13 +125,13 @@ describe('toText', () => {
     test('can format HTML with tabbing', () => {
       const ast = parse('<div><hr foo="bar" /><span>text</span></div>');
       const text = toText(ast, '  ');
-      expect(text).toBe('<div>\n  <hr foo=\'bar\' />\n  <span>text</span>\n</div>');
+      expect(text).toBe("<div>\n  <hr foo='bar' />\n  <span>text</span>\n</div>");
     });
 
     test('can format HTML fragment with tabbing', () => {
       const ast = parse('<hr foo="bar" /><span>text</span>');
       const text = toText(ast, '  ');
-      expect(text).toBe('<hr foo=\'bar\' />\n<span>text</span>');
+      expect(text).toBe("<hr foo='bar' />\n<span>text</span>");
     });
 
     test('can format HTML element with tabbing', () => {
@@ -170,7 +170,7 @@ describe('toText', () => {
         ],
       };
       const text = toText(ast, '  ');
-      expect(text).toBe('<div>\n  <hr foo=\'bar\' />\n  <span>text</span>\n</div>');
+      expect(text).toBe("<div>\n  <hr foo='bar' />\n  <span>text</span>\n</div>");
     });
   });
 });

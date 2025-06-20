@@ -251,7 +251,7 @@
   ],
   ['line 1  \nline2', '&lt;p&gt;line 1&lt;br /&gt;line2&lt;/p&gt;', 'inline line break'],
   ['&gt; this is blockquote', '&lt;blockquote&gt;&lt;p&gt;this is blockquote&lt;/p&gt;&lt;/blockquote&gt;'],
-  ['&gt;! this is spoiler', '&lt;blockquote data-spoiler="true"&gt;&lt;p&gt;this is spoiler&lt;/p&gt;&lt;/blockquote&gt;'],
+  ['&gt;! this is spoiler', "&lt;blockquote data-spoiler='true'&gt;&lt;p&gt;this is spoiler&lt;/p&gt;&lt;/blockquote&gt;"],
   ['# heading 1', '&lt;h1&gt;heading 1&lt;/h1&gt;'],
   ['## heading 2', '&lt;h2&gt;heading 2&lt;/h2&gt;'],
   ['### heading 3', '&lt;h3&gt;heading 3&lt;/h3&gt;'],
@@ -262,17 +262,17 @@
   ['&lt;div&gt;bold: &lt;b&gt;bold&lt;/b&gt;&lt;/div&gt;', '&lt;div&gt;bold: &lt;b&gt;bold&lt;/b&gt;&lt;/div&gt;'],
   [
     '```\ncode\n```',
-    '&lt;pre class="language-text" data-lang="text" data-meta=""&gt;&lt;code class="language-text" data-lang="text" data-meta=""&gt;code&lt;/code&gt;&lt;/pre&gt;',
+    "&lt;pre class='language-text' data-lang='text' data-meta=''&gt;&lt;code class='language-text' data-lang='text' data-meta=''&gt;code&lt;/code&gt;&lt;/pre&gt;",
     'plain text code block',
   ],
   [
     '```js\nconsole.log(123);\n```',
-    '&lt;pre class="language-js" data-lang="js" data-meta=""&gt;&lt;code class="language-js" data-lang="js" data-meta=""&gt;console.log(123);&lt;/code&gt;&lt;/pre&gt;',
+    "&lt;pre class='language-js' data-lang='js' data-meta=''&gt;&lt;code class='language-js' data-lang='js' data-meta=''&gt;console.log(123);&lt;/code&gt;&lt;/pre&gt;",
     'code block with language',
   ],
   [
     '```js meta\nconsole.log(123);\n```',
-    '&lt;pre class="language-js" data-lang="js" data-meta="meta"&gt;&lt;code class="language-js" data-lang="js" data-meta="meta"&gt;console.log(123);&lt;/code&gt;&lt;/pre&gt;',
+    "&lt;pre class='language-js' data-lang='js' data-meta='meta'&gt;&lt;code class='language-js' data-lang='js' data-meta='meta'&gt;console.log(123);&lt;/code&gt;&lt;/pre&gt;",
     'code block with language and meta',
   ],
   ['- list item', '&lt;ul&gt;&lt;li&gt;list item&lt;/li&gt;&lt;/ul&gt;', 'unordered list item'],
@@ -287,45 +287,45 @@
     '&lt;ul&gt;&lt;li&gt;&lt;p&gt;list item&lt;/p&gt;&lt;ul&gt;&lt;li&gt;nested list item&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;',
     'unordered list item with nested list item',
   ],
-  ['1. ordered list item', '&lt;ol start="1"&gt;&lt;li&gt;ordered list item&lt;/li&gt;&lt;/ol&gt;', 'ordered list item'],
+  ['1. ordered list item', "&lt;ol start='1'&gt;&lt;li&gt;ordered list item&lt;/li&gt;&lt;/ol&gt;", 'ordered list item'],
   [
     '2. ordered list\n2. start from 2',
-    '&lt;ol start="2"&gt;&lt;li&gt;ordered list&lt;/li&gt;&lt;li&gt;start from 2&lt;/li&gt;&lt;/ol&gt;',
+    "&lt;ol start='2'&gt;&lt;li&gt;ordered list&lt;/li&gt;&lt;li&gt;start from 2&lt;/li&gt;&lt;/ol&gt;",
     'ordered list items',
   ],
   [
     '- [x] checked list item\n- [ ] unchecked',
-    '&lt;ul&gt;&lt;li data-checked="true"&gt;checked list item&lt;/li&gt;&lt;li data-checked="false"&gt;unchecked&lt;/li&gt;&lt;/ul&gt;',
+    "&lt;ul&gt;&lt;li data-checked='true'&gt;checked list item&lt;/li&gt;&lt;li data-checked='false'&gt;unchecked&lt;/li&gt;&lt;/ul&gt;",
     'checked and unchecked list items',
   ],
-  ['$$\nx + 2\n$$', '&lt;pre data-math="true"&gt;&lt;code data-math="true"&gt;x + 2&lt;/code&gt;&lt;/pre&gt;', 'math block'],
+  ['$$\nx + 2\n$$', "&lt;pre data-math='true'&gt;&lt;code data-math='true'&gt;x + 2&lt;/code&gt;&lt;/pre&gt;", 'math block'],
   [
     '[^Footnote]: footnote definition',
-    '&lt;div data-node="footnoteDefinition" data-label="Footnote" data-id="footnote"&gt;&lt;a name="footnote" id="footnote"&gt;Footnote&lt;/a&gt;&lt;p&gt;footnote definition&lt;/p&gt;&lt;/div&gt;',
+    "&lt;div data-node='footnoteDefinition' data-label='Footnote' data-id='footnote'&gt;&lt;a name='footnote' id='footnote'&gt;Footnote&lt;/a&gt;&lt;p&gt;footnote definition&lt;/p&gt;&lt;/div&gt;",
     'footnote definition',
   ],
   [
     '[My-link]: https://example.com',
-    '&lt;div data-node="definition" data-label="My-link" data-id="my-link" data-title="" data-url="https://example.com"&gt;&lt;a name="my-link" id="my-link"&gt;My-link&lt;/a&gt;: &lt;a href="https://example.com" title="https://example.com"&gt;https://example.com&lt;/a&gt;&lt;/div&gt;',
+    "&lt;div data-node='definition' data-label='My-link' data-id='my-link' data-title='' data-url='https://example.com'&gt;&lt;a name='my-link' id='my-link'&gt;My-link&lt;/a&gt;: &lt;a href='https://example.com' title='https://example.com'&gt;https://example.com&lt;/a&gt;&lt;/div&gt;",
     'definition',
   ],
   [
     '[My-link-with-title]: https://example.com "My title"',
-    '&lt;div data-node="definition" data-label="My-link-with-title" data-id="my-link-with-title" data-title="My title" data-url="https://example.com"&gt;&lt;a name="my-link-with-title" id="my-link-with-title"&gt;My-link-with-title&lt;/a&gt;: &lt;a href="https://example.com" title="My title"&gt;My title&lt;/a&gt;&lt;/div&gt;',
+    "&lt;div data-node='definition' data-label='My-link-with-title' data-id='my-link-with-title' data-title='My title' data-url='https://example.com'&gt;&lt;a name='my-link-with-title' id='my-link-with-title'&gt;My-link-with-title&lt;/a&gt;: &lt;a href='https://example.com' title='My title'&gt;My title&lt;/a&gt;&lt;/div&gt;",
     'definition with title',
   ],
   [
     `| Header 1 | Header 2 |
 | -------- | -------- |
 | Cell 1   | Cell 2   |`,
-    '&lt;table data-align="[null,null]"&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Header 1&lt;/th&gt;&lt;th&gt;Header 2&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Cell 1&lt;/td&gt;&lt;td&gt;Cell 2&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;',
+    "&lt;table data-align='[null,null]'&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Header 1&lt;/th&gt;&lt;th&gt;Header 2&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Cell 1&lt;/td&gt;&lt;td&gt;Cell 2&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;",
     'table',
   ],
   [
     `| Left | Center | Right | None |
 |:---- |:------:| -----:|------|
 | foo  | bar    | baz   | qux  |`,
-    '&lt;table data-align="[&amp;quot;left&amp;quot;,&amp;quot;center&amp;quot;,&amp;quot;right&amp;quot;,null]"&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align="left"&gt;Left&lt;/th&gt;&lt;th align="center"&gt;Center&lt;/th&gt;&lt;th align="right"&gt;Right&lt;/th&gt;&lt;th&gt;None&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align="left"&gt;foo&lt;/td&gt;&lt;td align="center"&gt;bar&lt;/td&gt;&lt;td align="right"&gt;baz&lt;/td&gt;&lt;td&gt;qux&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;',
+    "&lt;table data-align='[\"left\",\"center\",\"right\",null]'&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align='left'&gt;Left&lt;/th&gt;&lt;th align='center'&gt;Center&lt;/th&gt;&lt;th align='right'&gt;Right&lt;/th&gt;&lt;th&gt;None&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align='left'&gt;foo&lt;/td&gt;&lt;td align='center'&gt;bar&lt;/td&gt;&lt;td align='right'&gt;baz&lt;/td&gt;&lt;td&gt;qux&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;",
     'table with alignment',
   ],
   ['__bold__ inline formatting', '&lt;p&gt;&lt;strong&gt;bold&lt;/strong&gt; inline formatting&lt;/p&gt;', 'bold inline formatting'],
@@ -337,7 +337,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-04T02:47:19.354Z
+                at 2025-06-20T13:47:33.683Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

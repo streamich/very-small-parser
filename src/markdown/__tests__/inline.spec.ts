@@ -159,6 +159,68 @@ describe('Inline Markdown', () => {
         {type: 'inlineCode', len: 20, value: 'console.log(123)', wrap: '``'},
       ]);
     });
+
+    test('supports postfixed language annotation with dot syntax', () => {
+      const ast = parseInline('See this: `console.log(123)`{.js}');
+      expect(ast).toMatchObject([
+        {type: 'text', len: 10, value: 'See this: '},
+        {type: 'inlineCode', len: 23, value: 'console.log(123)', wrap: '`', lang: 'js'},
+      ]);
+    });
+
+    test('supports postfixed language annotation with colon syntax', () => {
+      const ast = parseInline('See this: `console.log(123)`{:js}');
+      expect(ast).toMatchObject([
+        {type: 'text', len: 10, value: 'See this: '},
+        {type: 'inlineCode', len: 23, value: 'console.log(123)', wrap: '`', lang: 'js'},
+      ]);
+    });
+
+    test('supports double back-ticks with language annotation', () => {
+      const ast = parseInline('See this: ``console.log(123)``{.javascript}');
+      expect(ast).toMatchObject([
+        {type: 'text', len: 10, value: 'See this: '},
+        {type: 'inlineCode', len: 33, value: 'console.log(123)', wrap: '``', lang: 'javascript'},
+      ]);
+    });
+
+    test('works without language when no annotation provided', () => {
+      const ast = parseInline('See this: `code` and `more code`{.js}');
+      expect(ast).toMatchObject([
+        {type: 'text', len: 10, value: 'See this: '},
+        {type: 'inlineCode', len: 6, value: 'code', wrap: '`'},
+        {type: 'text', len: 5, value: ' and '},
+        {type: 'inlineCode', len: 16, value: 'more code', wrap: '`', lang: 'js'},
+      ]);
+    });
+
+    test('handles special characters in language', () => {
+      const ast = parseInline('C++ code: `std::cout`{.c++}');
+      expect(ast).toMatchObject([
+        {type: 'text', len: 10, value: 'C++ code: '},
+        {type: 'inlineCode', len: 17, value: 'std::cout', wrap: '`', lang: 'c++'},
+      ]);
+    });
+
+    test('handles malformed language annotation gracefully', () => {
+      const ast = parseInline('Broken: `code`{.js without closing brace');
+      expect(ast).toMatchObject([
+        {type: 'text', len: 8, value: 'Broken: '},
+        {type: 'inlineCode', len: 6, value: 'code', wrap: '`'},
+        {type: 'text', len: 26, value: '{.js without closing brace'},
+      ]);
+    });
+
+    test('ignores empty language annotation', () => {
+      const ast = parseInline('Empty: `code`{.} and `code2`{:}');
+      expect(ast).toMatchObject([
+        {type: 'text', len: 7, value: 'Empty: '},
+        {type: 'inlineCode', len: 6, value: 'code', wrap: '`'},
+        {type: 'text', len: 8, value: '{.} and '},
+        {type: 'inlineCode', len: 7, value: 'code2', wrap: '`'},
+        {type: 'text', len: 3, value: '{:}'},
+      ]);
+    });
   });
 
   describe('emphasis', () => {

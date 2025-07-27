@@ -1,6 +1,17 @@
 export const testCases: [html: string, markdown: string, name?: string][] = [
   // Inline elements
   ['<p><code>hello world</code></p>', '`hello world`'],
+  [
+    '<p><code class="language-js" data-lang="js">console.log(123)</code></p>',
+    '`console.log(123)`{.js}',
+    'inline code with language (data-lang)',
+  ],
+  [
+    '<p><code class="language-python">print("hello")</code></p>',
+    '`print("hello")`{.python}',
+    'inline code with language (class)',
+  ],
+  ['<p><code data-lang="c++">std::cout</code></p>', '`std::cout`{.c++}', 'inline code with special chars in language'],
   ['<p><pre><code>hello world</code></pre></p>', '`hello world`'],
   ['<p><pre>hello world</pre></p>', '`hello world`'],
   ['<p><code><strong>hello</strong> <span>world</span></code></p>', '`hello world`'],

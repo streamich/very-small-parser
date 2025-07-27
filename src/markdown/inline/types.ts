@@ -29,7 +29,7 @@ export interface IInlineCode extends IToken {
   type: 'inlineCode';
   value: string;
   wrap: string;
-  language?: string;
+  lang?: string;
 }
 
 export interface IStrong extends IToken {

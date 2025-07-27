@@ -164,7 +164,7 @@ describe('Inline Markdown', () => {
       const ast = parseInline('See this: `console.log(123)`{.js}');
       expect(ast).toMatchObject([
         {type: 'text', len: 10, value: 'See this: '},
-        {type: 'inlineCode', len: 23, value: 'console.log(123)', wrap: '`', language: 'js'},
+        {type: 'inlineCode', len: 23, value: 'console.log(123)', wrap: '`', lang: 'js'},
       ]);
     });
 
@@ -172,7 +172,7 @@ describe('Inline Markdown', () => {
       const ast = parseInline('See this: `console.log(123)`{:js}');
       expect(ast).toMatchObject([
         {type: 'text', len: 10, value: 'See this: '},
-        {type: 'inlineCode', len: 23, value: 'console.log(123)', wrap: '`', language: 'js'},
+        {type: 'inlineCode', len: 23, value: 'console.log(123)', wrap: '`', lang: 'js'},
       ]);
     });
 
@@ -180,7 +180,7 @@ describe('Inline Markdown', () => {
       const ast = parseInline('See this: ``console.log(123)``{.javascript}');
       expect(ast).toMatchObject([
         {type: 'text', len: 10, value: 'See this: '},
-        {type: 'inlineCode', len: 33, value: 'console.log(123)', wrap: '``', language: 'javascript'},
+        {type: 'inlineCode', len: 33, value: 'console.log(123)', wrap: '``', lang: 'javascript'},
       ]);
     });
 
@@ -190,7 +190,7 @@ describe('Inline Markdown', () => {
         {type: 'text', len: 10, value: 'See this: '},
         {type: 'inlineCode', len: 6, value: 'code', wrap: '`'},
         {type: 'text', len: 5, value: ' and '},
-        {type: 'inlineCode', len: 16, value: 'more code', wrap: '`', language: 'js'},
+        {type: 'inlineCode', len: 16, value: 'more code', wrap: '`', lang: 'js'},
       ]);
     });
 
@@ -198,7 +198,7 @@ describe('Inline Markdown', () => {
       const ast = parseInline('C++ code: `std::cout`{.c++}');
       expect(ast).toMatchObject([
         {type: 'text', len: 10, value: 'C++ code: '},
-        {type: 'inlineCode', len: 17, value: 'std::cout', wrap: '`', language: 'c++'},
+        {type: 'inlineCode', len: 17, value: 'std::cout', wrap: '`', lang: 'c++'},
       ]);
     });
 

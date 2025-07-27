@@ -23,7 +23,7 @@ export const toText = (node: IToken | IToken[], ctx: ToTextContext = {b: '_'}): 
       return inline.value;
     case 'inlineCode': {
       const inlineCode = node as import('./types').IInlineCode;
-      return '`' + inlineCode.value + '`' + (inlineCode.language ? `{.${inlineCode.language}}` : '');
+      return '`' + inlineCode.value + '`' + (inlineCode.lang ? `{.${inlineCode.lang}}` : '');
     }
     case 'strong': {
       const markup = ctx.b + ctx.b;

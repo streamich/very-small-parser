@@ -43,11 +43,23 @@ const toMdastInline = (node: html.THtmlToken): mdi.TInlineToken | undefined => {
               value: toPlainText(node),
             };
           }
-          return {
+          const inlineCode: mdi.IInlineCode = {
             type: 'inlineCode',
             value: toPlainText(node),
             wrap: '`',
           };
+          // Extract language from data-lang attribute or class attribute
+          const dataLang = attr?.['data-lang'];
+          if (dataLang && dataLang !== 'math') {
+            inlineCode.lang = dataLang;
+          } else if (attr?.class) {
+            const classAttr = attr.class;
+            const languageMatch = classAttr.match(/language-([^\s]{1,32})(?:\s|$)/);
+            if (languageMatch && languageMatch[1] !== 'math') {
+              inlineCode.lang = languageMatch[1];
+            }
+          }
+          return inlineCode;
         }
         case 'b':
         case 'strong':

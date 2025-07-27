@@ -5,7 +5,7 @@ import type {IElement} from '../../html/types';
 import type {TTokenizer} from '../../types';
 import type * as types from './types';
 
-const REG_INLINE_CODE = /^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)(?:\{(?:\.|:)([^}]+)\})?/;
+const REG_INLINE_CODE = /^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)(?:\{(?:\.|:)([^}]{1,32})\})?/;
 const inlineCode: TTokenizer<types.IInlineCode> = (_, value) => {
   const matches = value.match(REG_INLINE_CODE);
   if (!matches) return;
@@ -14,7 +14,7 @@ const inlineCode: TTokenizer<types.IInlineCode> = (_, value) => {
     wrap: matches[1],
   };
   if (matches[3]) {
-    overrides.language = matches[3];
+    overrides.lang = matches[3];
   }
   return token<types.IInlineCode>(matches[0], 'inlineCode', void 0, overrides);
 };

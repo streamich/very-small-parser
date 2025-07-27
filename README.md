@@ -142,6 +142,51 @@ const text = toText(mdast); // __Hello__ _world_!
 ```
 
 
+### CSS
+
+Parse CSS declarations (inline styles):
+
+```js
+import { css } from 'very-small-parser';
+
+const declarations = css.parseDecls('color: red; font-size: 14px;');
+// { color: 'red', 'font-size': '14px' }
+```
+
+Remove CSS comments:
+
+```js
+import { removeComments } from 'very-small-parser/lib/css';
+
+const clean = removeComments('/* comment */ color: red;'); // ' color: red;'
+```
+
+Parse CSS rules:
+
+```js
+import { parseRule, parseCSS } from 'very-small-parser/lib/css';
+
+// Single rule
+const rule = parseRule('p { color: red; font-size: 14px; }');
+// { selector: 'p', declarations: { color: 'red', 'font-size': '14px' } }
+
+// Multiple rules
+const rules = parseCSS('p { color: red; } .class { font-size: 14px; }');
+// Array of rule objects
+```
+
+Parse colors:
+
+```js
+import { parseColor } from 'very-small-parser/lib/css';
+
+parseColor('#ff0000');           // { r: 255, g: 0, b: 0 }
+parseColor('rgb(255, 0, 0)');    // { r: 255, g: 0, b: 0 }
+parseColor('rgba(255, 0, 0, 0.5)'); // { r: 255, g: 0, b: 0, a: 0.5 }
+parseColor('red');               // { r: 255, g: 0, b: 0 }
+```
+
+
 ### JSON-ML
 
 JSON-ML is a simple way to represent HTML as JSON. For example, the HTML

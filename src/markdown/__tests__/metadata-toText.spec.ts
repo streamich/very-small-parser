@@ -1,5 +1,5 @@
-import { parse } from './setup';
-import { toText } from '../block/toText';
+import {parse} from './setup';
+import {toText} from '../block/toText';
 
 describe('Metadata toText (frontmatter pretty-printing)', () => {
   it('should pretty-print basic frontmatter with dashes', () => {

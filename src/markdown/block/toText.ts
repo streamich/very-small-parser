@@ -132,6 +132,11 @@ export const toText = (node: IToken | IToken[]): string => {
     }
     case 'math':
       return '$$\n' + block.value + '\n$$';
+    case 'metadata': {
+      const fence = block.fence || '---';
+      const lang = block.lang ? ' ' + block.lang : '';
+      return fence + lang + '\n' + block.value + '\n' + fence;
+    }
     case 'element':
       return toTextHtml(block);
     case '': // newline

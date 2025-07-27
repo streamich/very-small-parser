@@ -21,8 +21,10 @@ export const toText = (node: IToken | IToken[], ctx: ToTextContext = {b: '_'}): 
   switch (type) {
     case 'text':
       return inline.value;
-    case 'inlineCode':
-      return '`' + node.value + '`';
+    case 'inlineCode': {
+      const inlineCode = node as import('./types').IInlineCode;
+      return '`' + inlineCode.value + '`' + (inlineCode.language ? `{.${inlineCode.language}}` : '');
+    }
     case 'strong': {
       const markup = ctx.b + ctx.b;
       return markup + toTextChildren(inline.children, {...ctx, b: ctx.b === '_' ? '*' : '_'}) + markup;

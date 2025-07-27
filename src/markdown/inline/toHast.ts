@@ -60,8 +60,14 @@ export const toHast = (node: IToken): hast.IElement | hast.IText | hast.IRoot =>
   switch (inline.type) {
     case 'text':
       return inline;
-    case 'inlineCode':
-      return elementWithText('code', inline, inline.value);
+    case 'inlineCode': {
+      const properties: hast.IElement['properties'] = {};
+      if (inline.language) {
+        properties.class = `language-${inline.language}`;
+        properties['data-lang'] = inline.language;
+      }
+      return el('code', properties, [{type: 'text', value: inline.value}]);
+    }
     case 'strong':
       return element('strong', inline);
     case 'emphasis':

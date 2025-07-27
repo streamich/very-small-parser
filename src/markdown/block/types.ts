@@ -7,6 +7,7 @@ export type TTokenTypeBlock =
   | 'newline'
   | 'code'
   | 'math'
+  | 'metadata'
   | 'thematicBreak'
   | 'heading'
   | 'blockquote'
@@ -39,6 +40,13 @@ export interface ICode extends IToken {
 export interface IMath extends IToken {
   type: 'math';
   value: string;
+}
+
+export interface IMetadata extends IToken {
+  type: 'metadata';
+  value: string;
+  lang?: string;
+  fence?: string;
 }
 
 export interface IThematicBreak extends IToken {
@@ -117,6 +125,7 @@ export type TBlockToken =
   | INewline
   | ICode
   | IMath
+  | IMetadata
   | IThematicBreak
   | IHeading
   | IBlockquote

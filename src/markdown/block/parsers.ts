@@ -43,6 +43,20 @@ const math: TTokenizer<type.IMath> = (_, src) => {
   if (matches) return token<type.IMath>(matches[0], 'math', void 0, {value: matches[2]});
 };
 
+const REG_METADATA = /^ *([-=+#@*^]{3,})(?:\s+([^\s]*))?\s*\n([\s\S]*?)\s*\1\s*(?:\n+|$)/;
+const metadata: TTokenizer<type.IMetadata> = (_, src) => {
+  const matches = src.match(REG_METADATA);
+  if (!matches) return;
+  const subvalue = matches[0];
+  const fence = matches[1];
+  const lang = matches[2] || undefined;
+  const value = matches[3];
+  const overrides: Partial<type.IMetadata> = {value};
+  if (lang) overrides.lang = lang;
+  if (fence !== '---') overrides.fence = fence;
+  return token<type.IMetadata>(subvalue, 'metadata', void 0, overrides);
+};
+
 const thematicBreak: TTokenizer<type.IThematicBreak> = (_, src) => {
   const matches = src.match(reg.hr);
   if (matches) return token<type.IThematicBreak>(matches[0], 'thematicBreak', void 0, {value: matches[1]});
@@ -227,6 +241,7 @@ export const parsers: TTokenizer<type.TBlockToken, MdBlockParser<type.TBlockToke
   <TTokenizer<type.TBlockToken>>newline,
   <TTokenizer<type.TBlockToken>>code,
   <TTokenizer<type.TBlockToken>>fences,
+  <TTokenizer<type.TBlockToken>>metadata,
   <TTokenizer<type.TBlockToken>>math,
   <TTokenizer<type.TBlockToken>>thematicBreak,
   <TTokenizer<type.TBlockToken>>heading,

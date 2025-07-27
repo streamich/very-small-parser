@@ -61,6 +61,12 @@ export const toHast = (node: IToken): hast.IElement | hast.IText | hast.IRoot =>
     case 'text':
       return inline;
     case 'inlineCode':
+      if (inline.lang) {
+        return elementWithText('code', inline, inline.value, {
+          class: `language-${inline.lang}`,
+          'data-lang': inline.lang
+        });
+      }
       return elementWithText('code', inline, inline.value);
     case 'strong':
       return element('strong', inline);

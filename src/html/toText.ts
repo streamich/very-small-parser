@@ -27,7 +27,10 @@ export const toText = (node: THtmlToken | THtmlToken[], tab: string = '', ident:
       const {value} = node;
       return value ? ident + '<!--' + escapeText(value) + '-->' : '';
     }
-    // case 'doctype': return '';
+    case 'doctype': {
+      const {value} = node;
+      return value ? ident + '<!DOCTYPE ' + value + '>' : '';
+    }
     case 'root':
     case 'element': {
       const children = node.children;

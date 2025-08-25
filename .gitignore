@@ -128,3 +128,6 @@ dist/
 out.bin
 
 /storybook-static/
+
+# Examples (not part of package)
+examples/

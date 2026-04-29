@@ -211,14 +211,13 @@ describe('Inline Markdown', () => {
       ]);
     });
 
-    test('ignores empty language annotation', () => {
+    test('empty lang annotations {.} and {:} are now treated as inline attrs', () => {
       const ast = parseInline('Empty: `code`{.} and `code2`{:}');
       expect(ast).toMatchObject([
-        {type: 'text', len: 7, value: 'Empty: '},
-        {type: 'inlineCode', len: 6, value: 'code', wrap: '`'},
-        {type: 'text', len: 8, value: '{.} and '},
-        {type: 'inlineCode', len: 7, value: 'code2', wrap: '`'},
-        {type: 'text', len: 3, value: '{:}'},
+        {type: 'text', value: 'Empty: '},
+        {type: 'inlineCode', value: 'code', wrap: '`', args: ['.']},
+        {type: 'text', value: ' and '},
+        {type: 'inlineCode', value: 'code2', wrap: '`', args: [':']},
       ]);
     });
   });

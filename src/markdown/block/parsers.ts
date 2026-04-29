@@ -229,6 +229,17 @@ const definition: TTokenizer<type.IDefinition> = (_, value) => {
   });
 };
 
+const REG_BLOCK_ATTR = /^ *\{([^}\n]+)\} *(\n+|$)/;
+const blockAttr: TTokenizer<type.IBlockAttr> = (_, src) => {
+  const matches = src.match(REG_BLOCK_ATTR);
+  if (!matches) return;
+  const args = matches[1].trim().split(/\s+/).filter(Boolean);
+  const tok = token<type.IBlockAttr>(matches[0], 'blockAttr', void 0, {args});
+  // Flag when a blank line follows (2+ newlines) — attrs won't apply across a blank line
+  if (matches[2] && matches[2].length > 1) (tok as any)._blankLine = true;
+  return tok;
+};
+
 const html: TTokenizer<IElement> = (_, src) => htmlParser.el(src);
 
 const REG_PARAGRAPH = reg.replace(/^((?:[^\n]+(\n(?!\s{0,3}bull))?)+)\n*/, {bull});
@@ -250,6 +261,7 @@ export const parsers: TTokenizer<type.TBlockToken, MdBlockParser<type.TBlockToke
   <TTokenizer<type.TBlockToken>>table,
   <TTokenizer<type.TBlockToken>>footnoteDefinition,
   <TTokenizer<type.TBlockToken>>definition,
+  <TTokenizer<type.TBlockToken>>blockAttr,
   <TTokenizer<IElement>>html,
   <TTokenizer<type.TBlockToken>>paragraph,
 ];

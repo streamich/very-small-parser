@@ -54,7 +54,10 @@ const spoiler: TTokenizer<types.ISpoiler> = (parser, value) => {
 const REG_INLINE_MATH = /^\${1,2}(?=\S)([\s\S]*?\S)\${1,2}/;
 const inlineMath: TTokenizer<types.IInlineMath> = (parser, value) => {
   const matches = value.match(REG_INLINE_MATH);
-  if (matches) return token<types.IInlineMath>(matches[0], 'inlineMath', void 0, {value: matches[1]});
+  if (matches)
+    return token<types.IInlineMath>(matches[0], 'inlineMath', void 0, {
+      value: matches[1],
+    });
 };
 
 const REG_FOOTNOTE_REFERENCE = /^\[\^([a-zA-Z0-9\-_]{1,64})\]/;
@@ -80,7 +83,10 @@ const reference: TTokenizer<types.ILinkReference | types.IImageReference> = (par
     identifier = matches[1];
     referenceType = matches[2] ? 'collapsed' : 'shortcut';
   }
-  const overrides: Partial<types.ILinkReference | types.IImageReference> = {identifier, referenceType};
+  const overrides: Partial<types.ILinkReference | types.IImageReference> = {
+    identifier,
+    referenceType,
+  };
   if (isImage) (overrides as types.IImageReference).alt = matches[1] || null;
   else children = parser.parse(matches[1]);
   return token<types.ILinkReference | types.IImageReference>(subvalue, type, children, overrides);
@@ -91,7 +97,9 @@ const inlineLink: TTokenizer<types.IInlineLink> = (_, value) => {
   const matches = value.match(REG_INLINE_LINK);
   if (!matches) return;
   const subvalue = matches[0];
-  return token<types.IInlineLink>(subvalue, 'inlineLink', void 0, {value: subvalue});
+  return token<types.IInlineLink>(subvalue, 'inlineLink', void 0, {
+    value: subvalue,
+  });
 };
 
 const REG_SUP = /^\^(?=\S)([\s\S]*?\S)\^/;
@@ -103,12 +111,26 @@ const sub: TTokenizer<types.ISub> = regexParser('sub', REG_SUB, 1);
 const REG_MARK = /^==(?=\S)([\s\S]*?\S)==/;
 const mark: TTokenizer<types.IMark> = regexParser('mark', REG_MARK, 1);
 
+const REG_INLINE_ATTR = /^\{([^}\n]{1,4096})\}/;
+const inlineAttr: TTokenizer<types.IInlineAttr> = (_, value) => {
+  const matches = value.match(REG_INLINE_ATTR);
+  if (!matches) return;
+  const args = matches[1].trim().split(/\s+/).filter(Boolean);
+  return token<types.IInlineAttr>(matches[0], 'inlineAttr', void 0, {
+    args,
+    value: matches[0],
+  });
+};
+
 const REG_HANDLE = /^([#~@])(?![#~@])(([\w\-_\.\/#]{1,64})|(\{([\w\-_\.\/#=\/ ]{1,64})\}))/;
 const handle: TTokenizer<types.IHandle> = (_, value) => {
   const matches = value.match(REG_HANDLE);
   if (!matches) return;
   const subvalue = matches[5] || matches[2];
-  return token<types.IHandle>(matches[0], 'handle', void 0, {value: subvalue, prefix: <any>matches[1]});
+  return token<types.IHandle>(matches[0], 'handle', void 0, {
+    value: subvalue,
+    prefix: <any>matches[1],
+  });
 };
 
 const REG_UNDERLINE = /^\+\+(?=\S)([\s\S]*?\S)\+\+/;
@@ -126,13 +148,20 @@ const icon = (maxLength: number = 32): TTokenizer<types.IIcon> => {
   const REG_ICON2 = new RegExp(`^:([^'\\s:]{1,${maxLength}}?):`);
   return (_, value: string) => {
     const matches = value.match(REG_ICON1) || value.match(REG_ICON2);
-    if (matches) return token<types.IIcon>(matches[0], 'icon', void 0, {emoji: matches[1]});
+    if (matches)
+      return token<types.IIcon>(matches[0], 'icon', void 0, {
+        emoji: matches[1],
+      });
   };
 };
 
 // biome-ignore lint: allow control characters in regexp
 const REG_URL = /\s*(<(?:\\[<>]?|[^\s<>\\])*>|(?:\\[()]?|\([^\s\x00-\x1f()\\]*\)|[^\s\x00-\x1f()\\])*?)/;
-const REG_LINK = replace(/^!?\[(r1)\]\(r2(?:\s+(title))?\s*\)/, {r1: label, r2: REG_URL, title});
+const REG_LINK = replace(/^!?\[(r1)\]\(r2(?:\s+(title))?\s*\)/, {
+  r1: label,
+  r2: REG_URL,
+  title,
+});
 const link: TTokenizer<types.ILink | types.IImage> = (parser, value: string) => {
   const matches = value.match(REG_LINK);
   if (!matches) return;
@@ -152,20 +181,55 @@ const link: TTokenizer<types.ILink | types.IImage> = (parser, value: string) => 
 };
 
 const smarttext = (text: string): string =>
-  // biome-ignore format: keep functional formatting
-  repAll('...', '…',
-  repAll('(P)', '§',
-  repAll('+-', '±',
-  repAll('--', '–',
-  repAll('---', '—',
-  repAll("'", '’',
-  repAll('"', '”',
-  rep(/\(c\)/gi, '©',
-  rep(/\(r\)/gi, '®',
-  rep(/\(tm\)/gi, '™',
-  rep(/^'(?=\S)/, '\u2018', // opening singles
-  rep(/^"(?=\S)/, '\u201c', // opening doubles
-  text))))))))))));
+  repAll(
+    '...',
+    '…',
+    repAll(
+      '(P)',
+      '§',
+      repAll(
+        '+-',
+        '±',
+        repAll(
+          '--',
+          '–',
+          repAll(
+            '---',
+            '—',
+            repAll(
+              "'",
+              '’',
+              repAll(
+                '"',
+                '”',
+                rep(
+                  /\(c\)/gi,
+                  '©',
+                  rep(
+                    /\(r\)/gi,
+                    '®',
+                    rep(
+                      /\(tm\)/gi,
+                      '™',
+                      rep(
+                        /^'(?=\S)/,
+                        '\u2018', // opening singles
+                        rep(
+                          /^"(?=\S)/,
+                          '\u201c', // opening doubles
+                          text,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 
 const REG_NEWLINE = /\s{0,2}\r?\n/g;
 const newlineReplacer = (newline: string) => (newline[0] === ' ' && newline[1] === ' ' ? '\n' : ' ');
@@ -188,7 +252,10 @@ const text =
 const REG_ESCAPE = /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/;
 const inlineEscape: TTokenizer<types.IText> = (_, value) => {
   const matches = value.match(REG_ESCAPE);
-  if (matches) return token<types.IText>(matches[0], 'text', void 0, {value: matches[1]});
+  if (matches)
+    return token<types.IText>(matches[0], 'text', void 0, {
+      value: matches[1],
+    });
 };
 
 const html: TTokenizer<IElement> = (_, src) => htmlParser.el(src);
@@ -208,6 +275,7 @@ export const parsers = (dhe: (html: string) => string): TTokenizer<types.TInline
   <TTokenizer<types.TInlineToken>>sup,
   <TTokenizer<types.TInlineToken>>sub,
   <TTokenizer<types.TInlineToken>>mark,
+  <TTokenizer<types.TInlineToken>>inlineAttr,
   <TTokenizer<types.TInlineToken>>handle,
   <TTokenizer<types.TInlineToken>>underline,
   <TTokenizer<types.TInlineToken>>inlineBreak,

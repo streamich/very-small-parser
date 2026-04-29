@@ -19,6 +19,7 @@ export type TTokenTypeBlock =
   | 'tableCell'
   | 'definition'
   | 'footnoteDefinition'
+  | 'blockAttr'
   | 'paragraph';
 
 export interface IRoot extends IToken {
@@ -116,6 +117,11 @@ export interface IFootnoteDefinition extends IToken {
   children: TBlockToken[];
 }
 
+export interface IBlockAttr extends IToken {
+  type: 'blockAttr';
+  args: string[];
+}
+
 export interface IParagraph extends IToken {
   type: 'paragraph';
   children: TInlineToken[];
@@ -137,5 +143,6 @@ export type TBlockToken =
   | ITableCell
   | IDefinition
   | IFootnoteDefinition
+  | IBlockAttr
   | IElement
   | IParagraph;

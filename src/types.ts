@@ -4,6 +4,7 @@ export interface IToken {
   raw?: string;
   children?: IToken[];
   value?: string;
+  args?: string[];
 }
 
 export type TNullableToken<T extends IToken> = T | undefined | null;

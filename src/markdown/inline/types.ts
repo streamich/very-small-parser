@@ -22,6 +22,7 @@ export type TTokenTypeInline =
   | 'link'
   | 'image'
   | 'whitespace'
+  | 'inlineAttr'
   | 'text'
   | 'element';
 
@@ -121,6 +122,12 @@ export interface IImage extends IToken {
   url: string;
 }
 
+export interface IInlineAttr extends IToken {
+  type: 'inlineAttr';
+  args: string[];
+  value: string;
+}
+
 export interface IText extends IToken {
   type: 'text';
   value: string;
@@ -152,5 +159,6 @@ export type TInlineToken =
   | IBreak
   | IIcon
   | IElement
+  | IInlineAttr
   | IText
   | IWhitespace;

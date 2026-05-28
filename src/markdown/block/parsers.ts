@@ -242,7 +242,7 @@ const blockAttr: TTokenizer<type.IBlockAttr> = (_, src) => {
 
 const html: TTokenizer<IElement> = (_, src) => htmlParser.el(src);
 
-const REG_PARAGRAPH = reg.replace(/^((?:[^\n]+(\n(?!\s{0,3}bull))?)+)\n*/, {bull});
+const REG_PARAGRAPH = reg.replace(/^((?:[^\n]+(\n(?!\s{0,3}bull\s{1,42}))?)+)\n*/, {bull});
 const paragraph: TTokenizer<type.IParagraph, MdBlockParser<type.TBlockToken>> = (parser, value) => {
   const matches = value.match(REG_PARAGRAPH);
   if (matches) return token<type.IParagraph>(matches[0], 'paragraph', parser.parsei(matches[1].trim()));

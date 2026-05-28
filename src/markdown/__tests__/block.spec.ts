@@ -388,6 +388,76 @@ trololo`);
         len: 21,
       });
     });
+
+    it('does not split paragraph when next line starts with numeric text', () => {
+      const ast = parse('HTTP/1.1 and WebSocket using Reactive JSON-RPC and JSON-RPC\n2.0.');
+      expect(ast).toMatchObject({
+        type: 'root',
+        children: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                type: 'text',
+                value: 'HTTP/1.1 and WebSocket using Reactive JSON-RPC and JSON-RPC 2.0.',
+              },
+            ],
+          },
+        ],
+      });
+    });
+
+    it('does not split paragraph when continuation line starts with asterisk emphasis', () => {
+      const ast = parse('This is\n*bold* text.');
+      expect(ast).toMatchObject({
+        type: 'root',
+        children: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                type: 'text',
+                value: 'This is ',
+              },
+              {
+                type: 'emphasis',
+                children: [{type: 'text', value: 'bold'}],
+              },
+              {
+                type: 'text',
+                value: ' text.',
+              },
+            ],
+          },
+        ],
+      });
+    });
+
+    it('does not split paragraph when backticks are at line end and start', () => {
+      const ast = parse('Paragraph with trailing backtick`\n`continued text');
+      expect(ast).toMatchObject({
+        type: 'root',
+        children: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                type: 'text',
+                value: 'Paragraph with trailing backtick',
+              },
+              {
+                type: 'inlineCode',
+                value: '\n',
+              },
+              {
+                type: 'text',
+                value: 'continued text',
+              },
+            ],
+          },
+        ],
+      });
+    });
   });
 
   describe('definition', () => {

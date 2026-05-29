@@ -8,6 +8,7 @@ describe('false', () => {
     ['empty string', ''],
     ['exclamation mark', '!'],
     ['heading without following', 'asdf asdf \n\n# Heading\n\n'],
+    ['heading with only whitespace content', 'asdf asdf \n\n#    \n\na'],
     ['code in the middle of word', 'copy`this`haha'],
     ['a single <ol>', 'asdf\n\n1. List\n\n'],
     [

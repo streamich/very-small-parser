@@ -62,8 +62,8 @@ const thematicBreak: TTokenizer<type.IThematicBreak> = (_, src) => {
   if (matches) return token<type.IThematicBreak>(matches[0], 'thematicBreak', void 0, {value: matches[1]});
 };
 
-const REG_HEADING1 = /^ *(#{1,6}) +([^\n]+?) *(?:#+ *)?(?:\n+|$)/;
-const REG_HEADING2 = /^([^\n]+)\n *(=|-){2,} *(?:\n+|$)/;
+const REG_HEADING1 = /^ {0,3}(#{1,6}) +([^\n]*\S[^\n]*) *(?:#+ *)?(?:\n|$)/;
+const REG_HEADING2 = /^ {0,3}([^\n]*\S[^\n]*)\n {0,3}(=|-){2,} *(?:\n|$)/;
 const heading: TTokenizer<type.IHeading, MdBlockParser<type.TBlockToken>> = (parser, src) => {
   let matches = src.match(REG_HEADING1);
   if (matches) {

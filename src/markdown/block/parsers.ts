@@ -59,11 +59,14 @@ const metadata: TTokenizer<type.IMetadata> = (_, src) => {
 
 const thematicBreak: TTokenizer<type.IThematicBreak> = (_, src) => {
   const matches = src.match(reg.hr);
-  if (matches) return token<type.IThematicBreak>(matches[0], 'thematicBreak', void 0, {value: matches[1]});
+  if (matches)
+    return token<type.IThematicBreak>(matches[0], 'thematicBreak', void 0, {
+      value: matches[1],
+    });
 };
 
-const REG_HEADING1 = /^ *(#{1,6}) +([^\n]+?) *(?:#+ *)?(?:\n+|$)/;
-const REG_HEADING2 = /^([^\n]+)\n *(=|-){2,} *(?:\n+|$)/;
+const REG_HEADING1 = /^ {0,3}(#{1,6}) +([^\n]+?) *(?:#+ *)?(?:\n+|$)/;
+const REG_HEADING2 = /^ {0,3}([^\n]*\S[^\n]*)\n {0,3}(=|-){2,} *(?:\n+|$)/;
 const heading: TTokenizer<type.IHeading, MdBlockParser<type.TBlockToken>> = (parser, src) => {
   let matches = src.match(REG_HEADING1);
   if (matches) {
@@ -147,7 +150,10 @@ const list: TTokenizer<type.IList, MdBlockParser<type.TBlockToken>> = (parser, v
       children: parser.parse(content),
     });
   }
-  return token<type.IList>(subvalue, 'list', children, {ordered: start !== null, start});
+  return token<type.IList>(subvalue, 'list', children, {
+    ordered: start !== null,
+    start,
+  });
 };
 
 const splitCells = (tableRow: string, count?: number) => {

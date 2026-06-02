@@ -185,6 +185,19 @@ describe('Block Markdown', () => {
       });
     });
 
+    it('does not support atx headings with 4 leading spaces', () => {
+      const ast = parse('    #### Title');
+      expect(ast).toMatchObject({
+        type: 'root',
+        children: [
+          {
+            type: 'code',
+            value: '#### Title',
+          },
+        ],
+      });
+    });
+
     it('supports orthodox heading H2', () => {
       const ast = parse('Title\n' + '-----');
       expect(ast).toMatchObject({

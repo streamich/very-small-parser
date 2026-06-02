@@ -1,5 +1,5 @@
 // Headings H1-H6.
-const h1 = /(^|\n) {0,3}#{1,6} {1,8}[^\n]*\S[^\n]*(?=\r?\n\r?\n\s{0,32}\S)/;
+const h1 = /(^|\n) {0,3}#{1,6} {1,8}[^\n]{1,64}\r?\n\r?\n\s{0,32}\S/;
 
 // Bold, italic, underline, strikethrough, highlight.
 const bold = /(?:\s|^)(_|__|\*|\*\*|~~|==|\+\+)(?!\s).{1,64}(?<!\s)(?=\1)/;

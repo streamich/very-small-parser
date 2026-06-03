@@ -1079,6 +1079,95 @@ Lists can have nested items:
     });
   });
 
+  test('keeps mdash continuation text with strong content on first line', () => {
+    const withStrongOnly = parse(`- **The browser File System Access (FSA) API**
+  --- the same \`FileSystemDirectoryHandle\`
+  interface a browser exposes, backed by memory.`);
+    expect(withStrongOnly).toMatchObject({
+      type: 'root',
+      children: [
+        {
+          type: 'list',
+          children: [
+            {
+              type: 'listItem',
+              children: [
+                {
+                  type: 'paragraph',
+                  children: [
+                    {type: 'strong'},
+                    {type: 'text', value: ' — the same '},
+                    {type: 'inlineCode', value: 'FileSystemDirectoryHandle'},
+                    {type: 'text', value: ' interface a browser exposes, backed by memory.'},
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    const withStrongAndText = parse(`- **The browser File System Access (FSA) API** more workds
+  --- the same \`FileSystemDirectoryHandle\`
+  interface a browser exposes, backed by memory.`);
+    expect(withStrongAndText).toMatchObject({
+      type: 'root',
+      children: [
+        {
+          type: 'list',
+          children: [
+            {
+              type: 'listItem',
+              children: [
+                {
+                  type: 'paragraph',
+                  children: [
+                    {type: 'strong'},
+                    {type: 'text', value: ' more workds — the same '},
+                    {type: 'inlineCode', value: 'FileSystemDirectoryHandle'},
+                    {type: 'text', value: ' interface a browser exposes, backed by memory.'},
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    const withStrongAndLink = parse(`- **The browser [File System Access (FSA) API](link)**
+  --- the same \`FileSystemDirectoryHandle\`
+  interface a browser exposes, backed by memory.`);
+    expect(withStrongAndLink).toMatchObject({
+      type: 'root',
+      children: [
+        {
+          type: 'list',
+          children: [
+            {
+              type: 'listItem',
+              children: [
+                {
+                  type: 'paragraph',
+                  children: [
+                    {
+                      type: 'strong',
+                      children: [{type: 'text'}, {type: 'link', url: 'link'}],
+                    },
+                    {type: 'text', value: ' — the same '},
+                    {type: 'inlineCode', value: 'FileSystemDirectoryHandle'},
+                    {type: 'text', value: ' interface a browser exposes, backed by memory.'},
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+  });
+
   describe('automated', () => {
     for (const {name, md, ast} of tests) {
       test(name, () => {

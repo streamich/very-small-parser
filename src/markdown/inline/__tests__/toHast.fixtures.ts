@@ -37,7 +37,7 @@ export const testCases: [markdown: string, html: string, name?: string, inlineOn
   [':smile:', "<acronym title='smile icon' data-icon='smile'>:smile:</acronym>"],
   ['::smile::', "<acronym title='smile icon' data-icon='smile'>:smile:</acronym>"],
   ['[^footnote]', "<sup data-node='footnote'><a href='#footnote'>footnote</a></sup>"],
-  ['[Click me][ref]', "<a href='#ref'>Click me</a>"],
-  ['![alt text][ref]', "<a data-ref='img' href='#ref'>alt text</a>"],
-  ['![][ref]', "<a data-ref='img' href='#ref'>ref</a>"],
+  ['[Click me][ref]', "<a href='#ref'>Click me</a>", undefined, true],
+  ['![alt text][ref]', "<a data-ref='img' href='#ref'>alt text</a>", undefined, true],
+  ['![][ref]', "<a data-ref='img' href='#ref'>ref</a>", undefined, true],
 ];

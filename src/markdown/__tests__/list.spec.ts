@@ -1108,7 +1108,7 @@ Lists can have nested items:
       ],
     });
 
-    const withStrongAndText = parse(`- **The browser File System Access (FSA) API** more workds
+    const withStrongAndText = parse(`- **The browser File System Access (FSA) API** more words
   --- the same \`FileSystemDirectoryHandle\`
   interface a browser exposes, backed by memory.`);
     expect(withStrongAndText).toMatchObject({
@@ -1124,7 +1124,7 @@ Lists can have nested items:
                   type: 'paragraph',
                   children: [
                     {type: 'strong'},
-                    {type: 'text', value: ' more workds — the same '},
+                    {type: 'text', value: ' more words — the same '},
                     {type: 'inlineCode', value: 'FileSystemDirectoryHandle'},
                     {type: 'text', value: ' interface a browser exposes, backed by memory.'},
                   ],

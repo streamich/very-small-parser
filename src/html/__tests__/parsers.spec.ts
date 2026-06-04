@@ -277,6 +277,70 @@ describe('parsers', () => {
         });
       });
     });
+
+    describe('void elements without self-closing syntax', () => {
+      test('<br> without slash has no children', () => {
+        const ast = parse('1<br>2');
+        expect(ast).toMatchObject([
+          {type: 'text', value: '1'},
+          {
+            type: 'element',
+            tagName: 'br',
+            children: [],
+          },
+          {type: 'text', value: '2'},
+        ]);
+      });
+
+      test('<br> nested in <p> does not consume next sibling', () => {
+        const ast = parse('<p>1<br>2</p>');
+        expect(ast[0]).toMatchObject({
+          type: 'element',
+          tagName: 'p',
+          children: [
+            {type: 'text', value: '1'},
+            {
+              type: 'element',
+              tagName: 'br',
+              children: [],
+            },
+            {type: 'text', value: '2'},
+          ],
+        });
+      });
+
+      test('<img> without slash does not consume next sibling', () => {
+        const ast = parse('<p><img src="x">text</p>');
+        expect(ast[0]).toMatchObject({
+          type: 'element',
+          tagName: 'p',
+          children: [
+            {
+              type: 'element',
+              tagName: 'img',
+              children: [],
+            },
+            {type: 'text', value: 'text'},
+          ],
+        });
+      });
+
+      test('<hr> without slash is treated as void', () => {
+        const ast = parse('<div><hr>text</div>');
+        expect(ast[0]).toMatchObject({
+          type: 'element',
+          tagName: 'div',
+          children: [
+            {
+              type: 'element',
+              tagName: 'hr',
+              children: [],
+            },
+            {type: 'text', value: 'text'},
+          ],
+        });
+      });
+    });
   });
 
   describe('fragment', () => {

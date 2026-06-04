@@ -39,6 +39,27 @@ const REG_ATTR = / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s
 const REG_OPEN_TAG = reg.replace(/^<([a-z][\w-]*)(?:attr)*? *(\/?)>/, {attr: REG_ATTR});
 const REG_ATTRS = /([\w|data-]+)=["']?((?:.(?!["']?\s+(?:\S+)=|\s*\/?[>"']))*.)["']?/gm;
 const REG_CLOSE_TAG = /^<\/([a-z][\w-]*)>/;
+const isVoidElement = (tagName: string): boolean => {
+  switch (tagName) {
+    case 'area':
+    case 'base':
+    case 'br':
+    case 'col':
+    case 'embed':
+    case 'hr':
+    case 'img':
+    case 'input':
+    case 'link':
+    case 'meta':
+    case 'param':
+    case 'source':
+    case 'track':
+    case 'wbr':
+      return true;
+    default:
+      return false;
+  }
+};
 export const el: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
   const matchOpen = src.match(REG_OPEN_TAG);
   if (!matchOpen) return;
@@ -57,17 +78,13 @@ export const el: TTokenizer<type.IElement, HtmlParser> = (parser, src) => {
     children: [],
     len: matchLength,
   };
-  if (!selfClosing) {
+  if (!selfClosing && !isVoidElement(tagName)) {
     const substr = src.slice(matchLength);
     const fragment = parser.parsef(substr);
     const fragmentLen = fragment.len;
-    if (selfClosing) {
-      token.len! += fragment.len!;
-    } else {
-      const matchClose = substr.slice(fragmentLen).match(REG_CLOSE_TAG);
-      if (!matchClose) return token;
-      token.len! += fragment.len! + (matchClose?.[0].length ?? 0);
-    }
+    const matchClose = substr.slice(fragmentLen).match(REG_CLOSE_TAG);
+    if (!matchClose || matchClose[1] !== tagName) return token;
+    token.len! += fragmentLen! + (matchClose?.[0].length ?? 0);
     token.children = fragment.children as any;
   }
   return token;
